@@ -490,17 +490,13 @@ async function generateAvatarImage(avatar) {
   if (aiImageCache[avatar.id]) return aiImageCache[avatar.id];
 
   try {
-    const response = await fetch(WORKER_URL + '/generate-image', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: avatar.prompt })
-    });
-    if (!response.ok) throw new Error('Worker error');
-    const data = await response.json();
-    if (data.imageUrl) {
-      aiImageCache[avatar.id] = data.imageUrl;
-      return data.imageUrl;
-    }
+    const encodedPrompt = encodeURIComponent(
+      avatar.prompt + ', children book illustration, soft colors, round face, cute, no text, square image'
+    );
+    const seed = Math.floor(Math.random() * 99999);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&model=flux&nologo=true&seed=${seed}`;
+    aiImageCache[avatar.id] = imageUrl;
+    return imageUrl;
   } catch (e) {
     console.warn('AI image failed for', avatar.id, e);
   }
