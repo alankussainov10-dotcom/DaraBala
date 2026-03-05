@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Nunito', sans-serif; background: #f1f8e9; min-height: 100vh; overflow-x: hidden; }
+  body { font-family: "Nunito", sans-serif; background: #f1f8e9; min-height: 100vh; overflow-x: hidden; }
 
   @keyframes popIn { 0%{transform:scale(0.85) translateY(24px);opacity:0} 100%{transform:scale(1) translateY(0);opacity:1} }
   @keyframes shake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)} }
@@ -17,6 +17,9 @@
   @keyframes spin { to{transform:rotate(360deg)} }
   @keyframes chatPop { 0%{transform:scale(0.8) translateY(20px);opacity:0} 100%{transform:scale(1) translateY(0);opacity:1} }
   @keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+  @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+  @keyframes timerShrink { from{width:100%} to{width:0%} }
 
   .anim-pop { animation: popIn .4s cubic-bezier(.175,.885,.32,1.275) both; }
   .anim-shake { animation: shake .45s ease-in-out; }
@@ -24,41 +27,35 @@
   .view { display: none; }
   .view.active { display: flex; flex-direction: column; min-height: 100vh; }
 
-  /* ===== ONBOARDING ===== */
+  /* ONBOARDING */
   #view-onboarding { align-items: center; justify-content: center; padding: 24px; }
-  .card {
-    background: #fff; border-radius: 32px; padding: 36px 32px;
-    width: 100%; max-width: 480px;
-    box-shadow: 0 8px 40px rgba(0,0,0,.10); border-bottom: 8px solid #c5e1a5;
-  }
+  .card { background: #fff; border-radius: 32px; padding: 36px 32px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,.10); border-bottom: 8px solid #c5e1a5; }
   .ob-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; }
   .ob-logo-icon { width: 80px; height: 80px; background: #aed581; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin-bottom: 14px; }
   .ob-logo h1 { font-size: 30px; font-weight: 900; color: #33691e; }
-  .ob-logo p  { color: #558b2f; font-weight: 700; margin-top: 4px; }
+  .ob-logo p { color: #558b2f; font-weight: 700; margin-top: 4px; }
   .ob-step { display: none; }
   .ob-step.active { display: block; animation: fadeSlide .35s ease both; }
   .ob-step h2 { font-size: 22px; font-weight: 800; text-align: center; color: #222; margin-bottom: 20px; }
   .input-wrap { position: relative; margin-bottom: 20px; }
   .input-wrap .icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #aaa; width: 22px; height: 22px; pointer-events: none; }
-  .input-wrap input { width: 100%; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 700; background: #f9f9f9; border: 2px solid #e0e0e0; border-radius: 18px; padding: 14px 16px 14px 48px; outline: none; color: #333; transition: border-color .2s; }
+  .input-wrap input { width: 100%; font-family: "Nunito",sans-serif; font-size: 18px; font-weight: 700; background: #f9f9f9; border: 2px solid #e0e0e0; border-radius: 18px; padding: 14px 16px 14px 48px; outline: none; color: #333; transition: border-color .2s; }
   .input-wrap input:focus { border-color: #8bc34a; background: #fff; }
-
   .avatar-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; max-height: 380px; overflow-y: auto; padding-right: 4px; }
   .avatar-grid::-webkit-scrollbar { width: 6px; }
   .avatar-grid::-webkit-scrollbar-thumb { background: #c5e1a5; border-radius: 3px; }
-  .avatar-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 8px; border-radius: 20px; border: 3px solid #f0f0f0; background: #fff; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; color: #555; transition: border-color .2s, transform .1s; }
+  .avatar-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px 8px; border-radius: 20px; border: 3px solid #f0f0f0; background: #fff; cursor: pointer; font-family: "Nunito",sans-serif; font-size: 12px; font-weight: 800; color: #555; transition: border-color .2s, transform .1s; }
   .avatar-btn:hover { border-color: #c5e1a5; transform: scale(1.05); }
   .avatar-btn.sel { border-color: #8bc34a; background: #f1f8e9; }
   .av-emoji { font-size: 40px; margin-bottom: 6px; }
-
-  .btn-green { display: block; width: 100%; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; color: #fff; background: #8bc34a; border: none; border-radius: 18px; padding: 16px; cursor: pointer; border-bottom: 5px solid #689f38; transition: transform .1s, border-bottom-width .1s, background .15s; user-select: none; }
+  .btn-green { display: block; width: 100%; font-family: "Nunito",sans-serif; font-size: 18px; font-weight: 900; color: #fff; background: #8bc34a; border: none; border-radius: 18px; padding: 16px; cursor: pointer; border-bottom: 5px solid #689f38; transition: transform .1s, border-bottom-width .1s, background .15s; user-select: none; }
   .btn-green:hover:not(:disabled) { background: #7cb342; }
   .btn-green:active:not(:disabled) { border-bottom-width: 0; transform: translateY(5px); }
   .btn-green:disabled { background: #d0d0d0; border-bottom-color: #bbb; cursor: not-allowed; }
 
-  /* ===== DASHBOARD ===== */
+  /* DASHBOARD */
   #view-dashboard { background: #f1f8e9; }
-  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.88); backdrop-filter: blur(10px); border-bottom: 1.5px solid #e8e8e8; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+  .topbar { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.92); backdrop-filter: blur(10px); border-bottom: 1.5px solid #e8e8e8; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
   .topbar-user { display: flex; align-items: center; gap: 10px; }
   .topbar-avatar { width: 44px; height: 44px; background: #e8f5e9; border: 2.5px solid #8bc34a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; }
   .topbar-name { font-weight: 800; color: #444; font-size: 15px; }
@@ -71,135 +68,165 @@
   .map-container { max-width: 480px; margin: 0 auto; padding: 28px 20px 100px; display: flex; flex-direction: column; align-items: center; }
   .module-header { width: 100%; border-radius: 28px; padding: 22px 24px; color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.13); border-bottom: 6px solid rgba(0,0,0,.12); margin-bottom: 28px; position: relative; overflow: hidden; }
   .module-header h3 { font-size: 28px; font-weight: 900; }
-  .module-header p  { font-size: 16px; font-weight: 700; opacity: .9; margin-top: 2px; }
+  .module-header p { font-size: 16px; font-weight: 700; opacity: .9; margin-top: 2px; }
   .module-header .mod-icon { position: absolute; right: -14px; bottom: -14px; font-size: 90px; opacity: .18; transform: rotate(-12deg); }
   .lessons-col { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; margin-bottom: 36px; }
   .node-wrap { position: relative; }
-  .lesson-node { width: 76px; height: 76px; border-radius: 50%; border: none; border-bottom: 6px solid rgba(0,0,0,.15); display: flex; align-items: center; justify-content: center; font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 900; color: #fff; cursor: pointer; transition: transform .12s, border-bottom-width .12s; user-select: none; box-shadow: 0 4px 12px rgba(0,0,0,.10); }
+  .lesson-node { width: 76px; height: 76px; border-radius: 50%; border: none; border-bottom: 6px solid rgba(0,0,0,.15); display: flex; align-items: center; justify-content: center; font-family: "Nunito",sans-serif; font-size: 28px; font-weight: 900; color: #fff; cursor: pointer; transition: transform .12s, border-bottom-width .12s; user-select: none; box-shadow: 0 4px 12px rgba(0,0,0,.10); }
   .lesson-node:hover:not(.locked) { transform: scale(1.08); }
   .lesson-node:active:not(.locked) { border-bottom-width: 0; transform: translateY(6px); }
   .lesson-node.locked { background: #d9d9d9; border-bottom-color: #bbb; color: #888; cursor: not-allowed; }
   .lesson-node.done { background: #ffc107; border-bottom-color: #ff9800; }
   .float-badge { position: absolute; top: -46px; left: 50%; transform: translateX(-50%); background: #fff; border: 2px solid #e8e8e8; border-radius: 18px; padding: 6px 16px; font-size: 14px; font-weight: 800; color: #444; white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,.10); animation: floatBadge 2s ease-in-out infinite; z-index: 10; }
-  .float-badge::after { content: ''; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: #fff; border-right: 2px solid #e8e8e8; border-bottom: 2px solid #e8e8e8; }
+  .float-badge::after { content: ""; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: #fff; border-right: 2px solid #e8e8e8; border-bottom: 2px solid #e8e8e8; }
   .connector { position: absolute; top: 76px; left: 50%; transform: translateX(-50%); width: 14px; height: 22px; background: #d0e8b8; border-radius: 7px; }
 
-  /* ===== LESSON ===== */
+  /* LESSON */
   #view-lesson { background: #fff; }
   .lesson-topbar { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 2px solid #f0f0f0; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
-  .close-btn { background: none; border: none; cursor: pointer; color: #aaa; padding: 4px; border-radius: 8px; flex-shrink: 0; }
+  .close-btn { background: none; border: none; cursor: pointer; color: #aaa; padding: 4px; flex-shrink: 0; }
   .close-btn svg { width: 24px; height: 24px; display: block; }
   .progress-bar-wrap { flex: 1; height: 20px; background: #eee; border-radius: 10px; overflow: hidden; }
   .progress-bar-fill { height: 100%; background: #8bc34a; border-radius: 10px; transition: width .6s ease; position: relative; }
-  .progress-bar-fill::after { content: ''; position: absolute; top: 4px; left: 6px; right: 6px; height: 5px; background: rgba(255,255,255,.35); border-radius: 3px; }
-  .lesson-content { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 28px 20px 0; }
-  .lesson-question { font-size: 26px; font-weight: 900; color: #1a1a1a; text-align: center; margin-bottom: 28px; line-height: 1.3; }
+  .progress-bar-fill::after { content: ""; position: absolute; top: 4px; left: 6px; right: 6px; height: 5px; background: rgba(255,255,255,.35); border-radius: 3px; }
+  .lives { display: flex; gap: 4px; flex-shrink: 0; }
+  .heart { font-size: 22px; transition: opacity .3s; }
+  .heart.lost { opacity: .25; filter: grayscale(1); }
+  .lesson-content { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 24px 20px 0; }
+  .mech-label { text-align: center; font-size: 13px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .lesson-question { font-size: 24px; font-weight: 900; color: #1a1a1a; text-align: center; margin-bottom: 24px; line-height: 1.3; }
+
+  /* MCQ / True-False */
   .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-  .opt-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 12px; border-radius: 24px; border: 3px solid #e0e0e0; background: #fff; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 800; color: #444; border-bottom-width: 5px; transition: transform .1s, border-color .15s, background .15s, opacity .2s; user-select: none; }
-  .opt-btn .opt-emoji { font-size: 52px; margin-bottom: 10px; }
+  .options-grid.single-col { grid-template-columns: 1fr; }
+  .opt-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px 12px; border-radius: 24px; border: 3px solid #e0e0e0; background: #fff; cursor: pointer; font-family: "Nunito",sans-serif; font-size: 18px; font-weight: 800; color: #444; border-bottom-width: 5px; transition: transform .1s, border-color .15s, background .15s, opacity .2s; user-select: none; }
+  .opt-btn .opt-emoji { font-size: 48px; margin-bottom: 8px; }
   .opt-btn:hover:not(:disabled):not(.sel):not(.correct):not(.wrong) { background: #fafafa; border-color: #bbb; }
   .opt-btn:active:not(:disabled) { transform: translateY(5px); border-bottom-width: 0; }
-  .opt-btn.sel     { border-color: #42a5f5; background: #e3f2fd; color: #1565c0; }
+  .opt-btn.sel { border-color: #42a5f5; background: #e3f2fd; color: #1565c0; }
   .opt-btn.correct { border-color: #7cb342; background: #f1f8e9; color: #558b2f; }
-  .opt-btn.wrong   { border-color: #ef5350; background: #ffebee; color: #c62828; }
-  .opt-btn.dim     { opacity: .45; filter: grayscale(40%); }
+  .opt-btn.wrong { border-color: #ef5350; background: #ffebee; color: #c62828; }
+  .opt-btn.dim { opacity: .4; filter: grayscale(40%); }
   .opt-btn:disabled { cursor: not-allowed; }
+
+  /* True/False */
+  .tf-wrap { display: flex; gap: 16px; justify-content: center; margin-top: 8px; }
+  .tf-btn { flex: 1; max-width: 160px; padding: 20px; border-radius: 24px; border: none; font-family: "Nunito",sans-serif; font-size: 28px; font-weight: 900; cursor: pointer; border-bottom: 5px solid; transition: transform .1s, border-bottom-width .1s; user-select: none; }
+  .tf-btn.yes { background: #8bc34a; border-bottom-color: #689f38; color: #fff; }
+  .tf-btn.no { background: #ef5350; border-bottom-color: #c62828; color: #fff; }
+  .tf-btn:active { transform: translateY(5px); border-bottom-width: 0; }
+  .tf-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .timer-bar-wrap { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+  .timer-bar { height: 100%; background: #ff9800; border-radius: 4px; }
+
+  /* Listen & Tap */
+  .listen-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 120px; height: 120px; border-radius: 50%; border: none; background: linear-gradient(135deg,#8bc34a,#558b2f); color: #fff; font-size: 48px; cursor: pointer; margin: 0 auto 24px; box-shadow: 0 8px 24px rgba(139,195,74,.4); border-bottom: 6px solid #33691e; transition: transform .1s, border-bottom-width .1s; }
+  .listen-btn:active { transform: translateY(6px); border-bottom-width: 0; }
+  .listen-btn.playing { animation: pulse 0.6s ease-in-out infinite; }
+
+  /* Sentence Builder */
+  .sentence-target { min-height: 56px; background: #f9f9f9; border: 2px dashed #c5e1a5; border-radius: 18px; padding: 10px 14px; margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .word-chip { padding: 8px 16px; border-radius: 14px; font-family: "Nunito",sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; border: 2px solid; transition: transform .1s, opacity .15s; user-select: none; }
+  .word-chip.in-sentence { background: #e3f2fd; border-color: #42a5f5; color: #1565c0; }
+  .word-chip.in-bank { background: #fff; border-color: #e0e0e0; color: #444; }
+  .word-chip:hover { transform: scale(1.05); }
+  .word-bank { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; background: #fff; border-radius: 18px; border: 2px solid #e8e8e8; }
+
+  /* Fill the Gap */
+  .gap-word-display { font-size: 36px; font-weight: 900; text-align: center; letter-spacing: 4px; margin-bottom: 24px; color: #222; }
+  .gap-word-display .gap { display: inline-block; width: 40px; height: 40px; border-bottom: 4px solid #8bc34a; text-align: center; color: #8bc34a; }
+  .letter-choices { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .letter-btn { width: 60px; height: 60px; border-radius: 16px; border: 3px solid #e0e0e0; background: #fff; font-family: "Nunito",sans-serif; font-size: 24px; font-weight: 900; cursor: pointer; border-bottom-width: 5px; transition: transform .1s, border-color .15s; user-select: none; }
+  .letter-btn:hover:not(:disabled) { border-color: #8bc34a; background: #f1f8e9; }
+  .letter-btn:active:not(:disabled) { transform: translateY(5px); border-bottom-width: 0; }
+  .letter-btn.correct { border-color: #7cb342; background: #f1f8e9; color: #558b2f; }
+  .letter-btn.wrong { border-color: #ef5350; background: #ffebee; color: #c62828; }
+  .letter-btn:disabled { cursor: not-allowed; }
+
+  /* Match Pairs */
+  .match-wrap { display: flex; gap: 16px; }
+  .match-col { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .match-item { padding: 14px 10px; border-radius: 18px; border: 3px solid #e0e0e0; background: #fff; font-family: "Nunito",sans-serif; font-size: 15px; font-weight: 800; text-align: center; cursor: pointer; transition: border-color .15s, background .15s, transform .1s; user-select: none; min-height: 54px; display: flex; align-items: center; justify-content: center; }
+  .match-item:hover:not(.matched):not(.selected) { border-color: #c5e1a5; }
+  .match-item.selected { border-color: #42a5f5; background: #e3f2fd; color: #1565c0; transform: scale(1.03); }
+  .match-item.matched { border-color: #7cb342; background: #f1f8e9; color: #558b2f; }
+  .match-item.wrong-flash { border-color: #ef5350; background: #ffebee; animation: shake .4s ease; }
+
+  /* Voice / Mic */
+  .mic-area { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .word-to-say { font-size: 42px; font-weight: 900; color: #33691e; text-align: center; }
+  .word-translation { font-size: 16px; color: #888; font-weight: 700; }
+  .mic-btn { width: 100px; height: 100px; border-radius: 50%; border: none; background: linear-gradient(135deg,#ef5350,#c62828); color: #fff; font-size: 44px; cursor: pointer; box-shadow: 0 8px 24px rgba(239,83,80,.4); border-bottom: 6px solid #b71c1c; transition: transform .1s; display: flex; align-items: center; justify-content: center; }
+  .mic-btn.listening { background: linear-gradient(135deg,#ff9800,#e65100); animation: pulse .8s ease-in-out infinite; box-shadow: 0 8px 32px rgba(255,152,0,.5); }
+  .mic-btn:active { transform: scale(0.95); }
+  .mic-result { font-size: 18px; font-weight: 800; color: #888; min-height: 28px; text-align: center; }
+  .mic-result.ok { color: #558b2f; }
+  .mic-result.fail { color: #c62828; }
+
+  /* FOOTER */
   .lesson-footer { padding: 16px 20px; border-top: 2px solid; transition: background .25s, border-color .25s; position: sticky; bottom: 0; z-index: 40; }
   .lesson-footer.neutral { background: #fff; border-color: #f0f0f0; }
-  .lesson-footer.good    { background: #f1f8e9; border-color: #aed581; }
-  .lesson-footer.bad     { background: #ffebee; border-color: #ef9a9a; }
+  .lesson-footer.good { background: #f1f8e9; border-color: #aed581; }
+  .lesson-footer.bad { background: #ffebee; border-color: #ef9a9a; }
   .footer-inner { max-width: 640px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
   .feedback-text { flex: 1; }
-  .feedback-text .fb-main { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 900; }
+  .feedback-text .fb-main { display: flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 900; }
   .feedback-text .fb-main.good { color: #558b2f; }
-  .feedback-text .fb-main.bad  { color: #c62828; }
-  .feedback-text .fb-sub { font-size: 14px; font-weight: 700; color: #888; margin-bottom: 2px; }
-  .check-icon { font-size: 32px; animation: bounceLoop 1.5s ease-in-out infinite; }
-  .btn-check { flex-shrink: 0; font-family: 'Nunito', sans-serif; font-size: 18px; font-weight: 900; color: #fff; border: none; border-radius: 16px; padding: 14px 32px; cursor: pointer; border-bottom: 5px solid; transition: transform .1s, border-bottom-width .1s, background .15s; user-select: none; }
+  .feedback-text .fb-main.bad { color: #c62828; }
+  .feedback-text .fb-sub { font-size: 13px; font-weight: 700; color: #888; margin-bottom: 2px; }
+  .check-icon { font-size: 28px; animation: bounceLoop 1.5s ease-in-out infinite; }
+  .btn-check { flex-shrink: 0; font-family: "Nunito",sans-serif; font-size: 18px; font-weight: 900; color: #fff; border: none; border-radius: 16px; padding: 14px 28px; cursor: pointer; border-bottom: 5px solid; transition: transform .1s, border-bottom-width .1s, background .15s; user-select: none; }
   .btn-check.green { background: #8bc34a; border-bottom-color: #689f38; }
   .btn-check.green:hover:not(:disabled) { background: #7cb342; }
-  .btn-check.red   { background: #ef5350; border-bottom-color: #c62828; }
+  .btn-check.red { background: #ef5350; border-bottom-color: #c62828; }
   .btn-check:active:not(:disabled) { border-bottom-width: 0; transform: translateY(5px); }
   .btn-check:disabled { background: #d9d9d9; border-bottom-color: #bbb; cursor: not-allowed; opacity: .7; }
 
-  /* ===== AI CHAT WIDGET ===== */
+  /* COMPLETE SCREEN */
+  #view-complete { align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg,#f1f8e9,#e8f5e9); }
+  .complete-card { background: #fff; border-radius: 32px; padding: 40px 32px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,.12); }
+  .complete-emoji { font-size: 80px; margin-bottom: 16px; animation: bounceLoop 2s ease-in-out infinite; }
+  .complete-title { font-size: 32px; font-weight: 900; color: #33691e; margin-bottom: 8px; }
+  .complete-sub { font-size: 16px; color: #888; font-weight: 700; margin-bottom: 28px; }
+  .complete-stats { display: flex; gap: 12px; justify-content: center; margin-bottom: 28px; }
+  .complete-stat { background: #f1f8e9; border-radius: 18px; padding: 14px 20px; font-weight: 900; }
+  .complete-stat .val { font-size: 28px; color: #33691e; }
+  .complete-stat .lbl { font-size: 12px; color: #888; margin-top: 2px; }
+
+  /* CHAT WIDGET */
   #chat-widget { position: fixed; bottom: 24px; right: 24px; z-index: 1000; }
-
-  #chat-toggle {
-    width: 64px; height: 64px; border-radius: 50%; border: none;
-    background: linear-gradient(135deg, #8bc34a, #558b2f);
-    box-shadow: 0 6px 20px rgba(139,195,74,.5);
-    cursor: pointer; font-size: 32px;
-    display: flex; align-items: center; justify-content: center;
-    transition: transform .2s, box-shadow .2s;
-    border-bottom: 4px solid #33691e;
-  }
-  #chat-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 28px rgba(139,195,74,.6); }
-  #chat-toggle:active { transform: scale(0.95); }
-
-  /* Пульсирующая точка — новое сообщение */
+  #chat-toggle { width: 64px; height: 64px; border-radius: 50%; border: none; background: linear-gradient(135deg,#8bc34a,#558b2f); box-shadow: 0 6px 20px rgba(139,195,74,.5); cursor: pointer; font-size: 32px; display: flex; align-items: center; justify-content: center; border-bottom: 4px solid #33691e; transition: transform .2s; }
+  #chat-toggle:hover { transform: scale(1.1); }
   #chat-dot { position: absolute; top: 2px; right: 2px; width: 14px; height: 14px; background: #ff5722; border-radius: 50%; border: 2px solid #fff; display: none; }
   #chat-dot.show { display: block; animation: bounceLoop 1s ease-in-out infinite; }
-
-  #chat-box {
-    position: absolute; bottom: 76px; right: 0;
-    width: 320px; background: #fff; border-radius: 24px;
-    box-shadow: 0 12px 48px rgba(0,0,0,.18);
-    border: 2px solid #e8f5e9;
-    display: none; flex-direction: column;
-    overflow: hidden; animation: chatPop .3s ease both;
-    max-height: 480px;
-  }
+  #chat-box { position: absolute; bottom: 76px; right: 0; width: 320px; background: #fff; border-radius: 24px; box-shadow: 0 12px 48px rgba(0,0,0,.18); border: 2px solid #e8f5e9; display: none; flex-direction: column; overflow: hidden; animation: chatPop .3s ease both; max-height: 480px; }
   #chat-box.open { display: flex; }
-
-  .chat-header {
-    background: linear-gradient(135deg, #8bc34a, #558b2f);
-    padding: 14px 16px; display: flex; align-items: center; gap: 10px;
-  }
+  .chat-header { background: linear-gradient(135deg,#8bc34a,#558b2f); padding: 14px 16px; display: flex; align-items: center; gap: 10px; }
   .chat-header-avatar { font-size: 28px; }
-  .chat-header-info { flex: 1; }
   .chat-header-name { font-size: 15px; font-weight: 900; color: #fff; }
   .chat-header-status { font-size: 12px; color: rgba(255,255,255,.8); font-weight: 600; }
-
-  .chat-messages {
-    flex: 1; overflow-y: auto; padding: 14px 12px; display: flex;
-    flex-direction: column; gap: 10px; min-height: 200px; max-height: 280px;
-  }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; min-height: 200px; max-height: 280px; }
   .chat-messages::-webkit-scrollbar { width: 4px; }
   .chat-messages::-webkit-scrollbar-thumb { background: #c5e1a5; border-radius: 2px; }
-
-  .msg { display: flex; gap: 8px; animation: msgIn .25s ease both; max-width: 100%; }
+  .msg { display: flex; gap: 8px; animation: msgIn .25s ease both; }
   .msg.user { flex-direction: row-reverse; }
-  .msg-bubble {
-    padding: 10px 14px; border-radius: 18px; font-size: 14px;
-    font-weight: 700; line-height: 1.4; max-width: 220px; word-break: break-word;
-  }
-  .msg.bot  .msg-bubble { background: #f1f8e9; color: #33691e; border-bottom-left-radius: 4px; }
+  .msg-bubble { padding: 10px 14px; border-radius: 18px; font-size: 14px; font-weight: 700; line-height: 1.4; max-width: 220px; word-break: break-word; }
+  .msg.bot .msg-bubble { background: #f1f8e9; color: #33691e; border-bottom-left-radius: 4px; }
   .msg.user .msg-bubble { background: #8bc34a; color: #fff; border-bottom-right-radius: 4px; }
   .msg-av { font-size: 22px; flex-shrink: 0; align-self: flex-end; }
-
   .typing-indicator { display: flex; gap: 4px; padding: 10px 14px; background: #f1f8e9; border-radius: 18px; border-bottom-left-radius: 4px; width: fit-content; }
   .typing-indicator span { width: 7px; height: 7px; background: #8bc34a; border-radius: 50%; animation: bounceLoop .8s ease-in-out infinite; }
   .typing-indicator span:nth-child(2) { animation-delay: .15s; }
   .typing-indicator span:nth-child(3) { animation-delay: .3s; }
-
   .chat-input-wrap { padding: 10px 12px; border-top: 1.5px solid #f0f0f0; display: flex; gap: 8px; }
-  .chat-input {
-    flex: 1; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700;
-    border: 2px solid #e0e0e0; border-radius: 14px; padding: 10px 12px;
-    outline: none; color: #333; transition: border-color .2s;
-  }
+  .chat-input { flex: 1; font-family: "Nunito",sans-serif; font-size: 14px; font-weight: 700; border: 2px solid #e0e0e0; border-radius: 14px; padding: 10px 12px; outline: none; color: #333; transition: border-color .2s; }
   .chat-input:focus { border-color: #8bc34a; }
-  .chat-send {
-    width: 40px; height: 40px; border-radius: 12px; border: none;
-    background: #8bc34a; color: #fff; cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .15s, transform .1s;
-    flex-shrink: 0;
-  }
+  .chat-send { width: 40px; height: 40px; border-radius: 12px; border: none; background: #8bc34a; color: #fff; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: background .15s; flex-shrink: 0; }
   .chat-send:hover { background: #7cb342; }
-  .chat-send:active { transform: scale(0.92); }
   .chat-send:disabled { background: #d0d0d0; cursor: not-allowed; }
+
+  /* CONFETTI */
+  .confetti-piece { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; border-radius: 2px; }
 
   /* Module colors */
   .mc-0{background:#4caf50} .mc-1{background:#26a69a} .mc-2{background:#26c6da}
@@ -209,7 +236,7 @@
 </head>
 <body>
 
-<!-- ===== ONBOARDING ===== -->
+<!-- ONBOARDING -->
 <div id="view-onboarding" class="view active">
   <div class="card">
     <div class="ob-logo">
@@ -241,7 +268,7 @@
   </div>
 </div>
 
-<!-- ===== DASHBOARD ===== -->
+<!-- DASHBOARD -->
 <div id="view-dashboard" class="view">
   <div class="topbar">
     <div class="topbar-user">
@@ -262,7 +289,7 @@
   <div class="map-container" id="map-container"></div>
 </div>
 
-<!-- ===== LESSON ===== -->
+<!-- LESSON -->
 <div id="view-lesson" class="view">
   <div class="lesson-topbar">
     <button class="close-btn" onclick="exitLesson()">
@@ -271,11 +298,9 @@
     <div class="progress-bar-wrap">
       <div class="progress-bar-fill" id="lesson-progress-fill" style="width:0%"></div>
     </div>
+    <div class="lives" id="lives-display"></div>
   </div>
-  <div class="lesson-content">
-    <div class="lesson-question" id="lesson-question"></div>
-    <div class="options-grid" id="options-grid"></div>
-  </div>
+  <div class="lesson-content" id="lesson-content"></div>
   <div class="lesson-footer neutral" id="lesson-footer">
     <div class="footer-inner">
       <div class="feedback-text" id="feedback-area"></div>
@@ -284,12 +309,27 @@
   </div>
 </div>
 
-<!-- ===== AI CHAT WIDGET ===== -->
+<!-- COMPLETE -->
+<div id="view-complete" class="view">
+  <div class="complete-card anim-pop">
+    <div class="complete-emoji" id="comp-emoji">🏆</div>
+    <div class="complete-title" id="comp-title">Урок пройден!</div>
+    <div class="complete-sub" id="comp-sub">Отличная работа!</div>
+    <div class="complete-stats">
+      <div class="complete-stat"><div class="val" id="comp-xp">+10</div><div class="lbl">XP</div></div>
+      <div class="complete-stat"><div class="val" id="comp-score">5/5</div><div class="lbl">Правильно</div></div>
+      <div class="complete-stat"><div class="val" id="comp-streak">🔥1</div><div class="lbl">Дней</div></div>
+    </div>
+    <button class="btn-green" onclick="showDashboard()">На карту уроков</button>
+  </div>
+</div>
+
+<!-- CHAT WIDGET -->
 <div id="chat-widget" style="display:none">
   <div id="chat-box">
     <div class="chat-header">
       <div class="chat-header-avatar" id="chat-av">🦊</div>
-      <div class="chat-header-info">
+      <div>
         <div class="chat-header-name" id="chat-name">Лисичка</div>
         <div class="chat-header-status">Учитель английского 🌟</div>
       </div>
@@ -300,253 +340,629 @@
       <button class="chat-send" id="chat-send-btn" onclick="sendChat()">➤</button>
     </div>
   </div>
-  <button id="chat-toggle" onclick="toggleChat()">
-    <span id="chat-toggle-emoji">🦊</span>
-  </button>
+  <button id="chat-toggle" onclick="toggleChat()"><span id="chat-toggle-emoji">🦊</span></button>
   <div id="chat-dot"></div>
 </div>
 
 <script>
-// ============ CONFIG ============
 const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
 
-// ============ DATA ============
+// ===================== CURRICULUM DATA =====================
 const MODULES = [
-  {id:1,title:"Hello, English!",lessons:6},
-  {id:2,title:"My School",lessons:8},
-  {id:3,title:"People I Love",lessons:8},
-  {id:4,title:"Weather",lessons:8},
-  {id:5,title:"My Free Time",lessons:8},
-  {id:6,title:"Health",lessons:8},
-  {id:7,title:"Buildings",lessons:8},
-  {id:8,title:"My Holidays",lessons:8},
-  {id:9,title:"Reserves & Round-up",lessons:6}
+  {
+    id:1, title:"Hello, English!", icon:"👋",
+    lessons:[
+      // Lesson 1: MCQ - Greetings
+      { type:"mcq", question:"Как сказать «Привет»?",
+        opts:[{t:"Hello",e:"👋"},{t:"Goodbye",e:"🚶"},{t:"Apple",e:"🍎"},{t:"Dog",e:"🐶"}], ans:0 },
+      { type:"mcq", question:"Как сказать «До свидания»?",
+        opts:[{t:"Hello",e:"👋"},{t:"Goodbye",e:"🚶"},{t:"Please",e:"🙏"},{t:"Thank you",e:"😊"}], ans:1 },
+      // Lesson 2: True/False - Colors
+      { type:"truefalse", question:"Это красный цвет?", emoji:"🔴", answer:"Red", correctIs:true },
+      { type:"truefalse", question:"Это синий цвет?", emoji:"🟢", answer:"Blue", correctIs:false },
+      // Lesson 3: Listen & Tap
+      { type:"listen", word:"Apple", emoji:"🍎",
+        opts:[{t:"Apple",e:"🍎"},{t:"Book",e:"📚"},{t:"Cat",e:"🐱"},{t:"Dog",e:"🐶"}], ans:0 },
+      { type:"listen", word:"School", emoji:"🏫",
+        opts:[{t:"House",e:"🏠"},{t:"School",e:"🏫"},{t:"Tree",e:"🌳"},{t:"Car",e:"🚗"}], ans:1 },
+      // Lesson 4: Fill the Gap
+      { type:"fillgap", word:"HELLO", gapIdx:1, choices:["E","A","O"] },
+      { type:"fillgap", word:"RED", gapIdx:1, choices:["A","E","I"] },
+      // Lesson 5: Sentence Builder
+      { type:"sentence", translation:"Привет, я [Имя]!", words:["Hello","I","am","Name"], correct:["Hello","I","am","Name"] },
+      // Lesson 6: Match Pairs (Boss)
+      { type:"match", pairs:[{en:"Hello",ru:"Привет"},{en:"Goodbye",ru:"Пока"},{en:"Red",ru:"Красный"},{en:"Blue",ru:"Синий"}] },
+    ]
+  },
+  {
+    id:2, title:"My School", icon:"🏫",
+    lessons:[
+      { type:"mcq", question:"Что это?", img:"🎒",
+        opts:[{t:"Schoolbag",e:"🎒"},{t:"Book",e:"📚"},{t:"Pen",e:"🖊️"},{t:"Ruler",e:"📏"}], ans:0 },
+      { type:"mcq", question:"Как сказать «Ручка»?",
+        opts:[{t:"Pencil",e:"✏️"},{t:"Rubber",e:"🧽"},{t:"Pen",e:"🖊️"},{t:"Book",e:"📚"}], ans:2 },
+      { type:"truefalse", question:"Это карандаш (pencil)?", emoji:"✏️", answer:"Pencil", correctIs:true },
+      { type:"truefalse", question:"Это книга (ruler)?", emoji:"📚", answer:"Ruler", correctIs:false },
+      { type:"listen", word:"Pencil", emoji:"✏️",
+        opts:[{t:"Pen",e:"🖊️"},{t:"Pencil",e:"✏️"},{t:"Rubber",e:"🧽"},{t:"Book",e:"📚"}], ans:1 },
+      { type:"fillgap", word:"BOOK", gapIdx:2, choices:["O","A","U"] },
+      { type:"fillgap", word:"PEN", gapIdx:1, choices:["E","A","I"] },
+      { type:"sentence", translation:"Открой свою книгу!", words:["your","Open","book","please"], correct:["Open","your","book","please"] },
+      { type:"match", pairs:[{en:"Book",ru:"Книга"},{en:"Pen",ru:"Ручка"},{en:"Pencil",ru:"Карандаш"},{en:"Bag",ru:"Сумка"}] },
+      { type:"voice", word:"Open your book", translation:"Открой свою книгу" },
+    ]
+  },
+  {
+    id:3, title:"People I Love", icon:"👨‍👩‍👧",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Мама»?",
+        opts:[{t:"Daddy",e:"👨"},{t:"Mummy",e:"👩"},{t:"Sister",e:"👧"},{t:"Brother",e:"👦"}], ans:1 },
+      { type:"mcq", question:"Как сказать «Брат»?",
+        opts:[{t:"Mummy",e:"👩"},{t:"Sister",e:"👧"},{t:"Brother",e:"👦"},{t:"Daddy",e:"👨"}], ans:2 },
+      { type:"truefalse", question:"Это папа (daddy)?", emoji:"👨", answer:"Daddy", correctIs:true },
+      { type:"truefalse", question:"Это бабушка (sister)?", emoji:"👧", answer:"Sister", correctIs:false },
+      { type:"listen", word:"Mummy", emoji:"👩",
+        opts:[{t:"Daddy",e:"👨"},{t:"Mummy",e:"👩"},{t:"Brother",e:"👦"},{t:"Sister",e:"👧"}], ans:1 },
+      { type:"fillgap", word:"DADDY", gapIdx:2, choices:["D","T","B"] },
+      { type:"sentence", translation:"Это моя мама", words:["my","This","is","mummy"], correct:["This","is","my","mummy"] },
+      { type:"match", pairs:[{en:"Mummy",ru:"Мама"},{en:"Daddy",ru:"Папа"},{en:"Sister",ru:"Сестра"},{en:"Brother",ru:"Брат"}] },
+      { type:"voice", word:"This is my mummy", translation:"Это моя мама" },
+    ]
+  },
+  {
+    id:4, title:"Weather", icon:"⛅",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Солнечно»?",
+        opts:[{t:"Raining",e:"🌧️"},{t:"Sunny",e:"☀️"},{t:"Snowing",e:"❄️"},{t:"Cloudy",e:"☁️"}], ans:1 },
+      { type:"mcq", question:"Что означает «Cold»?",
+        opts:[{t:"Жарко",e:"🥵"},{t:"Тепло",e:"🌤️"},{t:"Холодно",e:"🥶"},{t:"Ветрено",e:"💨"}], ans:2 },
+      { type:"truefalse", question:"Это солнечная погода (sunny)?", emoji:"☀️", answer:"Sunny", correctIs:true },
+      { type:"truefalse", question:"Это дождь (snowing)?", emoji:"🌧️", answer:"Snowing", correctIs:false },
+      { type:"listen", word:"Sunny", emoji:"☀️",
+        opts:[{t:"Raining",e:"🌧️"},{t:"Snowing",e:"❄️"},{t:"Sunny",e:"☀️"},{t:"Windy",e:"💨"}], ans:2 },
+      { type:"fillgap", word:"SUNNY", gapIdx:3, choices:["N","M","H"] },
+      { type:"sentence", translation:"Сегодня солнечно", words:["sunny","It","today","is"], correct:["It","is","sunny","today"] },
+      { type:"match", pairs:[{en:"Sunny",ru:"Солнечно"},{en:"Raining",ru:"Дождь"},{en:"Snowing",ru:"Снег"},{en:"Cold",ru:"Холодно"}] },
+      { type:"voice", word:"It is sunny today", translation:"Сегодня солнечно" },
+    ]
+  },
+  {
+    id:5, title:"My Free Time", icon:"⚽",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Читать»?",
+        opts:[{t:"Read",e:"📖"},{t:"Play",e:"⚽"},{t:"Swim",e:"🏊"},{t:"Dance",e:"💃"}], ans:0 },
+      { type:"mcq", question:"Что означает «Swim»?",
+        opts:[{t:"Играть",e:"⚽"},{t:"Бежать",e:"🏃"},{t:"Плавать",e:"🏊"},{t:"Прыгать",e:"🤸"}], ans:2 },
+      { type:"truefalse", question:"Это футбол (football)?", emoji:"⚽", answer:"Football", correctIs:true },
+      { type:"truefalse", question:"Это плавание (dancing)?", emoji:"🏊", answer:"Dancing", correctIs:false },
+      { type:"listen", word:"Read", emoji:"📖",
+        opts:[{t:"Write",e:"✍️"},{t:"Read",e:"📖"},{t:"Draw",e:"🎨"},{t:"Sing",e:"🎤"}], ans:1 },
+      { type:"fillgap", word:"PLAY", gapIdx:2, choices:["A","E","I"] },
+      { type:"sentence", translation:"Я люблю плавать", words:["swim","I","to","like"], correct:["I","like","to","swim"] },
+      { type:"match", pairs:[{en:"Read",ru:"Читать"},{en:"Play",ru:"Играть"},{en:"Swim",ru:"Плавать"},{en:"Dance",ru:"Танцевать"}] },
+      { type:"voice", word:"I like to play", translation:"Я люблю играть" },
+    ]
+  },
+  {
+    id:6, title:"Health", icon:"🏥",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Голова»?",
+        opts:[{t:"Arm",e:"💪"},{t:"Leg",e:"🦵"},{t:"Head",e:"🤕"},{t:"Hand",e:"✋"}], ans:2 },
+      { type:"mcq", question:"Что означает «I feel sick»?",
+        opts:[{t:"Я голоден",e:"🍽️"},{t:"Я устал",e:"😴"},{t:"Мне плохо",e:"🤒"},{t:"Мне холодно",e:"🥶"}], ans:2 },
+      { type:"truefalse", question:"Это рука (hand)?", emoji:"✋", answer:"Hand", correctIs:true },
+      { type:"truefalse", question:"Это нога (arm)?", emoji:"🦵", answer:"Arm", correctIs:false },
+      { type:"listen", word:"Head", emoji:"🤕",
+        opts:[{t:"Hand",e:"✋"},{t:"Leg",e:"🦵"},{t:"Head",e:"🤕"},{t:"Arm",e:"💪"}], ans:2 },
+      { type:"fillgap", word:"HAND", gapIdx:2, choices:["N","M","D"] },
+      { type:"sentence", translation:"У меня болит голова", words:["head","My","hurts","aches"], correct:["My","head","hurts"] },
+      { type:"match", pairs:[{en:"Head",ru:"Голова"},{en:"Hand",ru:"Рука"},{en:"Leg",ru:"Нога"},{en:"Arm",ru:"Рука/Плечо"}] },
+      { type:"voice", word:"My head hurts", translation:"У меня болит голова" },
+    ]
+  },
+  {
+    id:7, title:"Buildings", icon:"🏙️",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Школа»?",
+        opts:[{t:"Hospital",e:"🏥"},{t:"School",e:"🏫"},{t:"Shop",e:"🏪"},{t:"Park",e:"🌳"}], ans:1 },
+      { type:"mcq", question:"Что означает «Hospital»?",
+        opts:[{t:"Школа",e:"🏫"},{t:"Магазин",e:"🏪"},{t:"Больница",e:"🏥"},{t:"Дом",e:"🏠"}], ans:2 },
+      { type:"truefalse", question:"Это парк (park)?", emoji:"🌳", answer:"Park", correctIs:true },
+      { type:"truefalse", question:"Это больница (shop)?", emoji:"🏥", answer:"Shop", correctIs:false },
+      { type:"listen", word:"School", emoji:"🏫",
+        opts:[{t:"Hospital",e:"🏥"},{t:"Park",e:"🌳"},{t:"School",e:"🏫"},{t:"Shop",e:"🏪"}], ans:2 },
+      { type:"fillgap", word:"PARK", gapIdx:1, choices:["A","E","O"] },
+      { type:"sentence", translation:"Я иду в школу", words:["to","I","school","go"], correct:["I","go","to","school"] },
+      { type:"match", pairs:[{en:"School",ru:"Школа"},{en:"Hospital",ru:"Больница"},{en:"Park",ru:"Парк"},{en:"Shop",ru:"Магазин"}] },
+      { type:"voice", word:"I go to school", translation:"Я иду в школу" },
+    ]
+  },
+  {
+    id:8, title:"My Holidays", icon:"✈️",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Пляж»?",
+        opts:[{t:"Mountain",e:"⛰️"},{t:"Forest",e:"🌲"},{t:"Beach",e:"🏖️"},{t:"City",e:"🌆"}], ans:2 },
+      { type:"mcq", question:"Что означает «Travel»?",
+        opts:[{t:"Отдыхать",e:"😴"},{t:"Путешествовать",e:"✈️"},{t:"Плавать",e:"🏊"},{t:"Есть",e:"🍽️"}], ans:1 },
+      { type:"truefalse", question:"Это горы (mountains)?", emoji:"⛰️", answer:"Mountains", correctIs:true },
+      { type:"truefalse", question:"Это пляж (forest)?", emoji:"🏖️", answer:"Forest", correctIs:false },
+      { type:"listen", word:"Beach", emoji:"🏖️",
+        opts:[{t:"Mountain",e:"⛰️"},{t:"Beach",e:"🏖️"},{t:"Forest",e:"🌲"},{t:"City",e:"🌆"}], ans:1 },
+      { type:"fillgap", word:"BEACH", gapIdx:2, choices:["A","E","I"] },
+      { type:"sentence", translation:"Я люблю каникулы", words:["love","I","my","holidays"], correct:["I","love","my","holidays"] },
+      { type:"match", pairs:[{en:"Beach",ru:"Пляж"},{en:"Mountain",ru:"Гора"},{en:"Travel",ru:"Путешествие"},{en:"Holiday",ru:"Каникулы"}] },
+      { type:"voice", word:"I love holidays", translation:"Я люблю каникулы" },
+    ]
+  },
+  {
+    id:9, title:"Reserves & Round-up", icon:"🌿",
+    lessons:[
+      { type:"mcq", question:"Как сказать «Животное»?",
+        opts:[{t:"Plant",e:"🌿"},{t:"Animal",e:"🐾"},{t:"Water",e:"💧"},{t:"Tree",e:"🌳"}], ans:1 },
+      { type:"truefalse", question:"Это тигр (tiger)?", emoji:"🐯", answer:"Tiger", correctIs:true },
+      { type:"listen", word:"Tiger", emoji:"🐯",
+        opts:[{t:"Lion",e:"🦁"},{t:"Tiger",e:"🐯"},{t:"Bear",e:"🐻"},{t:"Wolf",e:"🐺"}], ans:1 },
+      { type:"fillgap", word:"TIGER", gapIdx:2, choices:["G","T","K"] },
+      { type:"sentence", translation:"Берегите природу!", words:["nature","Protect","our","please"], correct:["Protect","our","nature"] },
+      { type:"match", pairs:[{en:"Tiger",ru:"Тигр"},{en:"Forest",ru:"Лес"},{en:"Animal",ru:"Животное"},{en:"Nature",ru:"Природа"}] },
+      { type:"voice", word:"Protect nature", translation:"Берегите природу" },
+    ]
+  }
 ];
 
 const AVATARS = [
-  {id:'fox',      emoji:'🦊', name:'Лисичка',   personality:'весёлая и хитрая лисичка'},
-  {id:'bear',     emoji:'🐻', name:'Мишка',     personality:'добрый и медлительный мишка'},
-  {id:'panda',    emoji:'🐼', name:'Панда',     personality:'спокойная и умная панда'},
-  {id:'tiger',    emoji:'🐯', name:'Тигрёнок',  personality:'смелый и энергичный тигрёнок'},
-  {id:'lion',     emoji:'🦁', name:'Лёвушка',   personality:'гордый и благородный львёнок'},
-  {id:'elephant', emoji:'🐘', name:'Слонёнок',  personality:'добрый и умный слонёнок'},
-  {id:'bunny',    emoji:'🐰', name:'Зайка',     personality:'быстрая и весёлая зайка'},
-  {id:'penguin',  emoji:'🐧', name:'Пингви',    personality:'аккуратный и смешной пингвин'},
-  {id:'owl',      emoji:'🦉', name:'Совёнок',   personality:'мудрый и вдумчивый совёнок'},
-  {id:'cat',      emoji:'🐱', name:'Котёнок',   personality:'игривый и ласковый котёнок'},
-  {id:'dog',      emoji:'🐶', name:'Щенок',     personality:'верный и жизнерадостный щенок'},
-  {id:'frog',     emoji:'🐸', name:'Лягушка',   personality:'прыгучая и весёлая лягушка'},
-  {id:'koala',    emoji:'🐨', name:'Коала',     personality:'спокойная и милая коала'},
-  {id:'unicorn',  emoji:'🦄', name:'Единорог',  personality:'волшебный и добрый единорог'},
-  {id:'dragon',   emoji:'🐲', name:'Дракончик', personality:'храбрый и дружелюбный дракончик'},
-  {id:'hamster',  emoji:'🐹', name:'Хомяк',    personality:'запасливый и смешной хомяк'},
+  {id:"fox",emoji:"🦊",name:"Лисичка",personality:"весёлая и хитрая лисичка"},
+  {id:"bear",emoji:"🐻",name:"Мишка",personality:"добрый и медлительный мишка"},
+  {id:"panda",emoji:"🐼",name:"Панда",personality:"спокойная и умная панда"},
+  {id:"tiger",emoji:"🐯",name:"Тигрёнок",personality:"смелый и энергичный тигрёнок"},
+  {id:"lion",emoji:"🦁",name:"Лёвушка",personality:"гордый и благородный львёнок"},
+  {id:"elephant",emoji:"🐘",name:"Слонёнок",personality:"добрый и умный слонёнок"},
+  {id:"bunny",emoji:"🐰",name:"Зайка",personality:"быстрая и весёлая зайка"},
+  {id:"penguin",emoji:"🐧",name:"Пингви",personality:"аккуратный и смешной пингвин"},
+  {id:"owl",emoji:"🦉",name:"Совёнок",personality:"мудрый совёнок"},
+  {id:"cat",emoji:"🐱",name:"Котёнок",personality:"игривый котёнок"},
+  {id:"dog",emoji:"🐶",name:"Щенок",personality:"верный щенок"},
+  {id:"frog",emoji:"🐸",name:"Лягушка",personality:"весёлая лягушка"},
+  {id:"koala",emoji:"🐨",name:"Коала",personality:"спокойная коала"},
+  {id:"unicorn",emoji:"🦄",name:"Единорог",personality:"волшебный единорог"},
+  {id:"dragon",emoji:"🐲",name:"Дракончик",personality:"храбрый дракончик"},
+  {id:"hamster",emoji:"🐹",name:"Хомяк",personality:"запасливый хомяк"},
 ];
 
-const QUESTIONS = [
-  {text:'Как сказать «Привет»?',opts:[{id:'a',t:'Goodbye',e:'👋'},{id:'b',t:'Hello',e:'🖐️'},{id:'c',t:'Apple',e:'🍎'},{id:'d',t:'Dog',e:'🐶'}],ans:'b'},
-  {text:'Выбери правильный перевод: «Школьный рюкзак»',opts:[{id:'a',t:'Pencil case',e:'✏️'},{id:'b',t:'Schoolbag',e:'🎒'},{id:'c',t:'Rubber',e:'🧽'},{id:'d',t:'Pen',e:'🖊️'}],ans:'b'},
-  {text:'Где здесь «Кот»?',opts:[{id:'a',t:'Cat',e:'🐱'},{id:'b',t:'Dog',e:'🐶'},{id:'c',t:'Bird',e:'🐦'},{id:'d',t:'Fish',e:'🐟'}],ans:'a'},
-  {text:'Как сказать «Я» по-английски?',opts:[{id:'a',t:'You',e:'👉'},{id:'b',t:'He',e:'👦'},{id:'c',t:'I',e:'🙋‍♂️'},{id:'d',t:'She',e:'👧'}],ans:'c'},
-  {text:'Что означает слово «Red»?',opts:[{id:'a',t:'Синий',e:'🔵'},{id:'b',t:'Зелёный',e:'🟢'},{id:'c',t:'Красный',e:'🔴'},{id:'d',t:'Жёлтый',e:'🟡'}],ans:'c'}
-];
-
-// ============ STATE ============
+// ===================== STATE =====================
 let user = null;
-let progress = {completed:[],currentId:1,streak:0,xp:0};
-let lesson = {id:null,qIdx:0,sel:null,checked:false,score:0};
-let obAvatar = null;
-let chatOpen = false;
-let chatHistory = [];
-let chatWaiting = false;
+let progress = { completed:[], currentId:1, streak:0, xp:0 };
+let lesson = { modIdx:0, lesIdx:0, qIdx:0, questions:[], score:0, total:0, lives:3 };
+let chatOpen = false, chatWaiting = false, chatHistory = [];
 
-// ============ ONBOARDING ============
+// ===================== ONBOARDING =====================
 (function(){
-  const grid = document.getElementById('avatar-grid');
+  const grid = document.getElementById("avatar-grid");
   AVATARS.forEach(av => {
-    const btn = document.createElement('button');
-    btn.className = 'avatar-btn';
+    const btn = document.createElement("button");
+    btn.className = "avatar-btn";
     btn.innerHTML = `<span class="av-emoji">${av.emoji}</span><span>${av.name}</span>`;
     btn.onclick = () => {
-      obAvatar = av;
-      document.querySelectorAll('.avatar-btn').forEach(b=>b.classList.remove('sel'));
-      btn.classList.add('sel');
-      document.getElementById('btn-step3').disabled = false;
+      user = user || {};
+      user.avatar = av;
+      document.querySelectorAll(".avatar-btn").forEach(b=>b.classList.remove("sel"));
+      btn.classList.add("sel");
+      document.getElementById("btn-step3").disabled = false;
     };
     grid.appendChild(btn);
   });
 })();
 
-function checkStep1(){ document.getElementById('btn-step1').disabled = document.getElementById('input-name').value.trim().length < 2; }
-function checkStep2(){ document.getElementById('btn-step2').disabled = !document.getElementById('input-dob').value; }
-function goStep(n){ document.querySelectorAll('.ob-step').forEach(s=>s.classList.remove('active')); document.getElementById('ob-step'+n).classList.add('active'); }
+function checkStep1(){ document.getElementById("btn-step1").disabled = document.getElementById("input-name").value.trim().length < 2; }
+function checkStep2(){ document.getElementById("btn-step2").disabled = !document.getElementById("input-dob").value; }
+function goStep(n){ document.querySelectorAll(".ob-step").forEach(s=>s.classList.remove("active")); document.getElementById("ob-step"+n).classList.add("active"); }
 
 function finishOnboarding(){
-  user = { name: document.getElementById('input-name').value.trim(), dob: document.getElementById('input-dob').value, avatar: obAvatar };
-  // Setup chat widget
-  document.getElementById('chat-av').textContent = user.avatar.emoji;
-  document.getElementById('chat-name').textContent = user.avatar.name;
-  document.getElementById('chat-toggle-emoji').textContent = user.avatar.emoji;
-  document.getElementById('chat-widget').style.display = 'block';
-  // Send welcome message
+  user = { name: document.getElementById("input-name").value.trim(), dob: document.getElementById("input-dob").value, avatar: user.avatar };
+  document.getElementById("chat-av").textContent = user.avatar.emoji;
+  document.getElementById("chat-name").textContent = user.avatar.name;
+  document.getElementById("chat-toggle-emoji").textContent = user.avatar.emoji;
+  document.getElementById("chat-widget").style.display = "block";
   setTimeout(() => {
-    addBotMessage(`Привет, ${user.name}! 👋 Я ${user.avatar.name} — твой помощник в изучении английского! Спрашивай меня что угодно — слова, правила, переводы. Я помогу! 🌟`);
-    document.getElementById('chat-dot').classList.add('show');
-  }, 1000);
+    addBotMessage(`Привет, ${user.name}! 👋 Я ${user.avatar.name} — твой помощник! Спрашивай меня про английский! 🌟`);
+    document.getElementById("chat-dot").classList.add("show");
+  }, 800);
   showDashboard();
 }
 
-// ============ DASHBOARD ============
+// ===================== DASHBOARD =====================
 function showDashboard(){
-  switchView('dashboard');
-  document.getElementById('tb-avatar').textContent = user.avatar.emoji;
-  document.getElementById('tb-name').textContent = user.name;
+  switchView("dashboard");
+  document.getElementById("tb-avatar").textContent = user.avatar.emoji;
+  document.getElementById("tb-name").textContent = user.name;
   updateTopbar();
   buildMap();
 }
 
 function updateTopbar(){
-  document.getElementById('xp-val').textContent = progress.xp + ' XP';
-  document.getElementById('streak-val').textContent = progress.streak;
-  const sp = document.getElementById('stat-streak');
-  const fi = document.getElementById('flame-icon');
-  if(progress.streak > 0){ sp.classList.remove('dead'); fi.setAttribute('fill','currentColor'); fi.setAttribute('stroke','none'); }
-  else { sp.classList.add('dead'); fi.setAttribute('fill','none'); fi.setAttribute('stroke','currentColor'); }
+  document.getElementById("xp-val").textContent = progress.xp + " XP";
+  document.getElementById("streak-val").textContent = progress.streak;
+  const sp = document.getElementById("stat-streak"), fi = document.getElementById("flame-icon");
+  if(progress.streak > 0){ sp.classList.remove("dead"); fi.setAttribute("fill","currentColor"); fi.setAttribute("stroke","none"); }
+  else { sp.classList.add("dead"); fi.setAttribute("fill","none"); fi.setAttribute("stroke","currentColor"); }
 }
 
 function buildMap(){
-  const container = document.getElementById('map-container');
-  container.innerHTML = '';
+  const container = document.getElementById("map-container");
+  container.innerHTML = "";
   let gid = 1;
-  MODULES.forEach((mod,mi) => {
-    const mh = document.createElement('div');
+  MODULES.forEach((mod, mi) => {
+    const mh = document.createElement("div");
     mh.className = `module-header mc-${mi}`;
-    mh.innerHTML = `<div style="position:relative;z-index:1"><h3>Unit ${mod.id}</h3><p>${mod.title}</p></div><div class="mod-icon">📖</div>`;
+    mh.innerHTML = `<div style="position:relative;z-index:1"><h3>Unit ${mod.id} ${mod.icon}</h3><p>${mod.title}</p></div><div class="mod-icon">${mod.icon}</div>`;
     container.appendChild(mh);
-    const col = document.createElement('div');
-    col.className = 'lessons-col';
-    for(let i=0;i<mod.lessons;i++){
-      const lid=gid++, done=progress.completed.includes(lid), current=progress.currentId===lid, locked=lid>progress.currentId;
-      const wrap=document.createElement('div'); wrap.className='node-wrap'; wrap.style.transform=`translateX(${Math.sin(i*1.5)*42}px)`;
-      if(i<mod.lessons-1){const c=document.createElement('div');c.className='connector';wrap.appendChild(c);}
-      if(current){const b=document.createElement('div');b.className='float-badge';b.textContent='Start!';wrap.appendChild(b);}
-      const btn=document.createElement('button');
-      btn.className='lesson-node'+(done?' done':locked?' locked':` mc-${mi}`);
-      btn.disabled=locked; btn.innerHTML=done?'⭐':locked?'🔒':`<span>${i+1}</span>`;
-      if(!locked) btn.onclick=()=>startLesson(lid);
+    const col = document.createElement("div");
+    col.className = "lessons-col";
+    mod.lessons.forEach((q, i) => {
+      const lid = gid++, done = progress.completed.includes(lid), current = progress.currentId === lid, locked = lid > progress.currentId;
+      const wrap = document.createElement("div"); wrap.className = "node-wrap"; wrap.style.transform = `translateX(${Math.sin(i*1.5)*42}px)`;
+      if(i < mod.lessons.length-1){ const c=document.createElement("div"); c.className="connector"; wrap.appendChild(c); }
+      if(current){ const b=document.createElement("div"); b.className="float-badge"; b.textContent="Start!"; wrap.appendChild(b); }
+      const btn = document.createElement("button");
+      btn.className = "lesson-node" + (done?" done":locked?" locked":` mc-${mi}`);
+      btn.disabled = locked;
+      btn.innerHTML = done ? "⭐" : locked ? "🔒" : `<span>${i+1}</span>`;
+      if(!locked) btn.onclick = () => startLesson(mi, i, lid);
       wrap.appendChild(btn); col.appendChild(wrap);
-    }
+    });
     container.appendChild(col);
   });
 }
 
-// ============ LESSON ============
-function startLesson(lid){ lesson={id:lid,qIdx:0,sel:null,checked:false,score:0}; switchView('lesson'); renderQuestion(); }
-
-function renderQuestion(){
-  const q=QUESTIONS[lesson.qIdx];
-  document.getElementById('lesson-progress-fill').style.width=(lesson.qIdx/QUESTIONS.length*100)+'%';
-  const qEl=document.getElementById('lesson-question'); qEl.textContent=q.text; qEl.classList.remove('anim-pop'); void qEl.offsetWidth; qEl.classList.add('anim-pop');
-  const grid=document.getElementById('options-grid'); grid.innerHTML='';
-  q.opts.forEach(opt=>{
-    const btn=document.createElement('button'); btn.className='opt-btn'; btn.dataset.id=opt.id;
-    btn.innerHTML=`<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
-    btn.onclick=()=>selectOpt(opt.id,btn); grid.appendChild(btn);
-  });
-  setFooter('neutral','');
-  const cb=document.getElementById('btn-check'); cb.textContent='Проверить'; cb.className='btn-check green'; cb.disabled=true; cb.onclick=handleCheck;
-  lesson.sel=null; lesson.checked=false;
+// ===================== LESSON ENGINE =====================
+function startLesson(modIdx, lesIdx, lid){
+  const q = MODULES[modIdx].lessons[lesIdx];
+  lesson = { modIdx, lesIdx, lid, question: q, lives: 3, score: 0, checked: false, sel: null };
+  switchView("lesson");
+  renderLives();
+  document.getElementById("lesson-progress-fill").style.width = "0%";
+  renderQuestion(q);
 }
 
-function selectOpt(id,btn){ if(lesson.checked)return; lesson.sel=id; document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); document.getElementById('btn-check').disabled=false; }
+function renderLives(){
+  const d = document.getElementById("lives-display");
+  d.innerHTML = "";
+  for(let i=0;i<3;i++){
+    const h = document.createElement("span");
+    h.className = "heart" + (i >= lesson.lives ? " lost" : "");
+    h.textContent = "❤️";
+    d.appendChild(h);
+  }
+}
 
+function renderQuestion(q){
+  const content = document.getElementById("lesson-content");
+  content.innerHTML = "";
+  setFooter("neutral","");
+  document.getElementById("btn-check").disabled = true;
+  document.getElementById("btn-check").textContent = "Проверить";
+  document.getElementById("btn-check").className = "btn-check green";
+  document.getElementById("btn-check").onclick = handleCheck;
+  lesson.checked = false; lesson.sel = null;
+
+  const mechNames = {mcq:"Выбери ответ",truefalse:"Правда или Ложь?",listen:"Послушай и выбери",fillgap:"Вставь букву",sentence:"Составь фразу",match:"Найди пару",voice:"Произнеси вслух"};
+  const label = document.createElement("div"); label.className = "mech-label"; label.textContent = mechNames[q.type]||""; content.appendChild(label);
+
+  if(q.type === "mcq") renderMCQ(q, content);
+  else if(q.type === "truefalse") renderTrueFalse(q, content);
+  else if(q.type === "listen") renderListen(q, content);
+  else if(q.type === "fillgap") renderFillGap(q, content);
+  else if(q.type === "sentence") renderSentence(q, content);
+  else if(q.type === "match") renderMatch(q, content);
+  else if(q.type === "voice") renderVoice(q, content);
+}
+
+// MCQ
+function renderMCQ(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop";
+  qEl.textContent = q.question;
+  if(q.img){ const em=document.createElement("div"); em.style.cssText="font-size:60px;text-align:center;margin-bottom:12px"; em.textContent=q.img; el.insertBefore(em,el.firstChild); }
+  el.appendChild(qEl);
+  const grid = document.createElement("div"); grid.className = "options-grid"; el.appendChild(grid);
+  q.opts.forEach((opt,i) => {
+    const btn = document.createElement("button"); btn.className = "opt-btn"; btn.dataset.idx = i;
+    btn.innerHTML = `<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
+    btn.onclick = () => { if(lesson.checked)return; lesson.sel=i; document.querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("sel")); btn.classList.add("sel"); document.getElementById("btn-check").disabled=false; };
+    grid.appendChild(btn);
+  });
+}
+
+// True/False
+function renderTrueFalse(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop";
+  qEl.innerHTML = `<div style="font-size:72px;margin-bottom:12px">${q.emoji}</div>${q.question}`;
+  el.appendChild(qEl);
+  const timerWrap = document.createElement("div"); timerWrap.className = "timer-bar-wrap"; el.appendChild(timerWrap);
+  const timerBar = document.createElement("div"); timerBar.className = "timer-bar"; timerBar.style.cssText="width:100%;transition:width 5s linear"; timerWrap.appendChild(timerBar);
+  setTimeout(() => { timerBar.style.width = "0%"; }, 50);
+  lesson.tfTimer = setTimeout(() => { if(!lesson.checked) checkTF(false, null); }, 5100);
+
+  const wrap = document.createElement("div"); wrap.className = "tf-wrap"; el.appendChild(wrap);
+  ["✅ Да","❌ Нет"].forEach((txt,i) => {
+    const btn = document.createElement("button"); btn.className = "tf-btn " + (i===0?"yes":"no"); btn.textContent = txt;
+    btn.onclick = () => { clearTimeout(lesson.tfTimer); checkTF(i===0, btn); };
+    wrap.appendChild(btn);
+  });
+  // Hide footer check btn for TF
+  document.getElementById("btn-check").style.display = "none";
+  document.getElementById("feedback-area").style.flex = "1";
+}
+
+function checkTF(userSaidYes, btn){
+  if(lesson.checked) return; lesson.checked = true;
+  document.getElementById("btn-check").style.display = "";
+  const q = lesson.question;
+  const correct = userSaidYes === q.correctIs;
+  document.querySelectorAll(".tf-btn").forEach(b=>b.disabled=true);
+  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+  else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
+  const cb = document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+}
+
+// Listen & Tap
+function renderListen(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Послушай слово и выбери картинку!"; el.appendChild(qEl);
+  const lisBtn = document.createElement("button"); lisBtn.className = "listen-btn"; lisBtn.innerHTML = "🔊";
+  lisBtn.onclick = () => { speakWord(q.word); lisBtn.classList.add("playing"); setTimeout(()=>lisBtn.classList.remove("playing"),1500); };
+  el.appendChild(lisBtn);
+  setTimeout(() => { speakWord(q.word); }, 300);
+  const grid = document.createElement("div"); grid.className = "options-grid"; el.appendChild(grid);
+  q.opts.forEach((opt,i) => {
+    const btn = document.createElement("button"); btn.className = "opt-btn"; btn.dataset.idx = i;
+    btn.innerHTML = `<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
+    btn.onclick = () => { if(lesson.checked)return; lesson.sel=i; document.querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("sel")); btn.classList.add("sel"); document.getElementById("btn-check").disabled=false; };
+    grid.appendChild(btn);
+  });
+}
+
+// Fill the Gap
+function renderFillGap(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Вставь пропущенную букву!"; el.appendChild(qEl);
+  const wordEl = document.createElement("div"); wordEl.className = "gap-word-display";
+  let html = "";
+  for(let i=0;i<q.word.length;i++) html += i===q.gapIdx ? `<span class="gap" id="gap-slot">_</span>` : q.word[i];
+  wordEl.innerHTML = html; el.appendChild(wordEl);
+  const choicesEl = document.createElement("div"); choicesEl.className = "letter-choices"; el.appendChild(choicesEl);
+  q.choices.forEach(ch => {
+    const btn = document.createElement("button"); btn.className = "letter-btn"; btn.textContent = ch;
+    btn.onclick = () => {
+      if(lesson.checked) return;
+      const correct = ch === q.word[q.gapIdx];
+      lesson.checked = true; lesson.sel = ch;
+      document.querySelectorAll(".letter-btn").forEach(b=>b.disabled=true);
+      document.getElementById("gap-slot").textContent = ch;
+      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+      else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
+      const cb = document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+    };
+    choicesEl.appendChild(btn);
+  });
+  document.getElementById("btn-check").style.display="none";
+}
+
+// Sentence Builder
+function renderSentence(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = `Переведи: "${q.translation}"`; el.appendChild(qEl);
+  const target = document.createElement("div"); target.className = "sentence-target"; target.id = "sent-target"; el.appendChild(target);
+  const bank = document.createElement("div"); bank.className = "word-bank"; bank.id = "word-bank"; el.appendChild(bank);
+  const shuffled = [...q.words].sort(()=>Math.random()-.5);
+  shuffled.forEach(w => {
+    const chip = document.createElement("div"); chip.className = "word-chip in-bank"; chip.textContent = w;
+    chip.onclick = () => toggleWord(chip, w, target, bank, q);
+    bank.appendChild(chip);
+  });
+}
+
+function toggleWord(chip, word, target, bank, q){
+  if(lesson.checked) return;
+  if(chip.parentElement === bank){ chip.classList.replace("in-bank","in-sentence"); target.appendChild(chip); }
+  else { chip.classList.replace("in-sentence","in-bank"); bank.appendChild(chip); }
+  const inSentence = [...target.querySelectorAll(".word-chip")].map(c=>c.textContent);
+  document.getElementById("btn-check").disabled = inSentence.length === 0;
+}
+
+// Match Pairs
+function renderMatch(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Найди пары!"; el.appendChild(qEl);
+  const wrap = document.createElement("div"); wrap.className = "match-wrap"; el.appendChild(wrap);
+  const leftCol = document.createElement("div"); leftCol.className = "match-col";
+  const rightCol = document.createElement("div"); rightCol.className = "match-col";
+  wrap.appendChild(leftCol); wrap.appendChild(rightCol);
+  const shuffledRight = [...q.pairs].sort(()=>Math.random()-.5);
+  lesson.matchState = { selected: null, matched: 0, total: q.pairs.length };
+  q.pairs.forEach(pair => {
+    const li = document.createElement("div"); li.className = "match-item"; li.textContent = pair.en; li.dataset.key = pair.en; li.dataset.side = "left";
+    li.onclick = () => selectMatchItem(li, q.pairs);
+    leftCol.appendChild(li);
+  });
+  shuffledRight.forEach(pair => {
+    const ri = document.createElement("div"); ri.className = "match-item"; ri.textContent = pair.ru; ri.dataset.key = pair.en; ri.dataset.side = "right";
+    ri.onclick = () => selectMatchItem(ri, q.pairs);
+    rightCol.appendChild(ri);
+  });
+  document.getElementById("btn-check").style.display="none";
+}
+
+function selectMatchItem(item, pairs){
+  if(item.classList.contains("matched")) return;
+  const state = lesson.matchState;
+  if(!state.selected){ state.selected = item; item.classList.add("selected"); return; }
+  const prev = state.selected; prev.classList.remove("selected");
+  state.selected = null;
+  if(prev.dataset.side === item.dataset.side){ item.classList.add("selected"); state.selected = item; return; }
+  if(prev.dataset.key === item.dataset.key){
+    prev.classList.add("matched"); item.classList.add("matched");
+    state.matched++;
+    if(state.matched === state.total){ lesson.score++; lesson.checked=true; setTimeout(()=>{ spawnConfetti(); setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Все пары найдены!</div>`); const cb=document.getElementById("btn-check"); cb.style.display=""; cb.textContent="Дальше"; cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; }, 300); }
+  } else {
+    prev.classList.add("wrong-flash"); item.classList.add("wrong-flash");
+    loseLife();
+    setTimeout(()=>{ prev.classList.remove("wrong-flash"); item.classList.remove("wrong-flash"); }, 500);
+  }
+}
+
+// Voice
+function renderVoice(q, el){
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Произнеси вслух!"; el.appendChild(qEl);
+  const area = document.createElement("div"); area.className = "mic-area"; el.appendChild(area);
+  const wordEl = document.createElement("div"); wordEl.className = "word-to-say"; wordEl.textContent = q.word; area.appendChild(wordEl);
+  const transEl = document.createElement("div"); transEl.className = "word-translation"; transEl.textContent = q.translation; area.appendChild(transEl);
+  const lisBtn = document.createElement("button"); lisBtn.style.cssText="padding:10px 20px;border-radius:14px;border:none;background:#e3f2fd;color:#1565c0;font-family:Nunito,sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px";
+  lisBtn.textContent = "🔊 Послушать"; lisBtn.onclick = () => speakWord(q.word); area.appendChild(lisBtn);
+  const micBtn = document.createElement("button"); micBtn.className = "mic-btn"; micBtn.innerHTML = "🎤"; area.appendChild(micBtn);
+  const result = document.createElement("div"); result.className = "mic-result"; result.textContent = "Нажми на микрофон и говори!"; area.appendChild(result);
+  lesson.voiceSkipped = false;
+  micBtn.onclick = () => startListening(micBtn, result, q);
+  // Skip button
+  const skipBtn = document.createElement("button"); skipBtn.style.cssText="padding:8px 20px;border-radius:12px;border:none;background:#f5f5f5;color:#888;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px";
+  skipBtn.textContent = "Пропустить →"; skipBtn.onclick = () => { lesson.voiceSkipped=true; nextQuestion(); }; area.appendChild(skipBtn);
+  document.getElementById("btn-check").style.display="none";
+}
+
+function startListening(micBtn, resultEl, q){
+  if(!window.SpeechRecognition && !window.webkitSpeechRecognition){ resultEl.textContent="Микрофон не поддерживается в этом браузере 😢"; return; }
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const recognition = new SR();
+  recognition.lang = "en-US"; recognition.interimResults = false; recognition.maxAlternatives = 3;
+  micBtn.classList.add("listening"); resultEl.textContent = "Слушаю..."; resultEl.className = "mic-result";
+  recognition.start();
+  recognition.onresult = (event) => {
+    micBtn.classList.remove("listening");
+    const transcripts = Array.from(event.results[0]).map(r=>r.transcript.toLowerCase().trim());
+    const target = q.word.toLowerCase();
+    const ok = transcripts.some(t => t.includes(target) || target.includes(t) || similarity(t,target)>0.7);
+    if(ok){ resultEl.textContent = "✅ Отлично! Правильно!"; resultEl.className="mic-result ok"; lesson.score++; spawnConfetti(); setTimeout(nextQuestion,1500); }
+    else { resultEl.textContent = `❌ Услышал: "${transcripts[0]}". Попробуй ещё!`; resultEl.className="mic-result fail"; }
+  };
+  recognition.onerror = () => { micBtn.classList.remove("listening"); resultEl.textContent="Ошибка микрофона. Попробуй ещё!"; };
+}
+
+function similarity(a,b){ const longer=a.length>b.length?a:b; if(longer.length===0)return 1; return (longer.length-editDistance(a,b))/longer.length; }
+function editDistance(a,b){ const m=a.length,n=b.length; const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0)); for(let i=1;i<=m;i++)for(let j=1;j<=n;j++) dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]); return dp[m][n]; }
+
+// Check button handler
 function handleCheck(){
-  if(lesson.checked)return; lesson.checked=true;
-  const q=QUESTIONS[lesson.qIdx]; const correct=lesson.sel===q.ans;
-  if(correct) lesson.score+=20;
-  document.querySelectorAll('.opt-btn').forEach(b=>{
-    b.disabled=true; const bid=b.dataset.id;
-    if(bid===q.ans){b.classList.remove('sel');b.classList.add('correct');}
-    else if(bid===lesson.sel&&!correct){b.classList.remove('sel');b.classList.add('wrong');void b.offsetWidth;b.classList.add('anim-shake');setTimeout(()=>b.classList.remove('anim-shake'),500);}
-    else b.classList.add('dim');
-  });
-  const cb=document.getElementById('btn-check'); cb.onclick=handleContinue;
-  document.getElementById('lesson-progress-fill').style.width=((lesson.qIdx+1)/QUESTIONS.length*100)+'%';
-  if(correct){setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Великолепно!</div>`);cb.className='btn-check green';}
-  else{const ct=q.opts.find(o=>o.id===q.ans).t;setFooter('bad',`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${ct}</div>`);cb.className='btn-check red';}
-  cb.textContent='Дальше'; cb.disabled=false;
+  if(lesson.checked) return; lesson.checked = true;
+  const q = lesson.question;
+  if(q.type==="mcq"||q.type==="listen"){
+    const correct = lesson.sel === q.ans;
+    document.querySelectorAll(".opt-btn").forEach(b=>{ b.disabled=true; const idx=parseInt(b.dataset.idx); if(idx===q.ans)b.classList.add("correct"); else if(idx===lesson.sel&&!correct){b.classList.remove("sel");b.classList.add("wrong");} else b.classList.add("dim"); });
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+    else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].e} ${q.opts[q.ans].t}</div>`); }
+    const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+  } else if(q.type==="sentence"){
+    const target=document.getElementById("sent-target");
+    const inSentence=[...target.querySelectorAll(".word-chip")].map(c=>c.textContent);
+    const correct=JSON.stringify(inSentence)===JSON.stringify(q.correct);
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+    else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(" ")}</div>`); }
+    const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+  }
 }
 
-function handleContinue(){ if(lesson.qIdx<QUESTIONS.length-1){lesson.qIdx++;lesson.checked=false;renderQuestion();}else{completeLesson(lesson.score);} }
-function setFooter(state,html){ document.getElementById('lesson-footer').className='lesson-footer '+state; document.getElementById('feedback-area').innerHTML=html; }
-function completeLesson(score){ const lid=lesson.id,isNew=!progress.completed.includes(lid); if(isNew){progress.completed.push(lid);progress.currentId=lid+1;if(progress.streak===0)progress.streak=1;} progress.xp+=score>80?15:10; showDashboard(); }
-function exitLesson(){ showDashboard(); }
+function nextQuestion(){
+  document.getElementById("btn-check").style.display="";
+  clearTimeout(lesson.tfTimer);
+  if(lesson.lives <= 0){ showComplete(false); return; }
+  showComplete(true);
+}
 
-// ============ AI CHAT ============
+function loseLife(){
+  lesson.lives = Math.max(0, lesson.lives-1);
+  renderLives();
+  if(lesson.lives <= 0){ setTimeout(()=>showComplete(false), 1200); }
+}
+
+function showComplete(passed){
+  const earned = passed ? Math.max(5, lesson.score * 5) : 0;
+  if(passed && !progress.completed.includes(lesson.lid)){
+    progress.completed.push(lesson.lid);
+    progress.currentId = lesson.lid + 1;
+    progress.streak = Math.min(progress.streak+1, 999);
+    progress.xp += earned;
+  }
+  document.getElementById("comp-emoji").textContent = passed ? "🏆" : "💪";
+  document.getElementById("comp-title").textContent = passed ? "Урок пройден!" : "Попробуй ещё раз!";
+  document.getElementById("comp-sub").textContent = passed ? `Молодец, ${user.name}!` : "Не сдавайся, ты справишься!";
+  document.getElementById("comp-xp").textContent = "+" + earned;
+  document.getElementById("comp-score").textContent = lesson.score + " правильно";
+  document.getElementById("comp-streak").textContent = "🔥" + progress.streak;
+  if(passed) spawnConfetti(80);
+  switchView("complete");
+}
+
+// ===================== UTILS =====================
+function speakWord(word){
+  if(!window.speechSynthesis) return;
+  const utt = new SpeechSynthesisUtterance(word);
+  utt.lang = "en-US"; utt.rate = 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
+function spawnConfetti(count=40){
+  const colors=["#8bc34a","#ffc107","#42a5f5","#ef5350","#ab47bc","#ff9800"];
+  for(let i=0;i<count;i++){
+    const p=document.createElement("div"); p.className="confetti-piece";
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation:confettiFall ${1+Math.random()*2}s ease-in ${Math.random()*0.5}s forwards`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),3000);
+  }
+}
+
+function setFooter(state,html){ document.getElementById("lesson-footer").className="lesson-footer "+state; document.getElementById("feedback-area").innerHTML=html; }
+function exitLesson(){ switchView("dashboard"); buildMap(); }
+function switchView(name){ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active")); document.getElementById("view-"+name).classList.add("active"); window.scrollTo(0,0); }
+
+// ===================== AI CHAT =====================
 function toggleChat(){
   chatOpen=!chatOpen;
-  const box=document.getElementById('chat-box');
-  box.classList.toggle('open',chatOpen);
-  document.getElementById('chat-dot').classList.remove('show');
-  if(chatOpen) setTimeout(()=>document.getElementById('chat-input').focus(),100);
+  document.getElementById("chat-box").classList.toggle("open",chatOpen);
+  document.getElementById("chat-dot").classList.remove("show");
+  if(chatOpen) setTimeout(()=>document.getElementById("chat-input").focus(),100);
 }
 
 function addBotMessage(text){
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div'); div.className='msg bot';
-  div.innerHTML=`<div class="msg-av">${user?user.avatar.emoji:'🤖'}</div><div class="msg-bubble">${text}</div>`;
+  const msgs=document.getElementById("chat-messages");
+  const div=document.createElement("div"); div.className="msg bot";
+  div.innerHTML=`<div class="msg-av">${user?user.avatar.emoji:"🤖"}</div><div class="msg-bubble">${text}</div>`;
   msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
 
 function addUserMessage(text){
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div'); div.className='msg user';
+  const msgs=document.getElementById("chat-messages");
+  const div=document.createElement("div"); div.className="msg user";
   div.innerHTML=`<div class="msg-bubble">${text}</div>`;
   msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
 
 function showTyping(){
-  const msgs=document.getElementById('chat-messages');
-  const div=document.createElement('div'); div.className='msg bot'; div.id='typing-msg';
+  const msgs=document.getElementById("chat-messages");
+  const div=document.createElement("div"); div.className="msg bot"; div.id="typing-msg";
   div.innerHTML=`<div class="msg-av">${user.avatar.emoji}</div><div class="typing-indicator"><span></span><span></span><span></span></div>`;
   msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
 }
 
-function removeTyping(){ const t=document.getElementById('typing-msg'); if(t)t.remove(); }
+function removeTyping(){ const t=document.getElementById("typing-msg"); if(t)t.remove(); }
 
 async function sendChat(){
-  const input=document.getElementById('chat-input');
+  const input=document.getElementById("chat-input");
   const text=input.value.trim(); if(!text||chatWaiting)return;
-  input.value=''; chatWaiting=true;
-  document.getElementById('chat-send-btn').disabled=true;
-  addUserMessage(text);
-  chatHistory.push({role:'user',parts:[{text}]});
-  showTyping();
-
-  const systemPrompt = `Ты ${user.avatar.name} — ${user.avatar.personality}. Ты помогаешь ученику 3 класса учить английский язык. Отвечай коротко, дружелюбно и с эмодзи. Всегда отвечай на русском языке, но английские слова и примеры приводи на английском. Имя ученика: ${user.name}.`;
-
-  try {
-    const response = await fetch(WORKER_URL + '/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        message: systemPrompt + '\n\nВопрос ученика: ' + text
-      })
-    });
-    const data = await response.json();
-    removeTyping();
-    const reply = data.reply || 'Упс, что-то пошло не так 😅';
-    addBotMessage(reply);
-    chatHistory.push({role:'model',parts:[{text:reply}]});
-  } catch(e) {
-    removeTyping();
-    addBotMessage('Ой, я сейчас не могу ответить 😅 Попробуй позже!');
-  }
-  chatWaiting=false;
-  document.getElementById('chat-send-btn').disabled=false;
+  input.value=""; chatWaiting=true;
+  document.getElementById("chat-send-btn").disabled=true;
+  addUserMessage(text); showTyping();
+  const systemPrompt=`Ты ${user.avatar.name} — ${user.avatar.personality}. Помогаешь ученику 3 класса учить английский. Отвечай коротко, по-русски, с эмодзи. Имя ученика: ${user.name}.`;
+  try{
+    const response=await fetch(WORKER_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:systemPrompt+"\n\nВопрос: "+text})});
+    const data=await response.json(); removeTyping();
+    addBotMessage(data.reply||"Упс! 😅");
+  }catch(e){ removeTyping(); addBotMessage("Ой, не могу ответить сейчас 😅"); }
+  chatWaiting=false; document.getElementById("chat-send-btn").disabled=false;
 }
-
-// ============ VIEWS ============
-function switchView(name){ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active')); document.getElementById('view-'+name).classList.add('active'); window.scrollTo(0,0); }
 </script>
 </body>
 </html>
