@@ -616,12 +616,14 @@ function buildMap(){
 
 // ===================== LESSON ENGINE =====================
 function startLesson(modIdx, lesIdx, lid){
-  const q = MODULES[modIdx].lessons[lesIdx];
-  lesson = { modIdx, lesIdx, lid, question: q, lives: 3, score: 0, checked: false, sel: null };
+  // Collect ALL questions from this module as a flat sequence
+  const allQ = MODULES[modIdx].lessons;
+  lesson = { modIdx, lesIdx, lid, questions: allQ, qIdx: lesIdx, lives: 3, score: 0, checked: false, sel: null };
+  lesson.question = allQ[lesIdx];
   switchView("lesson");
   renderLives();
   document.getElementById("lesson-progress-fill").style.width = "0%";
-  renderQuestion(q);
+  renderQuestion(lesson.question);
 }
 
 function renderLives(){
@@ -690,7 +692,6 @@ function renderTrueFalse(q, el){
   });
   // Hide footer check btn for TF
   document.getElementById("btn-check").style.display = "none";
-  document.getElementById("feedback-area").style.flex = "1";
 }
 
 function checkTF(userSaidYes, btn){
@@ -701,7 +702,7 @@ function checkTF(userSaidYes, btn){
   document.querySelectorAll(".tf-btn").forEach(b=>b.disabled=true);
   if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
   else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
-  const cb = document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+  const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
 }
 
 // Listen & Tap
@@ -738,7 +739,7 @@ function renderFillGap(q, el){
       document.getElementById("gap-slot").textContent = ch;
       if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
       else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
-      const cb = document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+      const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
     };
     choicesEl.appendChild(btn);
   });
@@ -798,7 +799,7 @@ function selectMatchItem(item, pairs){
   if(prev.dataset.key === item.dataset.key){
     prev.classList.add("matched"); item.classList.add("matched");
     state.matched++;
-    if(state.matched === state.total){ lesson.score++; lesson.checked=true; setTimeout(()=>{ spawnConfetti(); setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Все пары найдены!</div>`); const cb=document.getElementById("btn-check"); cb.style.display=""; cb.textContent="Дальше"; cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; }, 300); }
+    if(state.matched === state.total){ lesson.score++; lesson.checked=true; setTimeout(()=>{ spawnConfetti(); setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Все пары найдены!</div>`); const cb=document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; }, 300); }
   } else {
     prev.classList.add("wrong-flash"); item.classList.add("wrong-flash");
     loseLife();
@@ -836,7 +837,7 @@ function startListening(micBtn, resultEl, q){
     const transcripts = Array.from(event.results[0]).map(r=>r.transcript.toLowerCase().trim());
     const target = q.word.toLowerCase();
     const ok = transcripts.some(t => t.includes(target) || target.includes(t) || similarity(t,target)>0.7);
-    if(ok){ resultEl.textContent = "✅ Отлично! Правильно!"; resultEl.className="mic-result ok"; lesson.score++; spawnConfetti(); setTimeout(nextQuestion,1500); }
+    if(ok){ resultEl.textContent = "✅ Отлично! Правильно!"; resultEl.className="mic-result ok"; lesson.score++; spawnConfetti(); const cb=document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Отлично произнёс!`); }
     else { resultEl.textContent = `❌ Услышал: "${transcripts[0]}". Попробуй ещё!`; resultEl.className="mic-result fail"; }
   };
   recognition.onerror = () => { micBtn.classList.remove("listening"); resultEl.textContent="Ошибка микрофона. Попробуй ещё!"; };
@@ -867,15 +868,24 @@ function handleCheck(){
 
 function nextQuestion(){
   document.getElementById("btn-check").style.display="";
+  document.getElementById("btn-check").disabled=true;
   clearTimeout(lesson.tfTimer);
   if(lesson.lives <= 0){ showComplete(false); return; }
-  showComplete(true);
+  lesson.qIdx++;
+  if(lesson.qIdx < lesson.questions.length){
+    lesson.question = lesson.questions[lesson.qIdx];
+    lesson.checked = false; lesson.sel = null;
+    const pct = (lesson.qIdx / lesson.questions.length * 100);
+    document.getElementById("lesson-progress-fill").style.width = pct + "%";
+    renderQuestion(lesson.question);
+  } else {
+    showComplete(true);
+  }
 }
 
 function loseLife(){
   lesson.lives = Math.max(0, lesson.lives-1);
   renderLives();
-  if(lesson.lives <= 0){ setTimeout(()=>showComplete(false), 1200); }
 }
 
 function showComplete(passed){
