@@ -27,6 +27,27 @@
   .view { display: none; }
   .view.active { display: flex; flex-direction: column; min-height: 100vh; }
 
+
+  /* ===== SUBJECT SELECT ===== */
+  #view-subject { align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%); }
+  .subject-card { background: #fff; border-radius: 32px; padding: 40px 32px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,.12); border-bottom: 8px solid #c5e1a5; text-align: center; }
+  .subject-card h1 { font-size: 28px; font-weight: 900; color: #33691e; margin-bottom: 6px; }
+  .subject-card p { color: #888; font-weight: 700; font-size: 15px; margin-bottom: 32px; }
+  .subject-choices { display: flex; flex-direction: column; gap: 16px; }
+  .subject-btn { display: flex; align-items: center; gap: 20px; padding: 22px 24px; border-radius: 24px; border: 3px solid #e0e0e0; background: #fff; cursor: pointer; font-family: "Nunito",sans-serif; text-align: left; transition: transform .15s, border-color .15s, box-shadow .15s; border-bottom-width: 5px; }
+  .subject-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+  .subject-btn.english { border-color: #8bc34a; border-bottom-color: #689f38; }
+  .subject-btn.english:hover { background: #f1f8e9; }
+  .subject-btn.cs { border-color: #42a5f5; border-bottom-color: #1565c0; }
+  .subject-btn.cs:hover { background: #e3f2fd; }
+  .subject-btn-icon { font-size: 52px; flex-shrink: 0; }
+  .subject-btn-info { flex: 1; }
+  .subject-btn-title { font-size: 20px; font-weight: 900; color: #222; margin-bottom: 4px; }
+  .subject-btn-sub { font-size: 13px; font-weight: 700; color: #888; }
+  .subject-btn-badge { font-size: 11px; font-weight: 900; padding: 4px 10px; border-radius: 10px; color: #fff; flex-shrink: 0; }
+  .badge-green { background: #8bc34a; }
+  .badge-blue { background: #42a5f5; }
+
   /* ONBOARDING */
   #view-onboarding { align-items: center; justify-content: center; padding: 24px; }
   .card { background: #fff; border-radius: 32px; padding: 36px 32px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,.10); border-bottom: 8px solid #c5e1a5; }
@@ -236,8 +257,35 @@
 </head>
 <body>
 
+<!-- SUBJECT SELECT -->
+<div id="view-subject" class="view active">
+  <div class="subject-card anim-pop">
+    <div style="font-size:56px;margin-bottom:12px">🇰🇿</div>
+    <h1>Выбери предмет</h1>
+    <p>Что будем учить сегодня?</p>
+    <div class="subject-choices">
+      <button class="subject-btn english" onclick="selectSubject('english')">
+        <div class="subject-btn-icon">🇬🇧</div>
+        <div class="subject-btn-info">
+          <div class="subject-btn-title">Английский язык</div>
+          <div class="subject-btn-sub">3–4 класс · 9 модулей · 60+ уроков</div>
+        </div>
+        <span class="subject-btn-badge badge-green">3-4 класс</span>
+      </button>
+      <button class="subject-btn cs" onclick="selectSubject('cs')">
+        <div class="subject-btn-icon">🐍</div>
+        <div class="subject-btn-info">
+          <div class="subject-btn-title">Информатика · Python</div>
+          <div class="subject-btn-sub">7 класс · §18–34 · Программирование</div>
+        </div>
+        <span class="subject-btn-badge badge-blue">7 класс</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- ONBOARDING -->
-<div id="view-onboarding" class="view active">
+<div id="view-onboarding" class="view">
   <div class="card">
     <div class="ob-logo">
       <div class="ob-logo-icon">🇰🇿</div>
@@ -335,6 +383,7 @@
       </div>
     </div>
     <div class="chat-messages" id="chat-messages"></div>
+    <div id="chat-chips" style="padding:8px 12px 0;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid #f0f0f0"></div>
     <div class="chat-input-wrap">
       <input class="chat-input" id="chat-input" placeholder="Спроси что-нибудь..." onkeydown="if(event.key==='Enter')sendChat()"/>
       <button class="chat-send" id="chat-send-btn" onclick="sendChat()">➤</button>
@@ -346,6 +395,125 @@
 
 <script>
 const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
+
+
+// ===================== CS MODULES (Информатика 7 класс) =====================
+const CS_MODULES = [
+  {
+    id:1, title:"Работа с файлами", icon:"📁", par:"§18-19",
+    lessons:[
+      { type:"mcq", question:"Какая функция открывает файл в Python?",
+        opts:[{t:"open()",e:"📂"},{t:"read()",e:"📖"},{t:"file()",e:"📄"},{t:"load()",e:"💾"}], ans:0 },
+      { type:"mcq", question:"Какой режим открывает файл для записи?",
+        opts:[{t:\`"r"\`,e:"👁️"},{t:\`"w"\`,e:"✏️"},{t:\`"x"\`,e:"❌"},{t:\`"b"\`,e:"💾"}], ans:1 },
+      { type:"truefalse", question:"Метод .read() читает весь файл?", emoji:"📖", answer:"read()", correctIs:true },
+      { type:"truefalse", question:"Режим 'a' удаляет содержимое файла?", emoji:"📝", answer:"'a' — дописывает", correctIs:false },
+      { type:"fillgap", word:"OPEN", gapIdx:2, choices:["E","A","I"] },
+      { type:"sentence", translation:"Открыть файл для чтения", words:["open","f","=","'file.txt'","'r'",")","("], correct:["f","=","open","(","'file.txt'","'r'",")"] },
+      { type:"match", pairs:[{en:"'r'",ru:"Чтение"},{en:"'w'",ru:"Запись"},{en:"'a'",ru:"Добавление"},{en:".close()",ru:"Закрыть файл"}] },
+    ]
+  },
+  {
+    id:2, title:"Алгоритмы ветвления", icon:"🔀", par:"§20-21",
+    lessons:[
+      { type:"mcq", question:"Какой оператор используется для ветвления?",
+        opts:[{t:"if",e:"🔀"},{t:"for",e:"🔄"},{t:"while",e:"⏳"},{t:"def",e:"📦"}], ans:0 },
+      { type:"mcq", question:"Что выведет: if 5 > 3: print('Yes')?",
+        opts:[{t:"Yes",e:"✅"},{t:"No",e:"❌"},{t:"Error",e:"💥"},{t:"5",e:"5️⃣"}], ans:0 },
+      { type:"truefalse", question:"else выполняется когда условие if ложно?", emoji:"🔀", answer:"else", correctIs:true },
+      { type:"truefalse", question:"elif — это то же самое что else if в других языках?", emoji:"🤔", answer:"elif", correctIs:true },
+      { type:"fillgap", word:"ELIF", gapIdx:2, choices:["I","E","A"] },
+      { type:"sentence", translation:"Если x больше 0, печатай Положительное", words:["x","if",">","0:","print('Положительное')"], correct:["if","x",">","0:","print('Положительное')"] },
+      { type:"match", pairs:[{en:"if",ru:"Если"},{en:"elif",ru:"Иначе если"},{en:"else",ru:"Иначе"},{en:":",ru:"Начало блока"}] },
+    ]
+  },
+  {
+    id:3, title:"Вложенные условия", icon:"🪆", par:"§22-23",
+    lessons:[
+      { type:"mcq", question:"Сколько пробелов используется для отступа в Python?",
+        opts:[{t:"2",e:"2️⃣"},{t:"4",e:"4️⃣"},{t:"6",e:"6️⃣"},{t:"Tab",e:"↹"}], ans:1 },
+      { type:"mcq", question:"Что такое вложенное условие?",
+        opts:[{t:"if внутри if",e:"🪆"},{t:"два elif подряд",e:"🔀"},{t:"if без else",e:"❓"},{t:"цикл в условии",e:"🔄"}], ans:0 },
+      { type:"truefalse", question:"Вложенный if должен иметь отступ больше внешнего?", emoji:"🪆", answer:"Отступ", correctIs:true },
+      { type:"fillgap", word:"INDENT", gapIdx:3, choices:["E","A","O"] },
+      { type:"sentence", translation:"Если x>0 и x<10, то напечатай Цифра", words:["if","x > 0:","if","x < 10:","print('Цифра')"], correct:["if","x > 0:","if","x < 10:","print('Цифра')"] },
+      { type:"match", pairs:[{en:"Отступ",ru:"Indent"},{en:"Блок кода",ru:"Code block"},{en:"Вложение",ru:"Nesting"},{en:"Условие",ru:"Condition"}] },
+    ]
+  },
+  {
+    id:4, title:"Составные условия", icon:"⚗️", par:"§24-25",
+    lessons:[
+      { type:"mcq", question:"Какой оператор означает «И»?",
+        opts:[{t:"and",e:"➕"},{t:"or",e:"➖"},{t:"not",e:"❌"},{t:"in",e:"📦"}], ans:0 },
+      { type:"mcq", question:"True or False = ?",
+        opts:[{t:"True",e:"✅"},{t:"False",e:"❌"},{t:"Error",e:"💥"},{t:"None",e:"❓"}], ans:0 },
+      { type:"truefalse", question:"not True равно False?", emoji:"❌", answer:"not True = False", correctIs:true },
+      { type:"truefalse", question:"False and True равно True?", emoji:"🤔", answer:"False and True = False", correctIs:false },
+      { type:"fillgap", word:"AND", gapIdx:1, choices:["N","M","D"] },
+      { type:"sentence", translation:"Если x больше 0 И меньше 10", words:["x > 0","if","and","x < 10:"], correct:["if","x > 0","and","x < 10:"] },
+      { type:"match", pairs:[{en:"and",ru:"И (оба true)"},{en:"or",ru:"ИЛИ (хоть один)"},{en:"not",ru:"НЕ (инверсия)"},{en:"in",ru:"Содержится в"}] },
+    ]
+  },
+  {
+    id:5, title:"Практика: Постановка задачи", icon:"📋", par:"§28-29",
+    lessons:[
+      { type:"mcq", question:"Что такое алгоритм?",
+        opts:[{t:"Последовательность шагов",e:"📋"},{t:"Язык программирования",e:"💻"},{t:"Тип данных",e:"📊"},{t:"Функция",e:"📦"}], ans:0 },
+      { type:"mcq", question:"Что делает функция input()?",
+        opts:[{t:"Выводит текст",e:"📤"},{t:"Вводит данные",e:"📥"},{t:"Открывает файл",e:"📂"},{t:"Считает сумму",e:"➕"}], ans:1 },
+      { type:"truefalse", question:"int() преобразует строку в целое число?", emoji:"🔢", answer:"int()", correctIs:true },
+      { type:"fillgap", word:"INPUT", gapIdx:3, choices:["U","O","A"] },
+      { type:"sentence", translation:"Получить число от пользователя", words:["=","n","int(input())"], correct:["n","=","int(input())"] },
+      { type:"match", pairs:[{en:"input()",ru:"Ввод данных"},{en:"print()",ru:"Вывод данных"},{en:"int()",ru:"В целое число"},{en:"str()",ru:"В строку"}] },
+    ]
+  },
+  {
+    id:6, title:"Практика: Разработка алгоритма", icon:"🗺️", par:"§30-31",
+    lessons:[
+      { type:"mcq", question:"Что такое блок-схема?",
+        opts:[{t:"Визуальный алгоритм",e:"🗺️"},{t:"Тип цикла",e:"🔄"},{t:"Метод класса",e:"📦"},{t:"Файл Python",e:"🐍"}], ans:0 },
+      { type:"mcq", question:"Какой символ блок-схемы обозначает решение?",
+        opts:[{t:"Ромб ◇",e:"◇"},{t:"Прямоугольник □",e:"□"},{t:"Овал ○",e:"○"},{t:"Стрелка →",e:"→"}], ans:0 },
+      { type:"truefalse", question:"Прямоугольник в блок-схеме — это действие/вычисление?", emoji:"□", answer:"Прямоугольник = действие", correctIs:true },
+      { type:"fillgap", word:"BLOCK", gapIdx:2, choices:["O","A","E"] },
+      { type:"match", pairs:[{en:"Овал",ru:"Начало/конец"},{en:"Прямоугольник",ru:"Действие"},{en:"Ромб",ru:"Условие"},{en:"Параллелограмм",ru:"Ввод/вывод"}] },
+    ]
+  },
+  {
+    id:7, title:"Практика: Написание кода", icon:"⌨️", par:"§32-33",
+    lessons:[
+      { type:"mcq", question:"Как написать комментарий в Python?",
+        opts:[{t:"# текст",e:"#️⃣"},{t:"// текст",e:"💬"},{t:"/* текст */",e:"📝"},{t:"-- текст",e:"➖"}], ans:0 },
+      { type:"mcq", question:"Что выведет print(2 ** 3)?",
+        opts:[{t:"8",e:"8️⃣"},{t:"6",e:"6️⃣"},{t:"9",e:"9️⃣"},{t:"23",e:"🔢"}], ans:0 },
+      { type:"truefalse", question:"В Python используется ** для возведения в степень?", emoji:"🔢", answer:"** = степень", correctIs:true },
+      { type:"truefalse", question:"Python чувствителен к регистру?", emoji:"🐍", answer:"Да, Print ≠ print", correctIs:true },
+      { type:"fillgap", word:"PRINT", gapIdx:3, choices:["N","M","T"] },
+      { type:"sentence", translation:"Вывести сумму двух чисел", words:["a","print(a","b","=","=","5","3","+","b)"], correct:["a","=","5","b","=","3","print(a","+","b)"] },
+      { type:"match", pairs:[{en:"#",ru:"Комментарий"},{en:"**",ru:"Степень"},{en:"%",ru:"Остаток"},{en:"//",ru:"Целочисленное деление"}] },
+    ]
+  },
+  {
+    id:8, title:"Практика: Тестирование", icon:"🧪", par:"§34",
+    lessons:[
+      { type:"mcq", question:"Что такое тестирование программы?",
+        opts:[{t:"Проверка на ошибки",e:"🧪"},{t:"Написание кода",e:"⌨️"},{t:"Установка Python",e:"📦"},{t:"Запуск редактора",e:"🖥️"}], ans:0 },
+      { type:"mcq", question:"Что такое SyntaxError?",
+        opts:[{t:"Ошибка синтаксиса",e:"💥"},{t:"Ошибка памяти",e:"💾"},{t:"Ошибка сети",e:"🌐"},{t:"Ошибка файла",e:"📂"}], ans:0 },
+      { type:"truefalse", question:"Отладка — это поиск и исправление ошибок?", emoji:"🐛", answer:"Отладка = debug", correctIs:true },
+      { type:"truefalse", question:"Программа без ошибок всегда работает правильно?", emoji:"🤔", answer:"Нет — могут быть логические ошибки", correctIs:false },
+      { type:"fillgap", word:"DEBUG", gapIdx:2, choices:["B","P","G"] },
+      { type:"match", pairs:[{en:"SyntaxError",ru:"Ошибка синтаксиса"},{en:"NameError",ru:"Имя не определено"},{en:"TypeError",ru:"Неверный тип"},{en:"Debug",ru:"Отладка"}] },
+    ]
+  },
+];
+
+let currentSubject = "english"; // "english" or "cs"
+
+function selectSubject(subject) {
+  currentSubject = subject;
+  switchView("onboarding");
+}
 
 // ===================== CURRICULUM DATA =====================
 const MODULES = [
@@ -563,6 +731,18 @@ function finishOnboarding(){
   document.getElementById("chat-name").textContent = user.avatar.name;
   document.getElementById("chat-toggle-emoji").textContent = user.avatar.emoji;
   document.getElementById("chat-widget").style.display = "block";
+  // Setup chat chips based on subject
+  const chips = currentSubject === "cs"
+    ? ["Объясни if/else","В чём разница elif?","Помоги найти ошибку","Что такое отступ?"]
+    : ["Как сказать привет?","Что значит слово?","Объясни правило","Приведи пример"];
+  const chipsEl = document.getElementById("chat-chips");
+  chips.forEach(c => {
+    const chip = document.createElement("button");
+    chip.style.cssText = "padding:5px 12px;border-radius:12px;border:1.5px solid #c5e1a5;background:#f1f8e9;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;color:#558b2f;cursor:pointer;white-space:nowrap";
+    chip.textContent = c;
+    chip.onclick = () => { document.getElementById("chat-input").value = c; sendChat(); };
+    chipsEl.appendChild(chip);
+  });
   setTimeout(() => {
     addBotMessage(`Привет, ${user.name}! 👋 Я ${user.avatar.name} — твой помощник! Спрашивай меня про английский! 🌟`);
     document.getElementById("chat-dot").classList.add("show");
@@ -591,10 +771,11 @@ function buildMap(){
   const container = document.getElementById("map-container");
   container.innerHTML = "";
   let gid = 1;
-  MODULES.forEach((mod, mi) => {
+  const activeModules = currentSubject === "cs" ? CS_MODULES : MODULES;
+  activeModules.forEach((mod, mi) => {
     const mh = document.createElement("div");
     mh.className = `module-header mc-${mi}`;
-    mh.innerHTML = `<div style="position:relative;z-index:1"><h3>Unit ${mod.id} ${mod.icon}</h3><p>${mod.title}</p></div><div class="mod-icon">${mod.icon}</div>`;
+    mh.innerHTML = `<div style="position:relative;z-index:1"><h3>Unit ${mod.id} ${mod.icon}</h3><p>${mod.title}${mod.par ? " · " + mod.par : ""}</p></div><div class="mod-icon">${mod.icon}</div>`;
     container.appendChild(mh);
     const col = document.createElement("div");
     col.className = "lessons-col";
@@ -607,7 +788,7 @@ function buildMap(){
       btn.className = "lesson-node" + (done?" done":locked?" locked":` mc-${mi}`);
       btn.disabled = locked;
       btn.innerHTML = done ? "⭐" : locked ? "🔒" : `<span>${i+1}</span>`;
-      if(!locked) btn.onclick = () => startLesson(mi, i, lid);
+      if(!locked) btn.onclick = () => startLesson(mi, i, lid, currentSubject);
       wrap.appendChild(btn); col.appendChild(wrap);
     });
     container.appendChild(col);
@@ -615,9 +796,10 @@ function buildMap(){
 }
 
 // ===================== LESSON ENGINE =====================
-function startLesson(modIdx, lesIdx, lid){
+function startLesson(modIdx, lesIdx, lid, subject){
   // Collect ALL questions from this module as a flat sequence
-  const allQ = MODULES[modIdx].lessons;
+  const activeModules = subject === "cs" ? CS_MODULES : MODULES;
+  const allQ = activeModules[modIdx].lessons;
   lesson = { modIdx, lesIdx, lid, questions: allQ, qIdx: lesIdx, lives: 3, score: 0, checked: false, sel: null };
   lesson.question = allQ[lesIdx];
   switchView("lesson");
@@ -965,7 +1147,9 @@ async function sendChat(){
   input.value=""; chatWaiting=true;
   document.getElementById("chat-send-btn").disabled=true;
   addUserMessage(text); showTyping();
-  const systemPrompt=`Ты ${user.avatar.name} — ${user.avatar.personality}. Помогаешь ученику 3 класса учить английский. Отвечай коротко, по-русски, с эмодзи. Имя ученика: ${user.name}.`;
+  const systemPrompt = currentSubject === "cs"
+    ? `Ты ${user.avatar.name} — терпеливый учитель информатики. Помогаешь ученику 7 класса учить Python. Отвечай по-русски с эмодзи. Объясняй концепции, но НЕ пиши весь код за ученика — наводи на мысль. НЕ отвечай на темы не связанные с программированием и учёбой. Имя ученика: ${user.name}.`
+    : `Ты ${user.avatar.name} — ${user.avatar.personality}. Помогаешь ученику 3 класса учить английский. Отвечай коротко, по-русски, с эмодзи. Имя ученика: ${user.name}.`;
   try{
     const response=await fetch(WORKER_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:systemPrompt+"\n\nВопрос: "+text})});
     const data=await response.json(); removeTyping();
