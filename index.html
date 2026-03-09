@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>English Grade 3</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Nunito", sans-serif; background: #f1f8e9; min-height: 100vh; overflow-x: hidden; }
@@ -28,7 +29,44 @@
   .view.active { display: flex; flex-direction: column; min-height: 100vh; }
 
 
+  /* ===== LOGIN ===== */
+  #view-login { align-items: center; justify-content: center; padding: 24px;
+    background: linear-gradient(160deg, #f1f8e9 0%, #dcedc8 100%); min-height: 100vh; }
+  .login-card { background: #fff; border-radius: 36px; padding: 48px 36px 40px;
+    width: 100%; max-width: 420px; box-shadow: 0 12px 48px rgba(0,0,0,.13);
+    border-bottom: 8px solid #aed581; text-align: center; animation: popIn .5s cubic-bezier(.175,.885,.32,1.275) both; }
+  .login-flag { font-size: 64px; margin-bottom: 12px; }
+  .login-title { font-size: 32px; font-weight: 900; color: #33691e; margin-bottom: 6px; }
+  .login-sub { font-size: 15px; color: #888; font-weight: 700; margin-bottom: 36px; line-height: 1.5; }
+  .google-btn { display: flex; align-items: center; justify-content: center; gap: 12px;
+    width: 100%; padding: 16px 20px; border-radius: 20px;
+    border: 2.5px solid #e0e0e0; background: #fff; cursor: pointer;
+    font-family: "Nunito", sans-serif; font-size: 17px; font-weight: 900; color: #333;
+    border-bottom: 5px solid #d0d0d0; transition: transform .1s, background .15s, border-color .15s;
+    user-select: none; }
+  .google-btn:hover { background: #fafafa; border-color: #bbb; transform: translateY(-2px); }
+  .google-btn:active { transform: translateY(4px); border-bottom-width: 0; }
+  .google-logo { width: 26px; height: 26px; flex-shrink: 0; }
+  .login-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #ccc; font-weight: 700; font-size: 13px; }
+  .login-divider::before, .login-divider::after { content: ""; flex: 1; height: 1.5px; background: #eee; }
+  .guest-btn { display: block; width: 100%; padding: 14px; border-radius: 18px;
+    border: 2px solid #e8f5e9; background: #f9fbe7; cursor: pointer;
+    font-family: "Nunito", sans-serif; font-size: 15px; font-weight: 800; color: #558b2f;
+    transition: background .15s; }
+  .guest-btn:hover { background: #f1f8e9; }
+  .login-user-card { display: flex; align-items: center; gap: 14px;
+    background: #f1f8e9; border-radius: 20px; padding: 14px 18px; margin-bottom: 24px;
+    border: 2px solid #c5e1a5; }
+  .login-user-pic { width: 52px; height: 52px; border-radius: 50%; border: 2.5px solid #8bc34a; object-fit: cover; }
+  .login-user-pic-placeholder { width: 52px; height: 52px; border-radius: 50%;
+    background: #8bc34a; display: flex; align-items: center; justify-content: center;
+    font-size: 24px; font-weight: 900; color: #fff; flex-shrink: 0; }
+  .login-user-info { text-align: left; }
+  .login-user-name { font-size: 17px; font-weight: 900; color: #222; }
+  .login-user-email { font-size: 12px; color: #888; font-weight: 700; margin-top: 2px; }
+
   /* ===== SUBJECT SELECT ===== */
+
   #view-subject { align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e9 100%); }
   .subject-card { background: #fff; border-radius: 32px; padding: 40px 32px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,.12); border-bottom: 8px solid #c5e1a5; text-align: center; }
   .subject-card h1 { font-size: 28px; font-weight: 900; color: #33691e; margin-bottom: 6px; }
@@ -121,7 +159,6 @@
   .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .options-grid.single-col { grid-template-columns: 1fr; }
   .opt-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 18px 12px; border-radius: 24px; border: 3px solid #e0e0e0; background: #fff; cursor: pointer; font-family: "Nunito",sans-serif; font-size: 18px; font-weight: 800; color: #444; border-bottom-width: 5px; transition: transform .1s, border-color .15s, background .15s, opacity .2s; user-select: none; }
-  .opt-btn .opt-emoji { font-size: 48px; margin-bottom: 8px; }
   .opt-btn:hover:not(:disabled):not(.sel):not(.correct):not(.wrong) { background: #fafafa; border-color: #bbb; }
   .opt-btn:active:not(:disabled) { transform: translateY(5px); border-bottom-width: 0; }
   .opt-btn.sel { border-color: #42a5f5; background: #e3f2fd; color: #1565c0; }
@@ -257,8 +294,45 @@
 </head>
 <body>
 
+<!-- LOGIN -->
+<div id="view-login" class="view active">
+  <div class="login-card">
+    <div class="login-flag">🇰🇿</div>
+    <div class="login-title">DaraBala</div>
+    <div class="login-sub">Умная платформа для учёбы.<br>Войди чтобы сохранить прогресс!</div>
+
+    <div id="login-returning-user" style="display:none">
+      <div class="login-user-card" id="login-user-preview"></div>
+      <button class="btn-green" id="btn-continue-as" onclick="continueAsUser()">
+        Продолжить как <span id="continue-name"></span>
+      </button>
+      <div class="login-divider">или</div>
+    </div>
+
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg class="google-logo" viewBox="0 0 24 24">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+      </svg>
+      Войти через Google
+    </button>
+
+    <div class="login-divider">или</div>
+
+    <button class="guest-btn" onclick="signInAsGuest()">
+      👤 Войти как гость
+    </button>
+
+    <div style="font-size:11px;color:#ccc;font-weight:700;margin-top:20px;line-height:1.5">
+      Прогресс гостя сохраняется только в этом браузере
+    </div>
+  </div>
+</div>
+
 <!-- SUBJECT SELECT -->
-<div id="view-subject" class="view active">
+<div id="view-subject" class="view">
   <div class="subject-card anim-pop">
     <div style="font-size:56px;margin-bottom:12px">🇰🇿</div>
     <h1>Выбери предмет</h1>
@@ -288,9 +362,9 @@
 <div id="view-onboarding" class="view">
   <div class="card">
     <div class="ob-logo">
-      <div class="ob-logo-icon">🇰🇿</div>
-      <h1>English Grade 3</h1>
-      <p>Давай учить английский вместе!</p>
+      <div class="ob-logo-icon" id="ob-logo-icon">🇰🇿</div>
+      <h1 id="ob-logo-title">English Grade 3</h1>
+      <p id="ob-logo-sub">Давай учить английский вместе!</p>
     </div>
     <div id="ob-step1" class="ob-step active">
       <h2>Как тебя зовут?</h2>
@@ -333,7 +407,48 @@
         <span id="streak-val">0</span>
       </div>
     </div>
+    <button id="subject-switcher-btn" onclick="switchSubjectPrompt()"
+      style="font-family:Nunito,sans-serif;font-size:13px;font-weight:900;
+             padding:8px 14px;border-radius:16px;border:2px solid #e0e0e0;
+             background:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;
+             color:#555;transition:background .15s,border-color .15s;white-space:nowrap">
+      <span id="subject-switcher-icon">🇬🇧</span>
+      <span id="subject-switcher-label">Английский</span>
+    </button>
   </div>
+
+  <!-- Subject overlay -->
+  <div id="subject-overlay" style="display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:24px">
+    <div style="background:#fff;border-radius:28px;padding:32px 24px;width:100%;max-width:380px;
+                box-shadow:0 12px 48px rgba(0,0,0,.2)">
+      <h2 style="font-size:22px;font-weight:900;text-align:center;margin-bottom:20px;color:#222">
+        Сменить предмет
+      </h2>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <button class="subject-btn english" onclick="changeSubject('english')"
+          style="display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:20px;
+                 border:3px solid #8bc34a;background:#f1f8e9;cursor:pointer;font-family:Nunito,sans-serif;text-align:left">
+          <span style="font-size:40px">🇬🇧</span>
+          <div><div style="font-size:17px;font-weight:900;color:#222">Английский язык</div>
+               <div style="font-size:12px;font-weight:700;color:#888">3–4 класс · 9 модулей</div></div>
+        </button>
+        <button class="subject-btn cs" onclick="changeSubject('cs')"
+          style="display:flex;align-items:center;gap:16px;padding:18px 20px;border-radius:20px;
+                 border:3px solid #42a5f5;background:#e3f2fd;cursor:pointer;font-family:Nunito,sans-serif;text-align:left">
+          <span style="font-size:40px">🐍</span>
+          <div><div style="font-size:17px;font-weight:900;color:#222">Информатика · Python</div>
+               <div style="font-size:12px;font-weight:700;color:#888">7 класс · §18–34</div></div>
+        </button>
+        <button onclick="document.getElementById('subject-overlay').style.display='none'"
+          style="padding:12px;border-radius:16px;border:2px solid #e0e0e0;background:#f9f9f9;
+                 font-family:Nunito,sans-serif;font-size:15px;font-weight:800;cursor:pointer;color:#888">
+          Отмена
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div class="map-container" id="map-container"></div>
 </div>
 
@@ -396,114 +511,289 @@
 <script>
 const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
 
+// ===================== GOOGLE OAUTH =====================
+// REPLACE THIS with your Google Cloud Console Client ID:
+const GOOGLE_CLIENT_ID = '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com';
 
-// ===================== CS MODULES (Информатика 7 класс) =====================
+function initGoogleAuth(){
+  // Check localStorage for saved user
+  const saved = localStorage.getItem('darabala_user');
+  if(saved){
+    try{
+      const u = JSON.parse(saved);
+      showReturningUser(u);
+    }catch(e){ localStorage.removeItem('darabala_user'); }
+  }
+  // Init Google Identity Services
+  if(window.google && GOOGLE_CLIENT_ID !== '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com'){
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredential,
+      auto_select: false,
+    });
+  }
+}
+
+function signInWithGoogle(){
+  if(!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID.includes('YOUR_GOOGLE')){
+    showOAuthSetupModal();
+    return;
+  }
+  google.accounts.id.prompt((notification) => {
+    if(notification.isNotDisplayed() || notification.isSkippedMoment()){
+      // Fallback to popup
+      google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'profile email',
+        callback: (resp) => { if(resp.access_token) fetchGoogleProfile(resp.access_token); }
+      }).requestAccessToken();
+    }
+  });
+}
+
+function handleGoogleCredential(response){
+  // Decode JWT (no verify needed client-side — we just want display info)
+  const parts = response.credential.split('.');
+  const payload = JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+  const googleUser = { name: payload.name, email: payload.email, picture: payload.picture, source: 'google' };
+  completeLogin(googleUser);
+}
+
+async function fetchGoogleProfile(token){
+  const resp = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+    headers: { Authorization: 'Bearer ' + token }
+  });
+  const info = await resp.json();
+  completeLogin({ name: info.name, email: info.email, picture: info.picture, source: 'google' });
+}
+
+function signInAsGuest(){
+  const guestNum = Math.floor(Math.random()*9000)+1000;
+  completeLogin({ name: 'Гость ' + guestNum, email: null, picture: null, source: 'guest' });
+}
+
+function showReturningUser(u){
+  const wrap = document.getElementById('login-returning-user');
+  const preview = document.getElementById('login-user-preview');
+  const contName = document.getElementById('continue-name');
+  wrap.style.display = 'block';
+  contName.textContent = u.name.split(' ')[0];
+  const picHtml = u.picture
+    ? `<img class="login-user-pic" src="${u.picture}" referrerpolicy="no-referrer"/>`
+    : `<div class="login-user-pic-placeholder">${u.name[0].toUpperCase()}</div>`;
+  preview.innerHTML = `${picHtml}<div class="login-user-info">
+    <div class="login-user-name">${u.name}</div>
+    <div class="login-user-email">${u.email || 'Гостевой аккаунт'}</div>
+  </div>`;
+  // Store for continueAsUser
+  window._savedUser = u;
+}
+
+function continueAsUser(){
+  if(window._savedUser) completeLogin(window._savedUser);
+}
+
+function completeLogin(googleUser){
+  // Save to localStorage
+  localStorage.setItem('darabala_user', JSON.stringify(googleUser));
+  // Load saved progress
+  const savedProgress = localStorage.getItem('darabala_progress_' + (googleUser.email || googleUser.name));
+  if(savedProgress){
+    try{
+      const sp = JSON.parse(savedProgress);
+      progressData.english = { completed: new Set(sp.english?.completed||[]), streak: sp.english?.streak||0, xp: sp.english?.xp||0 };
+      progressData.cs      = { completed: new Set(sp.cs?.completed||[]),      streak: sp.cs?.streak||0,      xp: sp.cs?.xp||0 };
+    }catch(e){}
+  }
+  // Pre-fill name in onboarding
+  window._googleUser = googleUser;
+  document.getElementById('input-name').value = googleUser.name.split(' ')[0];
+  checkStep1();
+  // Skip to subject selection
+  switchView('subject');
+}
+
+function saveProgress(){
+  if(!window._googleUser) return;
+  const key = 'darabala_progress_' + (window._googleUser.email || window._googleUser.name);
+  const data = {
+    english: { completed: [...progressData.english.completed], streak: progressData.english.streak, xp: progressData.english.xp },
+    cs:      { completed: [...progressData.cs.completed],      streak: progressData.cs.streak,      xp: progressData.cs.xp }
+  };
+  localStorage.setItem(key, JSON.stringify(data));
+}
+
+function signOut(){
+  if(confirm('Выйти из аккаунта?')){
+    saveProgress();
+    localStorage.removeItem('darabala_user');
+    window._googleUser = null;
+    location.reload();
+  }
+}
+
+function showOAuthSetupModal(){
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:24px;padding:32px;max-width:400px;width:100%;font-family:Nunito,sans-serif">
+      <div style="font-size:32px;text-align:center;margin-bottom:12px">⚙️</div>
+      <h3 style="font-size:18px;font-weight:900;text-align:center;margin-bottom:16px;color:#222">
+        Нужен Google Client ID
+      </h3>
+      <ol style="font-size:13px;font-weight:700;color:#555;line-height:1.8;padding-left:20px;margin-bottom:20px">
+        <li>Открой <a href="https://console.cloud.google.com" target="_blank" style="color:#1a73e8">console.cloud.google.com</a></li>
+        <li>Создай проект → Credentials → OAuth 2.0 Client ID</li>
+        <li>Тип: Web application</li>
+        <li>Добавь в Authorized origins:<br>
+            <code style="background:#f5f5f5;padding:2px 6px;border-radius:6px;font-size:11px">
+              https://alankussainov10-dotcom.github.io
+            </code></li>
+        <li>Скопируй Client ID в файл:<br>
+            <code style="background:#f5f5f5;padding:2px 6px;border-radius:6px;font-size:11px">
+              const GOOGLE_CLIENT_ID = 'ВСТАВЬ_СЮДА'
+            </code></li>
+      </ol>
+      <button onclick="this.closest('div[style*=fixed]').remove()"
+        style="width:100%;padding:14px;border-radius:16px;border:none;background:#8bc34a;
+               color:#fff;font-family:Nunito,sans-serif;font-size:16px;font-weight:900;cursor:pointer">
+        Понятно
+      </button>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+
+// Auto-save progress when lesson completes
+
+
+// ===================== CS MODULES (Информатика 7 класс §18-34) =====================
 const CS_MODULES = [
   {
-    id:1, title:"Работа с файлами", icon:"📁", par:"§18-19",
+    id:1, title:"Знакомство с Python", icon:"🐍", par:"§18",
     lessons:[
-      { type:"mcq", question:"Какая функция открывает файл в Python?",
-        opts:[{t:"open()",e:"📂"},{t:"read()",e:"📖"},{t:"file()",e:"📄"},{t:"load()",e:"💾"}], ans:0 },
-      { type:"mcq", question:"Какой режим открывает файл для записи?",
-        opts:[{t:\`"r"\`,e:"👁️"},{t:\`"w"\`,e:"✏️"},{t:\`"x"\`,e:"❌"},{t:\`"b"\`,e:"💾"}], ans:1 },
-      { type:"truefalse", question:"Метод .read() читает весь файл?", emoji:"📖", answer:"read()", correctIs:true },
-      { type:"truefalse", question:"Режим 'a' удаляет содержимое файла?", emoji:"📝", answer:"'a' — дописывает", correctIs:false },
-      { type:"fillgap", word:"OPEN", gapIdx:2, choices:["E","A","I"] },
-      { type:"sentence", translation:"Открыть файл для чтения", words:["open","f","=","'file.txt'","'r'",")","("], correct:["f","=","open","(","'file.txt'","'r'",")"] },
-      { type:"match", pairs:[{en:"'r'",ru:"Чтение"},{en:"'w'",ru:"Запись"},{en:"'a'",ru:"Добавление"},{en:".close()",ru:"Закрыть файл"}] },
-    ]
-  },
-  {
-    id:2, title:"Алгоритмы ветвления", icon:"🔀", par:"§20-21",
-    lessons:[
-      { type:"mcq", question:"Какой оператор используется для ветвления?",
-        opts:[{t:"if",e:"🔀"},{t:"for",e:"🔄"},{t:"while",e:"⏳"},{t:"def",e:"📦"}], ans:0 },
-      { type:"mcq", question:"Что выведет: if 5 > 3: print('Yes')?",
-        opts:[{t:"Yes",e:"✅"},{t:"No",e:"❌"},{t:"Error",e:"💥"},{t:"5",e:"5️⃣"}], ans:0 },
-      { type:"truefalse", question:"else выполняется когда условие if ложно?", emoji:"🔀", answer:"else", correctIs:true },
-      { type:"truefalse", question:"elif — это то же самое что else if в других языках?", emoji:"🤔", answer:"elif", correctIs:true },
-      { type:"fillgap", word:"ELIF", gapIdx:2, choices:["I","E","A"] },
-      { type:"sentence", translation:"Если x больше 0, печатай Положительное", words:["x","if",">","0:","print('Положительное')"], correct:["if","x",">","0:","print('Положительное')"] },
-      { type:"match", pairs:[{en:"if",ru:"Если"},{en:"elif",ru:"Иначе если"},{en:"else",ru:"Иначе"},{en:":",ru:"Начало блока"}] },
-    ]
-  },
-  {
-    id:3, title:"Вложенные условия", icon:"🪆", par:"§22-23",
-    lessons:[
-      { type:"mcq", question:"Сколько пробелов используется для отступа в Python?",
-        opts:[{t:"2",e:"2️⃣"},{t:"4",e:"4️⃣"},{t:"6",e:"6️⃣"},{t:"Tab",e:"↹"}], ans:1 },
-      { type:"mcq", question:"Что такое вложенное условие?",
-        opts:[{t:"if внутри if",e:"🪆"},{t:"два elif подряд",e:"🔀"},{t:"if без else",e:"❓"},{t:"цикл в условии",e:"🔄"}], ans:0 },
-      { type:"truefalse", question:"Вложенный if должен иметь отступ больше внешнего?", emoji:"🪆", answer:"Отступ", correctIs:true },
-      { type:"fillgap", word:"INDENT", gapIdx:3, choices:["E","A","O"] },
-      { type:"sentence", translation:"Если x>0 и x<10, то напечатай Цифра", words:["if","x > 0:","if","x < 10:","print('Цифра')"], correct:["if","x > 0:","if","x < 10:","print('Цифра')"] },
-      { type:"match", pairs:[{en:"Отступ",ru:"Indent"},{en:"Блок кода",ru:"Code block"},{en:"Вложение",ru:"Nesting"},{en:"Условие",ru:"Condition"}] },
-    ]
-  },
-  {
-    id:4, title:"Составные условия", icon:"⚗️", par:"§24-25",
-    lessons:[
-      { type:"mcq", question:"Какой оператор означает «И»?",
-        opts:[{t:"and",e:"➕"},{t:"or",e:"➖"},{t:"not",e:"❌"},{t:"in",e:"📦"}], ans:0 },
-      { type:"mcq", question:"True or False = ?",
-        opts:[{t:"True",e:"✅"},{t:"False",e:"❌"},{t:"Error",e:"💥"},{t:"None",e:"❓"}], ans:0 },
-      { type:"truefalse", question:"not True равно False?", emoji:"❌", answer:"not True = False", correctIs:true },
-      { type:"truefalse", question:"False and True равно True?", emoji:"🤔", answer:"False and True = False", correctIs:false },
-      { type:"fillgap", word:"AND", gapIdx:1, choices:["N","M","D"] },
-      { type:"sentence", translation:"Если x больше 0 И меньше 10", words:["x > 0","if","and","x < 10:"], correct:["if","x > 0","and","x < 10:"] },
-      { type:"match", pairs:[{en:"and",ru:"И (оба true)"},{en:"or",ru:"ИЛИ (хоть один)"},{en:"not",ru:"НЕ (инверсия)"},{en:"in",ru:"Содержится в"}] },
-    ]
-  },
-  {
-    id:5, title:"Практика: Постановка задачи", icon:"📋", par:"§28-29",
-    lessons:[
-      { type:"mcq", question:"Что такое алгоритм?",
-        opts:[{t:"Последовательность шагов",e:"📋"},{t:"Язык программирования",e:"💻"},{t:"Тип данных",e:"📊"},{t:"Функция",e:"📦"}], ans:0 },
-      { type:"mcq", question:"Что делает функция input()?",
-        opts:[{t:"Выводит текст",e:"📤"},{t:"Вводит данные",e:"📥"},{t:"Открывает файл",e:"📂"},{t:"Считает сумму",e:"➕"}], ans:1 },
-      { type:"truefalse", question:"int() преобразует строку в целое число?", emoji:"🔢", answer:"int()", correctIs:true },
-      { type:"fillgap", word:"INPUT", gapIdx:3, choices:["U","O","A"] },
-      { type:"sentence", translation:"Получить число от пользователя", words:["=","n","int(input())"], correct:["n","=","int(input())"] },
-      { type:"match", pairs:[{en:"input()",ru:"Ввод данных"},{en:"print()",ru:"Вывод данных"},{en:"int()",ru:"В целое число"},{en:"str()",ru:"В строку"}] },
-    ]
-  },
-  {
-    id:6, title:"Практика: Разработка алгоритма", icon:"🗺️", par:"§30-31",
-    lessons:[
-      { type:"mcq", question:"Что такое блок-схема?",
-        opts:[{t:"Визуальный алгоритм",e:"🗺️"},{t:"Тип цикла",e:"🔄"},{t:"Метод класса",e:"📦"},{t:"Файл Python",e:"🐍"}], ans:0 },
-      { type:"mcq", question:"Какой символ блок-схемы обозначает решение?",
-        opts:[{t:"Ромб ◇",e:"◇"},{t:"Прямоугольник □",e:"□"},{t:"Овал ○",e:"○"},{t:"Стрелка →",e:"→"}], ans:0 },
-      { type:"truefalse", question:"Прямоугольник в блок-схеме — это действие/вычисление?", emoji:"□", answer:"Прямоугольник = действие", correctIs:true },
-      { type:"fillgap", word:"BLOCK", gapIdx:2, choices:["O","A","E"] },
-      { type:"match", pairs:[{en:"Овал",ru:"Начало/конец"},{en:"Прямоугольник",ru:"Действие"},{en:"Ромб",ru:"Условие"},{en:"Параллелограмм",ru:"Ввод/вывод"}] },
-    ]
-  },
-  {
-    id:7, title:"Практика: Написание кода", icon:"⌨️", par:"§32-33",
-    lessons:[
+      { type:"mcq", question:"Какая команда выводит текст на экран?",
+        opts:[{t:"print()",e:"📤"},{t:"show()",e:"👁️"},{t:"write()",e:"✏️"},{t:"display()",e:"🖥️"}], ans:0 },
+      { type:"mcq", question:"Что напечатает: print(5 + 3)?",
+        opts:[{t:"5 + 3",e:"📝"},{t:"8",e:"8️⃣"},{t:"53",e:"🔢"},{t:"Ошибка",e:"💥"}], ans:1 },
       { type:"mcq", question:"Как написать комментарий в Python?",
-        opts:[{t:"# текст",e:"#️⃣"},{t:"// текст",e:"💬"},{t:"/* текст */",e:"📝"},{t:"-- текст",e:"➖"}], ans:0 },
-      { type:"mcq", question:"Что выведет print(2 ** 3)?",
-        opts:[{t:"8",e:"8️⃣"},{t:"6",e:"6️⃣"},{t:"9",e:"9️⃣"},{t:"23",e:"🔢"}], ans:0 },
-      { type:"truefalse", question:"В Python используется ** для возведения в степень?", emoji:"🔢", answer:"** = степень", correctIs:true },
-      { type:"truefalse", question:"Python чувствителен к регистру?", emoji:"🐍", answer:"Да, Print ≠ print", correctIs:true },
-      { type:"fillgap", word:"PRINT", gapIdx:3, choices:["N","M","T"] },
-      { type:"sentence", translation:"Вывести сумму двух чисел", words:["a","print(a","b","=","=","5","3","+","b)"], correct:["a","=","5","b","=","3","print(a","+","b)"] },
-      { type:"match", pairs:[{en:"#",ru:"Комментарий"},{en:"**",ru:"Степень"},{en:"%",ru:"Остаток"},{en:"//",ru:"Целочисленное деление"}] },
+        opts:[{t:"// комментарий",e:"❌"},{t:"# комментарий",e:"✅"},{t:"/* комментарий */",e:"❌"},{t:"-- комментарий",e:"❌"}], ans:1 },
+      { type:"truefalse", question:"print('Привет') выведет слово Привет?", emoji:"📤", answer:"Да, print выводит текст", correctIs:true },
+      { type:"truefalse", question:"Python чувствителен к регистру? (print ≠ Print)", emoji:"🐍", answer:"Да! print и Print — разные слова", correctIs:true },
+      { type:"fillgap", word:"PRINT", gapIdx:0, choices:["P","B","F"] },
+      { type:"match", pairs:[{en:"print()",ru:"Вывод на экран"},{en:"#",ru:"Комментарий"},{en:"+",ru:"Сложение"},{en:"*",ru:"Умножение"}] },
+      { type:"listen", word:"Python", emoji:"🐍", opts:[{t:"Python",e:"🐍"},{t:"Java",e:"☕"},{t:"Ruby",e:"💎"},{t:"Swift",e:"🕊️"}], ans:0 },
     ]
   },
   {
-    id:8, title:"Практика: Тестирование", icon:"🧪", par:"§34",
+    id:2, title:"Переменные и ввод", icon:"📦", par:"§19",
     lessons:[
-      { type:"mcq", question:"Что такое тестирование программы?",
-        opts:[{t:"Проверка на ошибки",e:"🧪"},{t:"Написание кода",e:"⌨️"},{t:"Установка Python",e:"📦"},{t:"Запуск редактора",e:"🖥️"}], ans:0 },
-      { type:"mcq", question:"Что такое SyntaxError?",
-        opts:[{t:"Ошибка синтаксиса",e:"💥"},{t:"Ошибка памяти",e:"💾"},{t:"Ошибка сети",e:"🌐"},{t:"Ошибка файла",e:"📂"}], ans:0 },
-      { type:"truefalse", question:"Отладка — это поиск и исправление ошибок?", emoji:"🐛", answer:"Отладка = debug", correctIs:true },
-      { type:"truefalse", question:"Программа без ошибок всегда работает правильно?", emoji:"🤔", answer:"Нет — могут быть логические ошибки", correctIs:false },
-      { type:"fillgap", word:"DEBUG", gapIdx:2, choices:["B","P","G"] },
-      { type:"match", pairs:[{en:"SyntaxError",ru:"Ошибка синтаксиса"},{en:"NameError",ru:"Имя не определено"},{en:"TypeError",ru:"Неверный тип"},{en:"Debug",ru:"Отладка"}] },
+      { type:"mcq", question:"Как сохранить число 10 в переменную x?",
+        opts:[{t:"x == 10",e:"❌"},{t:"x = 10",e:"✅"},{t:"x := 10",e:"❌"},{t:"int x = 10",e:"❌"}], ans:1 },
+      { type:"mcq", question:"Что делает input()?",
+        opts:[{t:"Выводит текст",e:"📤"},{t:"Считывает ввод пользователя",e:"📥"},{t:"Считает сумму",e:"➕"},{t:"Открывает файл",e:"📂"}], ans:1 },
+      { type:"mcq", question:"x = 5, y = 3. Что в x + y?",
+        opts:[{t:"53",e:"🔢"},{t:"8",e:"8️⃣"},{t:"xy",e:"📝"},{t:"Ошибка",e:"💥"}], ans:1 },
+      { type:"truefalse", question:"input() всегда возвращает строку (текст)?", emoji:"📥", answer:"Да! input() = строка", correctIs:true },
+      { type:"truefalse", question:"x = 5 сохраняет число 5 в переменную x?", emoji:"📦", answer:"Да — это присваивание", correctIs:true },
+      { type:"fillgap", word:"INPUT", gapIdx:0, choices:["I","O","U"] },
+      { type:"match", pairs:[{en:"x = 5",ru:"Переменная x равна 5"},{en:"input()",ru:"Ввод от пользователя"},{en:"int()",ru:"Строка → число"},{en:"str()",ru:"Число → строка"}] },
+      { type:"sentence", translation:"Попросить пользователя ввести имя", words:["name","=","input('Введи имя: ')"], correct:["name","=","input('Введи имя: ')"] },
+    ]
+  },
+  {
+    id:3, title:"Условие if / else", icon:"🔀", par:"§20-21",
+    lessons:[
+      { type:"mcq", question:"x = 10. Что напечатает?\nif x > 5:\n    print('Большое')",
+        opts:[{t:"Большое",e:"✅"},{t:"Маленькое",e:"❌"},{t:"10",e:"🔢"},{t:"Ничего",e:"⬜"}], ans:0 },
+      { type:"mcq", question:"Что ставится в конце строки if?",
+        opts:[{t:"Точка .",e:"."},{t:"Двоеточие :",e:":"},{t:"Скобка )",e:")"},{t:"Точка с запятой ;",e:";"}], ans:1 },
+      { type:"mcq", question:"Какой отступ используют в Python?",
+        opts:[{t:"2 пробела",e:"2️⃣"},{t:"4 пробела или Tab",e:"4️⃣"},{t:"8 пробелов",e:"8️⃣"},{t:"Без отступа",e:"❌"}], ans:1 },
+      { type:"truefalse", question:"else выполняется когда условие if ЛОЖНО?", emoji:"🔀", answer:"else = иначе", correctIs:true },
+      { type:"truefalse", question:"elif — это то же самое что else if?", emoji:"🤔", answer:"Да! elif = else if", correctIs:true },
+      { type:"fillgap", word:"ELSE", gapIdx:0, choices:["E","A","I"] },
+      { type:"match", pairs:[{en:"if",ru:"Если"},{en:"elif",ru:"Иначе если"},{en:"else",ru:"Иначе"},{en:":",ru:"Начало блока кода"}] },
+      { type:"sentence", translation:"Если x больше 0, вывести Плюс", words:["if","x > 0:","    print('Плюс')"], correct:["if","x > 0:","    print('Плюс')"] },
+    ]
+  },
+  {
+    id:4, title:"Сравнение и логика", icon:"⚖️", par:"§22-23",
+    lessons:[
+      { type:"mcq", question:"Что означает == в Python?",
+        opts:[{t:"Присваивание",e:"="},{t:"Сравнение равенства",e:"⚖️"},{t:"Больше",e:">"},{t:"Меньше",e:"<"}], ans:1 },
+      { type:"mcq", question:"5 > 3 — это...",
+        opts:[{t:"True",e:"✅"},{t:"False",e:"❌"},{t:"5",e:"5️⃣"},{t:"Ошибка",e:"💥"}], ans:0 },
+      { type:"mcq", question:"Что вернёт: 10 == 10?",
+        opts:[{t:"10",e:"🔢"},{t:"True",e:"✅"},{t:"False",e:"❌"},{t:"Ошибка",e:"💥"}], ans:1 },
+      { type:"truefalse", question:"3 != 5 означает: 3 НЕ равно 5?", emoji:"≠", answer:"!= означает не равно", correctIs:true },
+      { type:"truefalse", question:"True and False равно True?", emoji:"🤔", answer:"False! Оба должны быть True", correctIs:false },
+      { type:"fillgap", word:"TRUE", gapIdx:0, choices:["T","F","R"] },
+      { type:"match", pairs:[{en:"==",ru:"Равно"},{en:"!=",ru:"Не равно"},{en:"and",ru:"И (оба true)"},{en:"or",ru:"ИЛИ (хоть один)"}] },
+      { type:"sentence", translation:"Если оценка 5 И имя Алия", words:["if","grade == 5","and","name == 'Алия':"], correct:["if","grade == 5","and","name == 'Алия':"] },
+    ]
+  },
+  {
+    id:5, title:"Работа с файлами", icon:"📁", par:"§24-25",
+    lessons:[
+      { type:"mcq", question:"Какая функция открывает файл?",
+        opts:[{t:"open()",e:"📂"},{t:"read()",e:"📖"},{t:"start()",e:"▶️"},{t:"load()",e:"💾"}], ans:0 },
+      { type:"mcq", question:"Режим 'r' при открытии файла означает...",
+        opts:[{t:"Запись",e:"✏️"},{t:"Чтение",e:"👁️"},{t:"Удаление",e:"🗑️"},{t:"Создание",e:"🆕"}], ans:1 },
+      { type:"mcq", question:"Режим 'w' при открытии файла означает...",
+        opts:[{t:"Чтение",e:"👁️"},{t:"Запись (перезапись)",e:"✏️"},{t:"Добавление",e:"➕"},{t:"Закрытие",e:"🔒"}], ans:1 },
+      { type:"truefalse", question:"f.close() закрывает файл после работы?", emoji:"🔒", answer:"Да! Всегда закрывай файл", correctIs:true },
+      { type:"truefalse", question:"Режим 'a' удаляет старое содержимое файла?", emoji:"📝", answer:"Нет! 'a' добавляет в конец", correctIs:false },
+      { type:"fillgap", word:"OPEN", gapIdx:0, choices:["O","A","E"] },
+      { type:"match", pairs:[{en:"'r'",ru:"Чтение файла"},{en:"'w'",ru:"Запись (с нуля)"},{en:"'a'",ru:"Добавить в конец"},{en:".read()",ru:"Прочитать весь файл"}] },
+      { type:"sentence", translation:"Открыть файл и прочитать его", words:["f","=","open('file.txt', 'r')","text","=","f.read()"], correct:["f","=","open('file.txt', 'r')","text","=","f.read()"] },
+    ]
+  },
+  {
+    id:6, title:"Цикл while", icon:"🔁", par:"§28-29",
+    lessons:[
+      { type:"mcq", question:"i = 0, while i < 3: i += 1. Сколько раз выполнится цикл?",
+        opts:[{t:"2",e:"2️⃣"},{t:"3",e:"3️⃣"},{t:"4",e:"4️⃣"},{t:"0",e:"0️⃣"}], ans:1 },
+      { type:"mcq", question:"Что делает i += 1?",
+        opts:[{t:"Уменьшает i на 1",e:"➖"},{t:"Увеличивает i на 1",e:"➕"},{t:"Обнуляет i",e:"0️⃣"},{t:"Печатает i",e:"📤"}], ans:1 },
+      { type:"mcq", question:"Что такое бесконечный цикл?",
+        opts:[{t:"Цикл 1000 раз",e:"🔢"},{t:"Цикл который никогда не останавливается",e:"♾️"},{t:"Цикл без тела",e:"⬜"},{t:"Цикл for",e:"🔄"}], ans:1 },
+      { type:"truefalse", question:"while True: создаёт бесконечный цикл?", emoji:"♾️", answer:"Да! True всегда истина", correctIs:true },
+      { type:"truefalse", question:"break выходит из цикла досрочно?", emoji:"🚪", answer:"Да! break = стоп", correctIs:true },
+      { type:"fillgap", word:"WHILE", gapIdx:0, choices:["W","V","M"] },
+      { type:"match", pairs:[{en:"while",ru:"Цикл пока условие верно"},{en:"break",ru:"Выйти из цикла"},{en:"continue",ru:"Пропустить шаг"},{en:"i += 1",ru:"i = i + 1"}] },
+      { type:"sentence", translation:"Цикл от 1 до 5", words:["i","=","1","while","i <= 5:","    print(i)","    i += 1"], correct:["i","=","1","while","i <= 5:","    print(i)","    i += 1"] },
+    ]
+  },
+  {
+    id:7, title:"Цикл for и range", icon:"🔄", par:"§30-31",
+    lessons:[
+      { type:"mcq", question:"for i in range(3): print(i). Что напечатает?",
+        opts:[{t:"1 2 3",e:"1️⃣"},{t:"0 1 2",e:"0️⃣"},{t:"3",e:"3️⃣"},{t:"Ошибка",e:"💥"}], ans:1 },
+      { type:"mcq", question:"range(1, 4) даёт какие числа?",
+        opts:[{t:"1 2 3 4",e:"4️⃣"},{t:"1 2 3",e:"3️⃣"},{t:"0 1 2 3",e:"4️⃣"},{t:"1 4",e:"🔢"}], ans:1 },
+      { type:"mcq", question:"Как создать список в Python?",
+        opts:[{t:"nums = (1, 2, 3)",e:"()"},{t:"nums = [1, 2, 3]",e:"[]"},{t:"nums = {1, 2, 3}",e:"{}"},{t:"nums = 1, 2, 3",e:"❌"}], ans:1 },
+      { type:"truefalse", question:"range(5) начинается с 0, а не с 1?", emoji:"0️⃣", answer:"Да! range(5) = 0,1,2,3,4", correctIs:true },
+      { type:"truefalse", question:"for i in range(3) выполнится 3 раза?", emoji:"🔄", answer:"Да! 0, 1, 2 — три раза", correctIs:true },
+      { type:"fillgap", word:"FOR", gapIdx:0, choices:["F","G","T"] },
+      { type:"match", pairs:[{en:"range(5)",ru:"0 1 2 3 4"},{en:"range(1,4)",ru:"1 2 3"},{en:"for i in ...",ru:"Цикл по каждому"},{en:"len(lst)",ru:"Длина списка"}] },
+      { type:"sentence", translation:"Напечатать числа от 1 до 5", words:["for","i","in","range(1, 6):","    print(i)"], correct:["for","i","in","range(1, 6):","    print(i)"] },
+    ]
+  },
+  {
+    id:8, title:"Функции", icon:"🔧", par:"§32-34",
+    lessons:[
+      { type:"mcq", question:"Как объявить функцию greet в Python?",
+        opts:[{t:"function greet():",e:"❌"},{t:"def greet():",e:"✅"},{t:"func greet():",e:"❌"},{t:"greet = function:",e:"❌"}], ans:1 },
+      { type:"mcq", question:"Что делает return в функции?",
+        opts:[{t:"Печатает результат",e:"🖨️"},{t:"Возвращает значение",e:"↩️"},{t:"Останавливает программу",e:"⛔"},{t:"Создаёт переменную",e:"📦"}], ans:1 },
+      { type:"mcq", question:"Как вызвать функцию add с числами 3 и 5?",
+        opts:[{t:"call add(3, 5)",e:"❌"},{t:"add(3, 5)",e:"✅"},{t:"def add(3, 5)",e:"❌"},{t:"add 3, 5",e:"❌"}], ans:1 },
+      { type:"truefalse", question:"def нужно писать каждый раз при вызове функции?", emoji:"🔧", answer:"Нет! def только при объявлении", correctIs:false },
+      { type:"truefalse", question:"Функцию можно вызывать много раз после объявления?", emoji:"✅", answer:"Да! В этом и смысл функций", correctIs:true },
+      { type:"fillgap", word:"DEF", gapIdx:0, choices:["D","B","P"] },
+      { type:"match", pairs:[{en:"def",ru:"Объявить функцию"},{en:"return",ru:"Вернуть значение"},{en:"()",ru:"Скобки параметров"},{en:"Вызов fn()",ru:"Запустить функцию"}] },
+      { type:"sentence", translation:"Функция которая складывает два числа", words:["def","add(a, b):","    return","a + b"], correct:["def","add(a, b):","    return","a + b"] },
     ]
   },
 ];
@@ -512,6 +802,15 @@ let currentSubject = "english"; // "english" or "cs"
 
 function selectSubject(subject) {
   currentSubject = subject;
+  if(subject === "cs") {
+    document.getElementById("ob-logo-icon").textContent = "🐍";
+    document.getElementById("ob-logo-title").textContent = "Информатика · Python";
+    document.getElementById("ob-logo-sub").textContent = "7 класс · Учимся программировать!";
+  } else {
+    document.getElementById("ob-logo-icon").textContent = "🇰🇿";
+    document.getElementById("ob-logo-title").textContent = "English Grade 3";
+    document.getElementById("ob-logo-sub").textContent = "Давай учить английский вместе!";
+  }
   switchView("onboarding");
 }
 
@@ -699,12 +998,20 @@ const AVATARS = [
 
 // ===================== STATE =====================
 let user = null;
-let progress = { completed:[], currentId:1, streak:0, xp:0 };
+let progressData = {
+  english: { completed:new Set(), streak:0, xp:0 },
+  cs:      { completed:new Set(), streak:0, xp:0 }
+};
+function prog(){ return progressData[currentSubject]; }
+function lesKey(mi,li){ return mi+'_'+li; }
 let lesson = { modIdx:0, lesIdx:0, qIdx:0, questions:[], score:0, total:0, lives:3 };
 let chatOpen = false, chatWaiting = false, chatHistory = [];
 
 // ===================== ONBOARDING =====================
 (function(){
+  // Init Google Auth on load
+  window.addEventListener('load', initGoogleAuth);
+
   const grid = document.getElementById("avatar-grid");
   AVATARS.forEach(av => {
     const btn = document.createElement("button");
@@ -760,48 +1067,75 @@ function showDashboard(){
 }
 
 function updateTopbar(){
-  document.getElementById("xp-val").textContent = progress.xp + " XP";
-  document.getElementById("streak-val").textContent = progress.streak;
+  const p = prog();
+  document.getElementById("xp-val").textContent = p.xp + " XP";
+  document.getElementById("streak-val").textContent = p.streak;
   const sp = document.getElementById("stat-streak"), fi = document.getElementById("flame-icon");
-  if(progress.streak > 0){ sp.classList.remove("dead"); fi.setAttribute("fill","currentColor"); fi.setAttribute("stroke","none"); }
+  if(p.streak > 0){ sp.classList.remove("dead"); fi.setAttribute("fill","currentColor"); fi.setAttribute("stroke","none"); }
   else { sp.classList.add("dead"); fi.setAttribute("fill","none"); fi.setAttribute("stroke","currentColor"); }
 }
 
 function buildMap(){
   const container = document.getElementById("map-container");
   container.innerHTML = "";
-  let gid = 1;
   const activeModules = currentSubject === "cs" ? CS_MODULES : MODULES;
+  const p = prog();
+
   activeModules.forEach((mod, mi) => {
+    // Module header
     const mh = document.createElement("div");
     mh.className = `module-header mc-${mi}`;
     mh.innerHTML = `<div style="position:relative;z-index:1"><h3>Unit ${mod.id} ${mod.icon}</h3><p>${mod.title}${mod.par ? " · " + mod.par : ""}</p></div><div class="mod-icon">${mod.icon}</div>`;
     container.appendChild(mh);
+
     const col = document.createElement("div");
     col.className = "lessons-col";
-    mod.lessons.forEach((q, i) => {
-      const lid = gid++, done = progress.completed.includes(lid), current = progress.currentId === lid, locked = lid > progress.currentId;
-      const wrap = document.createElement("div"); wrap.className = "node-wrap"; wrap.style.transform = `translateX(${Math.sin(i*1.5)*42}px)`;
-      if(i < mod.lessons.length-1){ const c=document.createElement("div"); c.className="connector"; wrap.appendChild(c); }
-      if(current){ const b=document.createElement("div"); b.className="float-badge"; b.textContent="Start!"; wrap.appendChild(b); }
-      const btn = document.createElement("button");
-      btn.className = "lesson-node" + (done?" done":locked?" locked":` mc-${mi}`);
-      btn.disabled = locked;
-      btn.innerHTML = done ? "⭐" : locked ? "🔒" : `<span>${i+1}</span>`;
-      if(!locked) btn.onclick = () => startLesson(mi, i, lid, currentSubject);
-      wrap.appendChild(btn); col.appendChild(wrap);
-    });
+
+    // ONE node per module
+    const key = "mod_" + mi;
+    const done = p.completed.has(key);
+    const locked = mi > 0 && !p.completed.has("mod_" + (mi-1));
+    const isCurrent = !done && !locked;
+
+    const wrap = document.createElement("div");
+    wrap.className = "node-wrap";
+    wrap.style.marginBottom = "12px";
+
+    const btn = document.createElement("button");
+    btn.className = "lesson-node" + (done ? " done" : locked ? " locked" : ` mc-${mi}`);
+    btn.style.width = "88px";
+    btn.style.height = "88px";
+    btn.style.fontSize = "32px";
+    btn.disabled = locked;
+    btn.innerHTML = done ? "⭐" : locked ? "🔒" : mod.icon;
+
+    if(!locked) btn.onclick = () => startLesson(mi, key);
+
+    // Show question count badge
+    const badge = document.createElement("div");
+    badge.style.cssText = `text-align:center;font-size:12px;font-weight:800;
+      color:${done?"#8bc34a":locked?"#aaa":"#555"};margin-top:6px`;
+    badge.textContent = done ? "Пройдено ✓" : locked ? "Закрыто" : `${mod.lessons.length} вопросов`;
+
+    wrap.appendChild(btn);
+    wrap.appendChild(badge);
+    col.appendChild(wrap);
     container.appendChild(col);
   });
 }
 
-// ===================== LESSON ENGINE =====================
-function startLesson(modIdx, lesIdx, lid, subject){
-  // Collect ALL questions from this module as a flat sequence
-  const activeModules = subject === "cs" ? CS_MODULES : MODULES;
+function startLesson(modIdx, key){
+  const activeModules = currentSubject === "cs" ? CS_MODULES : MODULES;
   const allQ = activeModules[modIdx].lessons;
-  lesson = { modIdx, lesIdx, lid, questions: allQ, qIdx: lesIdx, lives: 3, score: 0, checked: false, sel: null };
-  lesson.question = allQ[lesIdx];
+  // Shuffle questions for variety
+  const shuffled = [...allQ].sort(() => Math.random() - 0.5);
+  lesson = {
+    modIdx, lid: key,
+    questions: shuffled,
+    qIdx: 0,
+    lives: 3, score: 0, checked: false, sel: null
+  };
+  lesson.question = shuffled[0];
   switchView("lesson");
   renderLives();
   document.getElementById("lesson-progress-fill").style.width = "0%";
@@ -850,7 +1184,7 @@ function renderMCQ(q, el){
   const grid = document.createElement("div"); grid.className = "options-grid"; el.appendChild(grid);
   q.opts.forEach((opt,i) => {
     const btn = document.createElement("button"); btn.className = "opt-btn"; btn.dataset.idx = i;
-    btn.innerHTML = `<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
+    btn.innerHTML = `<span>${opt.t}</span>`;
     btn.onclick = () => { if(lesson.checked)return; lesson.sel=i; document.querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("sel")); btn.classList.add("sel"); document.getElementById("btn-check").disabled=false; };
     grid.appendChild(btn);
   });
@@ -897,7 +1231,7 @@ function renderListen(q, el){
   const grid = document.createElement("div"); grid.className = "options-grid"; el.appendChild(grid);
   q.opts.forEach((opt,i) => {
     const btn = document.createElement("button"); btn.className = "opt-btn"; btn.dataset.idx = i;
-    btn.innerHTML = `<span class="opt-emoji">${opt.e}</span><span>${opt.t}</span>`;
+    btn.innerHTML = `<span>${opt.t}</span>`;
     btn.onclick = () => { if(lesson.checked)return; lesson.sel=i; document.querySelectorAll(".opt-btn").forEach(b=>b.classList.remove("sel")); btn.classList.add("sel"); document.getElementById("btn-check").disabled=false; };
     grid.appendChild(btn);
   });
@@ -1036,7 +1370,7 @@ function handleCheck(){
     const correct = lesson.sel === q.ans;
     document.querySelectorAll(".opt-btn").forEach(b=>{ b.disabled=true; const idx=parseInt(b.dataset.idx); if(idx===q.ans)b.classList.add("correct"); else if(idx===lesson.sel&&!correct){b.classList.remove("sel");b.classList.add("wrong");} else b.classList.add("dim"); });
     if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
-    else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].e} ${q.opts[q.ans].t}</div>`); }
+    else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
     const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   } else if(q.type==="sentence"){
     const target=document.getElementById("sent-target");
@@ -1057,7 +1391,7 @@ function nextQuestion(){
   if(lesson.qIdx < lesson.questions.length){
     lesson.question = lesson.questions[lesson.qIdx];
     lesson.checked = false; lesson.sel = null;
-    const pct = (lesson.qIdx / lesson.questions.length * 100);
+    const pct = Math.round((lesson.qIdx / lesson.questions.length) * 100);
     document.getElementById("lesson-progress-fill").style.width = pct + "%";
     renderQuestion(lesson.question);
   } else {
@@ -1072,18 +1406,19 @@ function loseLife(){
 
 function showComplete(passed){
   const earned = passed ? Math.max(5, lesson.score * 5) : 0;
-  if(passed && !progress.completed.includes(lesson.lid)){
-    progress.completed.push(lesson.lid);
-    progress.currentId = lesson.lid + 1;
-    progress.streak = Math.min(progress.streak+1, 999);
-    progress.xp += earned;
+  const p = prog();
+  if(passed && !p.completed.has(lesson.lid)){
+    p.completed.add(lesson.lid);  // lesson.lid = "mod_X"
+    p.streak = Math.min(p.streak+1, 999);
+    p.xp += earned;
+    setTimeout(saveProgress, 500);
   }
   document.getElementById("comp-emoji").textContent = passed ? "🏆" : "💪";
   document.getElementById("comp-title").textContent = passed ? "Урок пройден!" : "Попробуй ещё раз!";
   document.getElementById("comp-sub").textContent = passed ? `Молодец, ${user.name}!` : "Не сдавайся, ты справишься!";
   document.getElementById("comp-xp").textContent = "+" + earned;
   document.getElementById("comp-score").textContent = lesson.score + " правильно";
-  document.getElementById("comp-streak").textContent = "🔥" + progress.streak;
+  document.getElementById("comp-streak").textContent = "🔥" + p.streak;
   if(passed) spawnConfetti(80);
   switchView("complete");
 }
@@ -1111,6 +1446,113 @@ function exitLesson(){ switchView("dashboard"); buildMap(); }
 function switchView(name){ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active")); document.getElementById("view-"+name).classList.add("active"); window.scrollTo(0,0); }
 
 // ===================== AI CHAT =====================
+
+// ===================== SUBJECT SWITCHER =====================
+function switchSubjectPrompt(){
+  document.getElementById('subject-overlay').style.display = 'flex';
+}
+function changeSubject(subj){
+  document.getElementById('subject-overlay').style.display = 'none';
+  currentSubject = subj;
+  const icon = subj === 'cs' ? '🐍' : '🇬🇧';
+  const label = subj === 'cs' ? 'Python' : 'Английский';
+  document.getElementById('subject-switcher-icon').textContent = icon;
+  document.getElementById('subject-switcher-label').textContent = label;
+  // Update chat chips
+  const chips = subj === "cs"
+    ? ["Объясни if/else","Что такое функция?","Помоги с ошибкой","Объясни range()"]
+    : ["Как сказать привет?","Что значит слово?","Объясни правило","Приведи пример"];
+  const chipsEl = document.getElementById("chat-chips");
+  if(chipsEl){ chipsEl.innerHTML = ""; chips.forEach(c => {
+    const chip = document.createElement("button");
+    chip.style.cssText = "padding:5px 12px;border-radius:12px;border:1.5px solid #c5e1a5;background:#f1f8e9;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;color:#558b2f;cursor:pointer;white-space:nowrap";
+    chip.textContent = c;
+    chip.onclick = () => { document.getElementById("chat-input").value = c; sendChat(); };
+    chipsEl.appendChild(chip);
+  }); }
+  buildMap();
+}
+
+// ===================== LO-FI MUSIC (Web Audio API) =====================
+let audioCtx = null, musicNodes = [], musicOn = false;
+
+function initMusic(){
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  playLofi();
+}
+
+function playLofi(){
+  if(!audioCtx || !musicOn) return;
+  // Simple lofi: slow chord progression with soft pads
+  const masterGain = audioCtx.createGain();
+  masterGain.gain.setValueAtTime(0.07, audioCtx.currentTime);
+  masterGain.connect(audioCtx.destination);
+  musicNodes.push(masterGain);
+
+  // Lo-fi chord notes (Am - F - C - G in mid-low octave)
+  const chords = [
+    [220, 261.6, 329.6],   // Am
+    [174.6, 220, 261.6],   // F
+    [130.8, 164.8, 196],   // C
+    [196, 246.9, 293.7],   // G
+  ];
+  const bpm = 70, beatDur = 60/bpm, chordDur = beatDur * 4;
+  let t = audioCtx.currentTime + 0.1;
+
+  function scheduleChords(repeat){
+    chords.forEach((chord, ci) => {
+      chord.forEach(freq => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, t + ci*chordDur);
+        gain.gain.linearRampToValueAtTime(0.3, t + ci*chordDur + 0.3);
+        gain.gain.linearRampToValueAtTime(0.2, t + ci*chordDur + chordDur - 0.4);
+        gain.gain.linearRampToValueAtTime(0, t + ci*chordDur + chordDur);
+        osc.connect(gain); gain.connect(masterGain);
+        osc.start(t + ci*chordDur);
+        osc.stop(t + ci*chordDur + chordDur + 0.1);
+        musicNodes.push(osc);
+      });
+    });
+    // Soft hi-hat
+    for(let b=0; b<16; b++){
+      const buf = audioCtx.createBuffer(1, audioCtx.sampleRate*0.05, audioCtx.sampleRate);
+      const data = buf.getChannelData(0);
+      for(let i=0;i<data.length;i++) data[i] = (Math.random()*2-1) * (1 - i/data.length);
+      const src = audioCtx.createBufferSource();
+      const hGain = audioCtx.createGain();
+      src.buffer = buf;
+      hGain.gain.value = b%2===0 ? 0.04 : 0.02;
+      src.connect(hGain); hGain.connect(masterGain);
+      src.start(t + b * beatDur);
+      musicNodes.push(src);
+    }
+    // Loop
+    const loopDur = chordDur * chords.length;
+    if(musicOn){
+      setTimeout(() => { t = audioCtx.currentTime + 0.05; if(musicOn) scheduleChords(repeat+1); }, loopDur*1000 - 200);
+    }
+  }
+  scheduleChords(0);
+}
+
+function stopLofi(){
+  musicNodes.forEach(n => { try{ n.disconnect(); }catch(e){} });
+  musicNodes = [];
+}
+
+function toggleMusic(){
+  if(!audioCtx) initMusic();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  musicOn = !musicOn;
+  const btn = document.getElementById('music-btn');
+  if(musicOn){ btn.textContent = '🎵'; playLofi(); }
+  else { btn.textContent = '🔇'; stopLofi(); }
+}
+
 function toggleChat(){
   chatOpen=!chatOpen;
   document.getElementById("chat-box").classList.toggle("open",chatOpen);
