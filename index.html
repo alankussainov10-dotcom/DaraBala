@@ -6,6 +6,7 @@
 <title>English Grade 3</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://accounts.google.com/gsi/client" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: "Nunito", sans-serif; background: #f1f8e9; min-height: 100vh; overflow-x: hidden; }
@@ -86,7 +87,42 @@
   .badge-green { background: #8bc34a; }
   .badge-blue { background: #42a5f5; }
 
+  /* ===== LOTTIE MASCOT ===== */
+  .mascot-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto 8px; }
+  #mascot-lottie { width: 140px; height: 140px; }
+  .mascot-bubble { position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
+    background: #fff; border: 2px solid #c5e1a5; border-radius: 16px; padding: 6px 14px;
+    font-size: 13px; font-weight: 800; color: #33691e; white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08); animation: floatBadge 2.5s ease-in-out infinite; }
+  .mascot-bubble::after { content:""; position:absolute; bottom:-7px; left:50%;
+    transform:translateX(-50%) rotate(45deg); width:12px; height:12px;
+    background:#fff; border-right:2px solid #c5e1a5; border-bottom:2px solid #c5e1a5; }
+
+  /* ===== DRUM PICKER ===== */
+  .drum-picker { display: flex; gap: 8px; justify-content: center; margin-bottom: 24px; user-select: none; }
+  .drum-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .drum-col label { font-size: 11px; font-weight: 900; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+  .drum-scroll { position: relative; width: 80px; height: 160px; overflow: hidden;
+    border-radius: 18px; border: 2.5px solid #e0e0e0; background: #fafafa;
+    cursor: grab; }
+  .drum-scroll:active { cursor: grabbing; }
+  .drum-scroll::before, .drum-scroll::after { content: ""; position: absolute;
+    left: 0; right: 0; height: 52px; z-index: 2; pointer-events: none; }
+  .drum-scroll::before { top: 0; background: linear-gradient(to bottom, rgba(250,250,250,.95), transparent); }
+  .drum-scroll::after  { bottom: 0; background: linear-gradient(to top, rgba(250,250,250,.95), transparent); }
+  .drum-selector { position: absolute; top: 50%; left: 4px; right: 4px;
+    height: 44px; transform: translateY(-50%); background: #e8f5e9;
+    border-radius: 12px; border: 2px solid #a5d6a7; z-index: 1; pointer-events: none; }
+  .drum-list { position: absolute; top: 0; left: 0; right: 0;
+    display: flex; flex-direction: column; align-items: center;
+    transition: transform .15s ease; will-change: transform; }
+  .drum-item { height: 44px; display: flex; align-items: center; justify-content: center;
+    font-family: "Nunito", sans-serif; font-size: 17px; font-weight: 800;
+    color: #999; transition: color .15s, font-size .15s; width: 100%; text-align: center; }
+  .drum-item.selected { color: #33691e; font-size: 20px; }
+
   /* ONBOARDING */
+
   #view-onboarding { align-items: center; justify-content: center; padding: 24px; }
   .card { background: #fff; border-radius: 32px; padding: 36px 32px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(0,0,0,.10); border-bottom: 8px solid #c5e1a5; }
   .ob-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 32px; }
@@ -362,9 +398,12 @@
 <div id="view-onboarding" class="view">
   <div class="card">
     <div class="ob-logo">
-      <div class="ob-logo-icon" id="ob-logo-icon">🇰🇿</div>
-      <h1 id="ob-logo-title">English Grade 3</h1>
-      <p id="ob-logo-sub">Давай учить английский вместе!</p>
+      <div class="mascot-wrap">
+        <div id="mascot-lottie"></div>
+        <div class="mascot-bubble" id="mascot-bubble">Привет! 👋</div>
+      </div>
+      <h1 id="ob-logo-title">DaraBala</h1>
+      <p id="ob-logo-sub">Давай учиться вместе!</p>
     </div>
     <div id="ob-step1" class="ob-step active">
       <h2>Как тебя зовут?</h2>
@@ -375,12 +414,23 @@
       <button class="btn-green" id="btn-step1" disabled onclick="goStep(2)">Дальше</button>
     </div>
     <div id="ob-step2" class="ob-step">
-      <h2>Когда твой день рождения?</h2>
-      <div class="input-wrap">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <input type="date" id="input-dob" oninput="checkStep2()"/>
+      <h2>День рождения 🎂</h2>
+      <div class="drum-picker">
+        <div class="drum-col">
+          <label>День</label>
+          <div class="drum-scroll" id="drum-day"><div class="drum-selector"></div><div class="drum-list" id="drum-day-list"></div></div>
+        </div>
+        <div class="drum-col">
+          <label>Месяц</label>
+          <div class="drum-scroll" id="drum-month" style="width:100px"><div class="drum-selector"></div><div class="drum-list" id="drum-month-list"></div></div>
+        </div>
+        <div class="drum-col">
+          <label>Год</label>
+          <div class="drum-scroll" id="drum-year" style="width:90px"><div class="drum-selector"></div><div class="drum-list" id="drum-year-list"></div></div>
+        </div>
       </div>
-      <button class="btn-green" id="btn-step2" disabled onclick="goStep(3)">Дальше</button>
+      <div style="text-align:center;font-size:14px;font-weight:800;color:#8bc34a;margin-bottom:16px" id="dob-display">Выбери дату</div>
+      <button class="btn-green" id="btn-step2" onclick="goStep(3)">Дальше</button>
     </div>
     <div id="ob-step3" class="ob-step">
       <h2>Выбери своего героя</h2>
@@ -511,7 +561,158 @@
 <script>
 const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
 
+// ===================== MASCOT (LOTTIE) =====================
+let mascotAnim = null;
+const MASCOT_MESSAGES = {
+  idle: ["Привет! 👋", "Погнали! 🚀", "Ты справишься! 💪", "Удачи! 🌟"],
+  correct: ["Молодец! ⭐", "Отлично! 🎉", "Супер! 🔥", "Так держать! 💯"],
+  wrong: ["Не сдавайся! 💪", "Почти! 🤏", "Попробуй ещё! 😊", "Всё получится! 🌈"],
+  thinking: ["Думаем... 🤔", "Хороший вопрос! 💭", "Интересно! 🧐"]
+};
+
+function initMascot(){
+  // Use a free Lottie animal animation from LottieFiles CDN
+  // Cute bear/animal character
+  const animations = [
+    'https://assets10.lottiefiles.com/packages/lf20_ysrn2iwp.json', // bear
+    'https://assets9.lottiefiles.com/packages/lf20_ikvndbmv.json',  // owl
+  ];
+  const el = document.getElementById('mascot-lottie');
+  if(!el || !window.lottie) return;
+  try {
+    mascotAnim = lottie.loadAnimation({
+      container: el,
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: animations[0]
+    });
+    mascotAnim.addEventListener('error', () => {
+      // Fallback to emoji if Lottie fails
+      el.innerHTML = '<div style="font-size:80px;text-align:center;line-height:140px" id="mascot-emoji">🐻</div>';
+    });
+  } catch(e) {
+    el.innerHTML = '<div style="font-size:80px;text-align:center;line-height:140px">🐻</div>';
+  }
+}
+
+function setMascotMood(mood){
+  const msgs = MASCOT_MESSAGES[mood] || MASCOT_MESSAGES.idle;
+  const msg = msgs[Math.floor(Math.random()*msgs.length)];
+  const bubble = document.getElementById('mascot-bubble');
+  if(bubble){ bubble.textContent = msg; }
+  // Update emoji if lottie failed
+  const em = document.getElementById('mascot-emoji');
+  if(em){
+    const emojis = { correct:'🐻', wrong:'😅', thinking:'🤔', idle:'🐻' };
+    em.textContent = emojis[mood] || '🐻';
+  }
+}
+
+// Update mascot based on avatar choice - show in onboarding
+function updateMascotForAvatar(av){
+  const em = document.getElementById('mascot-emoji');
+  if(em) em.textContent = av.emoji;
+  const bubble = document.getElementById('mascot-bubble');
+  if(bubble) bubble.textContent = `Я ${av.name}! 🌟`;
+}
+
+// ===================== DRUM DATE PICKER =====================
+window.drumState = { day: new Date().getDate(), month: new Date().getMonth()+1, year: new Date().getFullYear()-10 };
+const ITEM_H = 44;
+
+function initDrums(){
+  const days   = Array.from({length:31},(_,i)=>String(i+1).padStart(2,'0'));
+  const months = ['Январь','Февраль','Март','Апрель','Май','Июнь',
+                  'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  const curY   = new Date().getFullYear();
+  const years  = Array.from({length:20},(_,i)=>String(curY-5-i));
+
+  buildDrum('drum-day',   'drum-day-list',   days,   drumState.day-1,   v => { drumState.day   = parseInt(v); updateDobDisplay(); });
+  buildDrum('drum-month', 'drum-month-list', months, drumState.month-1, (v,i) => { drumState.month = i+1; updateDobDisplay(); });
+  buildDrum('drum-year',  'drum-year-list',  years,  0,                 v => { drumState.year  = parseInt(v); updateDobDisplay(); });
+  updateDobDisplay();
+}
+
+function buildDrum(scrollId, listId, items, initIdx, onChange){
+  const scroll = document.getElementById(scrollId);
+  const list   = document.getElementById(listId);
+  const pad    = 2; // padding items top/bottom so selection sits in middle
+
+  // Add padding items
+  for(let p=0; p<pad; p++){
+    const d = document.createElement('div'); d.className='drum-item'; d.textContent=''; list.appendChild(d);
+  }
+  items.forEach((item,i)=>{
+    const d = document.createElement('div');
+    d.className = 'drum-item' + (i===initIdx?' selected':'');
+    d.textContent = item;
+    list.appendChild(d);
+  });
+  for(let p=0; p<pad; p++){
+    const d = document.createElement('div'); d.className='drum-item'; d.textContent=''; list.appendChild(d);
+  }
+
+  let currentIdx = initIdx;
+  function setIndex(idx, animate=true){
+    idx = Math.max(0, Math.min(items.length-1, idx));
+    currentIdx = idx;
+    const offset = -(idx * ITEM_H);
+    list.style.transition = animate ? 'transform .2s cubic-bezier(.25,.46,.45,.94)' : 'none';
+    list.style.transform = `translateY(${offset}px)`;
+    list.querySelectorAll('.drum-item').forEach((el,i)=>{
+      el.classList.toggle('selected', i-pad === idx);
+    });
+    onChange(items[idx], idx);
+  }
+  setIndex(initIdx, false);
+
+  // Touch/mouse drag
+  let startY=0, startIdx=0, dragging=false;
+  const onStart = e => {
+    dragging=true; startY = (e.touches?.[0]||e).clientY; startIdx=currentIdx;
+    list.style.transition='none';
+    e.preventDefault();
+  };
+  const onMove = e => {
+    if(!dragging) return;
+    const dy = startY - (e.touches?.[0]||e).clientY;
+    const delta = Math.round(dy / ITEM_H);
+    const ni = Math.max(0, Math.min(items.length-1, startIdx+delta));
+    const offset = -(ni * ITEM_H);
+    list.style.transform = `translateY(${offset}px)`;
+    list.querySelectorAll('.drum-item').forEach((el,i)=>{ el.classList.toggle('selected', i-pad===ni); });
+    e.preventDefault();
+  };
+  const onEnd = e => {
+    if(!dragging) return; dragging=false;
+    const dy = startY - (e.changedTouches?.[0]||e).clientY;
+    const delta = Math.round(dy / ITEM_H);
+    setIndex(startIdx + delta);
+  };
+  scroll.addEventListener('mousedown',  onStart, {passive:false});
+  scroll.addEventListener('touchstart', onStart, {passive:false});
+  window.addEventListener('mousemove',  onMove,  {passive:false});
+  window.addEventListener('touchmove',  onMove,  {passive:false});
+  window.addEventListener('mouseup',    onEnd);
+  window.addEventListener('touchend',   onEnd);
+
+  // Scroll wheel
+  scroll.addEventListener('wheel', e => {
+    e.preventDefault();
+    setIndex(currentIdx + (e.deltaY>0?1:-1));
+  }, {passive:false});
+}
+
+function updateDobDisplay(){
+  const months = ['января','февраля','марта','апреля','мая','июня',
+                  'июля','августа','сентября','октября','ноября','декабря'];
+  const el = document.getElementById('dob-display');
+  if(el) el.textContent = `${drumState.day} ${months[drumState.month-1]} ${drumState.year} г.`;
+}
+
 // ===================== GOOGLE OAUTH =====================
+
 // REPLACE THIS with your Google Cloud Console Client ID:
 const GOOGLE_CLIENT_ID = '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com';
 
@@ -1010,7 +1211,10 @@ let chatOpen = false, chatWaiting = false, chatHistory = [];
 // ===================== ONBOARDING =====================
 (function(){
   // Init Google Auth on load
-  window.addEventListener('load', initGoogleAuth);
+  window.addEventListener('load', () => {
+    initGoogleAuth();
+    setTimeout(initMascot, 300);
+  });
 
   const grid = document.getElementById("avatar-grid");
   AVATARS.forEach(av => {
@@ -1023,17 +1227,24 @@ let chatOpen = false, chatWaiting = false, chatHistory = [];
       document.querySelectorAll(".avatar-btn").forEach(b=>b.classList.remove("sel"));
       btn.classList.add("sel");
       document.getElementById("btn-step3").disabled = false;
+      updateMascotForAvatar(av);
     };
     grid.appendChild(btn);
   });
 })();
 
 function checkStep1(){ document.getElementById("btn-step1").disabled = document.getElementById("input-name").value.trim().length < 2; }
-function checkStep2(){ document.getElementById("btn-step2").disabled = !document.getElementById("input-dob").value; }
-function goStep(n){ document.querySelectorAll(".ob-step").forEach(s=>s.classList.remove("active")); document.getElementById("ob-step"+n).classList.add("active"); }
+function checkStep2(){ /* drum picker — always enabled */ }
+function goStep(n){
+  document.querySelectorAll(".ob-step").forEach(s=>s.classList.remove("active"));
+  document.getElementById("ob-step"+n).classList.add("active");
+  if(n===2){ setTimeout(initDrums, 50); setMascotMood('thinking'); }
+  if(n===3){ setMascotMood('idle'); }
+}
 
 function finishOnboarding(){
-  user = { name: document.getElementById("input-name").value.trim(), dob: document.getElementById("input-dob").value, avatar: user.avatar };
+  const dobVal = window.drumState ? `${window.drumState.year}-${String(window.drumState.month).padStart(2,'0')}-${String(window.drumState.day).padStart(2,'0')}` : '';
+  user = { name: document.getElementById("input-name").value.trim(), dob: dobVal, avatar: user.avatar };
   document.getElementById("chat-av").textContent = user.avatar.emoji;
   document.getElementById("chat-name").textContent = user.avatar.name;
   document.getElementById("chat-toggle-emoji").textContent = user.avatar.emoji;
@@ -1216,8 +1427,8 @@ function checkTF(userSaidYes, btn){
   const q = lesson.question;
   const correct = userSaidYes === q.correctIs;
   document.querySelectorAll(".tf-btn").forEach(b=>b.disabled=true);
-  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
-  else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
+  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
+  else { loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
   const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
 }
 
@@ -1253,8 +1464,8 @@ function renderFillGap(q, el){
       lesson.checked = true; lesson.sel = ch;
       document.querySelectorAll(".letter-btn").forEach(b=>b.disabled=true);
       document.getElementById("gap-slot").textContent = ch;
-      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
-      else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
+      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
+      else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
       const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
     };
     choicesEl.appendChild(btn);
@@ -1369,15 +1580,15 @@ function handleCheck(){
   if(q.type==="mcq"||q.type==="listen"){
     const correct = lesson.sel === q.ans;
     document.querySelectorAll(".opt-btn").forEach(b=>{ b.disabled=true; const idx=parseInt(b.dataset.idx); if(idx===q.ans)b.classList.add("correct"); else if(idx===lesson.sel&&!correct){b.classList.remove("sel");b.classList.add("wrong");} else b.classList.add("dim"); });
-    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
-    else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
+    else { loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
     const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   } else if(q.type==="sentence"){
     const target=document.getElementById("sent-target");
     const inSentence=[...target.querySelectorAll(".word-chip")].map(c=>c.textContent);
     const correct=JSON.stringify(inSentence)===JSON.stringify(q.correct);
-    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
-    else { loseLife(); setFooter("bad",`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(" ")}</div>`); }
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
+    else { loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(" ")}</div>`); }
     const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   }
 }
