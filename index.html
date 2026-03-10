@@ -806,11 +806,9 @@ function completeLogin(googleUser){
       progressData.cs      = { completed: new Set(sp.cs?.completed||[]),      streak: sp.cs?.streak||0,      xp: sp.cs?.xp||0 };
     }catch(e){}
   }
-  // Pre-fill name in onboarding
   window._googleUser = googleUser;
-  document.getElementById('input-name').value = googleUser.name.split(' ')[0];
-  checkStep1();
-  // Skip to subject selection
+  const _ni = document.getElementById('input-name');
+  if(_ni){ _ni.value = googleUser.name.split(' ')[0]; checkStep1(); }
   switchView('subject');
 }
 
@@ -1003,15 +1001,19 @@ let currentSubject = "english"; // "english" or "cs"
 
 function selectSubject(subject) {
   currentSubject = subject;
+  const titleEl = document.getElementById("ob-logo-title");
+  const subEl   = document.getElementById("ob-logo-sub");
   if(subject === "cs") {
-    document.getElementById("ob-logo-icon").textContent = "🐍";
-    document.getElementById("ob-logo-title").textContent = "Информатика · Python";
-    document.getElementById("ob-logo-sub").textContent = "7 класс · Учимся программировать!";
+    if(titleEl) titleEl.textContent = "Информатика · Python";
+    if(subEl)   subEl.textContent   = "7 класс · Учимся программировать!";
   } else {
-    document.getElementById("ob-logo-icon").textContent = "🇰🇿";
-    document.getElementById("ob-logo-title").textContent = "English Grade 3";
-    document.getElementById("ob-logo-sub").textContent = "Давай учить английский вместе!";
+    if(titleEl) titleEl.textContent = "DaraBala";
+    if(subEl)   subEl.textContent   = "Давай учиться вместе!";
   }
+  const swIcon  = document.getElementById("subject-switcher-icon");
+  const swLabel = document.getElementById("subject-switcher-label");
+  if(swIcon)  swIcon.textContent  = subject === "cs" ? "🐍" : "🇬🇧";
+  if(swLabel) swLabel.textContent = subject === "cs" ? "Python" : "Английский";
   switchView("onboarding");
 }
 
@@ -1238,8 +1240,8 @@ function checkStep2(){ /* drum picker — always enabled */ }
 function goStep(n){
   document.querySelectorAll(".ob-step").forEach(s=>s.classList.remove("active"));
   document.getElementById("ob-step"+n).classList.add("active");
-  if(n===2){ setTimeout(initDrums, 50); setMascotMood('thinking'); }
-  if(n===3){ setMascotMood('idle'); }
+  if(n===2){ setTimeout(initDrums, 50); try{setMascotMood('thinking');}catch(e){} }
+  if(n===3){ try{setMascotMood('idle');}catch(e){} }
 }
 
 function finishOnboarding(){
@@ -1427,8 +1429,8 @@ function checkTF(userSaidYes, btn){
   const q = lesson.question;
   const correct = userSaidYes === q.correctIs;
   document.querySelectorAll(".tf-btn").forEach(b=>b.disabled=true);
-  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
-  else { loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
+  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+  else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
   const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
 }
 
@@ -1464,8 +1466,8 @@ function renderFillGap(q, el){
       lesson.checked = true; lesson.sel = ch;
       document.querySelectorAll(".letter-btn").forEach(b=>b.disabled=true);
       document.getElementById("gap-slot").textContent = ch;
-      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
-      else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
+      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+      else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
       const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
     };
     choicesEl.appendChild(btn);
@@ -1580,15 +1582,15 @@ function handleCheck(){
   if(q.type==="mcq"||q.type==="listen"){
     const correct = lesson.sel === q.ans;
     document.querySelectorAll(".opt-btn").forEach(b=>{ b.disabled=true; const idx=parseInt(b.dataset.idx); if(idx===q.ans)b.classList.add("correct"); else if(idx===lesson.sel&&!correct){b.classList.remove("sel");b.classList.add("wrong");} else b.classList.add("dim"); });
-    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
-    else { loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+    else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
     const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   } else if(q.type==="sentence"){
     const target=document.getElementById("sent-target");
     const inSentence=[...target.querySelectorAll(".word-chip")].map(c=>c.textContent);
     const correct=JSON.stringify(inSentence)===JSON.stringify(q.correct);
-    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); setMascotMood('correct'); }
-    else { loseLife(); setMascotMood('wrong'); setFooter("bad",`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(" ")}</div>`); }
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+    else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(" ")}</div>`); }
     const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   }
 }
@@ -1663,12 +1665,15 @@ function switchSubjectPrompt(){
   document.getElementById('subject-overlay').style.display = 'flex';
 }
 function changeSubject(subj){
-  document.getElementById('subject-overlay').style.display = 'none';
+  const _ov = document.getElementById('subject-overlay');
+  if(_ov) _ov.style.display = 'none';
   currentSubject = subj;
   const icon = subj === 'cs' ? '🐍' : '🇬🇧';
   const label = subj === 'cs' ? 'Python' : 'Английский';
-  document.getElementById('subject-switcher-icon').textContent = icon;
-  document.getElementById('subject-switcher-label').textContent = label;
+  const _si = document.getElementById('subject-switcher-icon');
+  const _sl = document.getElementById('subject-switcher-label');
+  if(_si) _si.textContent = icon;
+  if(_sl) _sl.textContent = label;
   // Update chat chips
   const chips = subj === "cs"
     ? ["Объясни if/else","Что такое функция?","Помоги с ошибкой","Объясни range()"]
