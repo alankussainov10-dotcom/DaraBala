@@ -1598,6 +1598,9 @@ function currentTeacher(){ return currentSubject==='cs' ? PYTHON_TEACHER : (user
 (function(){
   // Init Google Auth on load
   window.addEventListener('load', () => {
+    _ttsEnabled = localStorage.getItem('darabala_tts') !== '0';
+    const ttsBtn = document.getElementById('tts-toggle-btn');
+    if(ttsBtn) ttsBtn.textContent = _ttsEnabled ? '🔊' : '🔇';
     initGoogleAuth();
     setTimeout(initMascot, 300);
   });
@@ -2078,19 +2081,107 @@ function speakWord(word){
   window.speechSynthesis.speak(utt);
 }
 
-function speakAsAvatar(text, teacher){
+// ── TTS ENGINE ────────────────────────────────────────────────
+let _ttsAudio = null;
+let _ttsEnabled = true; // user can mute
+
+function stopTTS(){
+  if(_ttsAudio){ try{ _ttsAudio.pause(); _ttsAudio.src=''; }catch(e){} _ttsAudio=null; }
+}
+
+function cleanForTTS(text){
+  return text
+    .replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, '')
+    .replace(/[*_~`#>\[\]]/g, '')
+    .replace(/https?:\/\/\S+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// ElevenLabs via Cloudflare Worker — unique voice per avatar
+async function speakAsAvatar(text, teacher){
+  if(!_ttsEnabled) return;
+  stopTTS();
+  const clean = cleanForTTS(text);
+  if(!clean) return;
+
+  // Chunk at 480 chars max (ElevenLabs limit per request kept comfortable)
+  const chunks = [];
+  let rem = clean;
+  while(rem.length > 0){
+    if(rem.length <= 480){ chunks.push(rem); break; }
+    let cut = rem.lastIndexOf('. ', 480);
+    if(cut < 100) cut = rem.lastIndexOf(' ', 480);
+    if(cut < 100) cut = 480;
+    chunks.push(rem.slice(0, cut+1).trim());
+    rem = rem.slice(cut+1).trim();
+  }
+
+  const avatarId = teacher?.id || 'bear';
+
+  for(const chunk of chunks){
+    if(!_ttsEnabled) break;
+    const played = await playElevenLabs(chunk, avatarId);
+    if(!played) await playGoogleTTS(chunk);  // fallback
+  }
+  _ttsAudio = null;
+}
+
+async function playElevenLabs(text, avatarId){
+  try{
+    const resp = await fetch(WORKER_URL + '/tts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text, avatarId })
+    });
+
+    // If worker returns JSON it's an error
+    const ctype = resp.headers.get('content-type') || '';
+    if(ctype.includes('application/json')){
+      const err = await resp.json();
+      if(err.error === 'NO_ELEVENLABS_KEY') console.warn('ElevenLabs key not set — using fallback');
+      return false;
+    }
+
+    if(!resp.ok) return false;
+    const blob = await resp.blob();
+    const url  = URL.createObjectURL(blob);
+    return await playAudioUrl(url, true);
+  }catch(e){ return false; }
+}
+
+async function playGoogleTTS(text){
+  const ttsLang = lang === 'kz' ? 'kk' : 'ru';
+  const url = `${WORKER_URL}/tts-fallback?text=${encodeURIComponent(text.slice(0,200))}&lang=${ttsLang}`;
+  const ok = await playAudioUrl(url, false);
+  if(!ok) webSpeechFallback(text);
+}
+
+function playAudioUrl(url, revokeAfter){
+  return new Promise(resolve => {
+    const audio = new Audio(url);
+    _ttsAudio = audio;
+    audio.volume = 0.92;
+    audio.onended = () => { if(revokeAfter) URL.revokeObjectURL(url); resolve(true); };
+    audio.onerror = () => resolve(false);
+    audio.play().catch(() => resolve(false));
+  });
+}
+
+function webSpeechFallback(text){
   if(!window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const clean = text.replace(/\p{Emoji}/gu, '').replace(/[*_~`#]/g,'').trim();
-  const utt = new SpeechSynthesisUtterance(clean);
-  utt.lang = 'ru-RU';
-  utt.pitch  = teacher?.voice?.pitch  ?? 1.0;
-  utt.rate   = teacher?.voice?.rate   ?? 1.0;
-  utt.volume = 0.85;
-  const voices = window.speechSynthesis.getVoices();
-  const pick = voices.find(v=>v.lang.startsWith('ru')) || voices.find(v=>v.lang.startsWith('en'));
-  if(pick) utt.voice = pick;
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'ru-RU'; utt.rate = 0.95;
   window.speechSynthesis.speak(utt);
+}
+
+// Mute/unmute TTS button (shown in topbar)
+function toggleTTS(){
+  _ttsEnabled = !_ttsEnabled;
+  stopTTS();
+  const btn = document.getElementById('tts-toggle-btn');
+  if(btn) btn.textContent = _ttsEnabled ? '🔊' : '🔇';
+  localStorage.setItem('darabala_tts', _ttsEnabled ? '1' : '0');
 }
 
 function spawnConfetti(count=40){
@@ -2108,6 +2199,8 @@ function switchView(name){
   document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
   document.getElementById("view-"+name).classList.add("active");
   window.scrollTo(0,0);
+  // Stop any playing TTS when changing views
+  stopTTS();
   // Disable chat during lesson
   const cw = document.getElementById("chat-widget");
   if(cw) cw.style.display = (name==="lesson" || name==="complete") ? "none" : (user ? "block" : "none");
