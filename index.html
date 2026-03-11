@@ -176,7 +176,71 @@
   .float-badge::after { content: ""; position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: #fff; border-right: 2px solid #e8e8e8; border-bottom: 2px solid #e8e8e8; }
   .connector { position: absolute; top: 76px; left: 50%; transform: translateX(-50%); width: 14px; height: 22px; background: #d0e8b8; border-radius: 7px; }
 
+  /* ===== WELCOME OVERLAY ===== */
+  #welcome-overlay { position:fixed;inset:0;z-index:5000;display:flex;align-items:center;
+    justify-content:center;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s; }
+  #welcome-overlay.show { pointer-events:all; background:rgba(0,0,0,.5); }
+  .welcome-card { background:#fff;border-radius:32px;padding:40px 36px;text-align:center;
+    width:90%;max-width:360px;box-shadow:0 16px 56px rgba(0,0,0,.2);
+    transform:scale(0.8) translateY(40px);opacity:0;
+    transition:transform .6s cubic-bezier(.175,.885,.32,1.275),opacity .4s ease; }
+  #welcome-overlay.show { background:rgba(0,0,0,.5) !important; }
+  #welcome-overlay.show .welcome-card { transform:scale(1) translateY(0);opacity:1; }
+  .welcome-avatar { font-size:72px;margin-bottom:12px;animation:bounceLoop 1.5s ease-in-out infinite; }
+  .welcome-name { font-size:28px;font-weight:900;color:#33691e;margin-bottom:6px; }
+  .welcome-sub  { font-size:15px;color:#888;font-weight:700;margin-bottom:24px; }
+
+  /* ===== PROFILE PANEL ===== */
+  #profile-panel { position:fixed;top:0;right:0;bottom:0;width:300px;background:#fff;
+    z-index:3000;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+    box-shadow:-8px 0 32px rgba(0,0,0,.15);display:flex;flex-direction:column; }
+  #profile-panel.open { transform:translateX(0); }
+  #profile-backdrop { position:fixed;inset:0;z-index:2999;background:rgba(0,0,0,.4);
+    opacity:0;pointer-events:none;transition:opacity .3s; }
+  #profile-backdrop.show { opacity:1;pointer-events:all; }
+  .profile-header { background:linear-gradient(135deg,#8bc34a,#33691e);padding:32px 20px 24px;
+    display:flex;flex-direction:column;align-items:center;gap:8px; }
+  .profile-pic { width:72px;height:72px;border-radius:50%;background:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:42px;
+    border:3px solid rgba(255,255,255,.5);margin-bottom:4px; }
+  .profile-pic img { width:72px;height:72px;border-radius:50%;object-fit:cover; }
+  .profile-uname { font-size:20px;font-weight:900;color:#fff; }
+  .profile-email { font-size:12px;color:rgba(255,255,255,.8);font-weight:700; }
+  .profile-stats { display:flex;gap:12px;margin-top:8px; }
+  .profile-stat  { background:rgba(255,255,255,.2);border-radius:12px;padding:8px 14px;
+    text-align:center;color:#fff; }
+  .profile-stat .sv { font-size:20px;font-weight:900; }
+  .profile-stat .sl { font-size:10px;font-weight:700;opacity:.8; }
+  .profile-body { flex:1;overflow-y:auto;padding:16px; }
+  .profile-section-title { font-size:11px;font-weight:900;color:#aaa;text-transform:uppercase;
+    letter-spacing:1px;margin:16px 0 8px; }
+  .profile-row { display:flex;align-items:center;gap:12px;padding:12px 14px;
+    border-radius:16px;cursor:pointer;transition:background .15s;font-family:Nunito,sans-serif;
+    font-size:15px;font-weight:800;color:#333; }
+  .profile-row:hover { background:#f5f5f5; }
+  .profile-row-icon { width:36px;height:36px;border-radius:12px;display:flex;
+    align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+  .profile-row-icon.green { background:#e8f5e9; }
+  .profile-row-icon.blue  { background:#e3f2fd; }
+  .profile-row-icon.orange{ background:#fff3e0; }
+  .profile-row-icon.red   { background:#ffebee; }
+  .lang-options { display:flex;gap:8px;padding:8px 14px 16px; }
+  .lang-btn { flex:1;padding:10px;border-radius:14px;border:2.5px solid #e0e0e0;
+    background:#fff;font-family:Nunito,sans-serif;font-size:15px;font-weight:900;
+    cursor:pointer;transition:all .15s; }
+  .lang-btn.active { border-color:#8bc34a;background:#f1f8e9;color:#33691e; }
+
+  /* AVATAR CHANGE MODAL */
+  #avatar-change-modal { position:fixed;inset:0;z-index:4000;display:none;
+    align-items:center;justify-content:center;background:rgba(0,0,0,.5);padding:20px; }
+  #avatar-change-modal.open { display:flex; }
+  .avatar-modal-card { background:#fff;border-radius:28px;padding:24px;width:100%;
+    max-width:440px;max-height:80vh;display:flex;flex-direction:column; }
+  .avatar-modal-card h3 { font-size:20px;font-weight:900;text-align:center;margin-bottom:16px; }
+  .avatar-modal-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:8px;overflow-y:auto; }
+
   /* LESSON */
+
   #view-lesson { background: #fff; }
   .lesson-topbar { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 2px solid #f0f0f0; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
   .close-btn { background: none; border: none; cursor: pointer; color: #aaa; padding: 4px; flex-shrink: 0; }
@@ -332,7 +396,7 @@
 
 <!-- LOGIN -->
 <div id="view-login" class="view active">
-  <div class="login-card">
+  <div class="login-card" style="animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both">
     <div class="login-flag">🇰🇿</div>
     <div class="login-title">DaraBala</div>
     <div class="login-sub">Умная платформа для учёбы.<br>Войди чтобы сохранить прогресс!</div>
@@ -444,7 +508,7 @@
 <div id="view-dashboard" class="view">
   <div class="topbar">
     <div class="topbar-user">
-      <div class="topbar-avatar" id="tb-avatar"></div>
+      <div class="topbar-avatar" id="tb-avatar" onclick="openProfile()" style="cursor:pointer" title="Профиль"></div>
       <span class="topbar-name" id="tb-name"></span>
     </div>
     <div class="topbar-stats">
@@ -499,7 +563,10 @@
     </div>
   </div>
 
-  <div class="map-container" id="map-container"></div>
+  <div id="dashboard-story" style="display:none;max-width:480px;width:calc(100% - 32px);
+  margin:16px auto 0;background:#f9fbe7;border-radius:20px;padding:14px 18px;
+  border:1.5px solid #c5e1a5;animation:fadeSlide .4s ease both"></div>
+<div class="map-container" id="map-container"></div>
 </div>
 
 <!-- LESSON -->
@@ -556,6 +623,59 @@
   </div>
   <button id="chat-toggle" onclick="toggleChat()"><span id="chat-toggle-emoji">🦊</span></button>
   <div id="chat-dot"></div>
+</div>
+
+<!-- WELCOME OVERLAY -->
+<div id="welcome-overlay">
+  <div class="welcome-card">
+    <div class="welcome-avatar" id="welcome-av">🐻</div>
+    <div class="welcome-name" id="welcome-name">Привет!</div>
+    <div class="welcome-sub"  id="welcome-sub">Готов учиться?</div>
+    <button class="btn-green" onclick="closeWelcome()">Поехали! 🚀</button>
+  </div>
+</div>
+
+<!-- PROFILE BACKDROP -->
+<div id="profile-backdrop" onclick="closeProfile()"></div>
+
+<!-- PROFILE PANEL -->
+<div id="profile-panel">
+  <div class="profile-header">
+    <div class="profile-pic" id="profile-pic-wrap"></div>
+    <div class="profile-uname" id="profile-uname">—</div>
+    <div class="profile-email" id="profile-email"></div>
+    <div class="profile-stats">
+      <div class="profile-stat"><div class="sv" id="profile-xp-en">0</div><div class="sl">XP 🇬🇧</div></div>
+      <div class="profile-stat"><div class="sv" id="profile-xp-cs">0</div><div class="sl">XP 🐍</div></div>
+      <div class="profile-stat"><div class="sv" id="profile-streak">0🔥</div><div class="sl">Streak</div></div>
+    </div>
+  </div>
+  <div class="profile-body">
+    <div class="profile-section-title">Настройки</div>
+    <div class="profile-row" onclick="openAvatarChange()">
+      <div class="profile-row-icon green">🦊</div>
+      <span data-t="changeAvatar">Сменить аватара</span>
+    </div>
+    <div class="profile-section-title" data-t="changeLanguage">Язык</div>
+    <div class="lang-options">
+      <button class="lang-btn" id="lang-ru" onclick="setLang('ru');updateLangBtns()">🇷🇺 Русский</button>
+      <button class="lang-btn" id="lang-kz" onclick="setLang('kz');updateLangBtns()">🇰🇿 Қазақша</button>
+    </div>
+    <div class="profile-section-title">Аккаунт</div>
+    <div class="profile-row" onclick="signOut()">
+      <div class="profile-row-icon red">🚪</div>
+      <span data-t="logout">Выйти</span>
+    </div>
+  </div>
+</div>
+
+<!-- AVATAR CHANGE MODAL -->
+<div id="avatar-change-modal">
+  <div class="avatar-modal-card">
+    <h3>Выбери нового героя</h3>
+    <div class="avatar-modal-grid" id="avatar-modal-grid"></div>
+    <button class="btn-green" style="margin-top:16px" onclick="closeAvatarChange()">Закрыть</button>
+  </div>
 </div>
 
 <script>
@@ -711,17 +831,239 @@ function updateDobDisplay(){
   if(el) el.textContent = `${drumState.day} ${months[drumState.month-1]} ${drumState.year} г.`;
 }
 
+
+// ===================== TRANSLATIONS =====================
+const T = {
+  ru: {
+    appName:"DaraBala", appSub:"Давай учиться вместе!",
+    chooseSubject:"Выбери предмет", todayLearn:"Что будем учить сегодня?",
+    english:"Английский язык", englishSub:"3–4 класс · 9 модулей · 60+ уроков",
+    cs:"Информатика · Python", csSub:"7 класс · §18–34 · Программирование",
+    grade34:"3-4 класс", grade7:"7 класс",
+    howName:"Как тебя зовут?", namePlaceholder:"Введи своё имя",
+    birthday:"День рождения 🎂", next:"Дальше",
+    chooseHero:"Выбери своего героя", startLearning:"Начать учиться!",
+    day:"День", month:"Месяц", year:"Год", chooseDate:"Выбери дату",
+    months:["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"],
+    monthsGen:["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
+    loginTitle:"Войти через Google", loginGuest:"👤 Войти как гость",
+    continueAs:"Продолжить как", guestProgress:"Прогресс гостя сохраняется только в этом браузере",
+    welcome:"Добро пожаловать,", welcomeBack:"С возвращением,",
+    profile:"Профиль", changeAvatar:"Сменить аватара", changeLanguage:"Язык",
+    logout:"Выйти", lessonDone:"Урок пройден!", tryAgain:"Попробуй ещё раз!",
+    wellDone:"Молодец,", dontGiveUp:"Не сдавайся, ты справишься!",
+    correct:"Правильно!", correctAns:"Правильный ответ:",
+    checkBtn:"Проверить", nextBtn:"Дальше", skipBtn:"Пропустить →",
+    listenBtn:"🔊 Послушать", micHint:"Нажми на микрофон и говори!",
+    micError:"Микрофон не поддерживается 😢", micFail:"Услышал:",
+    micOk:"✅ Отлично! Правильно!",
+    allPairs:"Все пары найдены!", pairsLabel:"Найди пары!",
+    sentenceLabel:'Переведи:', insertLetter:"Вставь пропущенную букву!",
+    listenPick:"Послушай слово и выбери картинку!",
+    unitLabel:"Unit", questionsCount:"вопросов", done:"Пройдено ✓", locked:"Закрыто",
+    streak:"дней", xp:"XP", lives:"Жизни",
+    storyTitle:"История урока 📖", storyLoading:"Генерирую историю...",
+    chatPlaceholder:"Спроси что-нибудь...",
+    signOut:"Выйти из аккаунта?",
+    mechNames:{mcq:"Выбери ответ",truefalse:"Правда или Ложь?",listen:"Послушай и выбери",fillgap:"Вставь букву",sentence:"Составь фразу",match:"Найди пару",voice:"Произнеси вслух"},
+    tfYes:"✅ Да", tfNo:"❌ Нет",
+  },
+  kz: {
+    appName:"DaraBala", appSub:"Бірге оқып үйренейік!",
+    chooseSubject:"Пән таңда", todayLearn:"Бүгін не оқимыз?",
+    english:"Ағылшын тілі", englishSub:"3–4 сынып · 9 модуль · 60+ сабақ",
+    cs:"Информатика · Python", csSub:"7 сынып · §18–34 · Бағдарламалау",
+    grade34:"3-4 сынып", grade7:"7 сынып",
+    howName:"Атың кім?", namePlaceholder:"Атыңды енгіз",
+    birthday:"Туған күн 🎂", next:"Келесі",
+    chooseHero:"Кейіпкер таңда", startLearning:"Оқуды бастау!",
+    day:"Күн", month:"Ай", year:"Жыл", chooseDate:"Күнді таңда",
+    months:["Қаңтар","Ақпан","Наурыз","Сәуір","Мамыр","Маусым","Шілде","Тамыз","Қыркүйек","Қазан","Қараша","Желтоқсан"],
+    monthsGen:["қаңтар","ақпан","наурыз","сәуір","мамыр","маусым","шілде","тамыз","қыркүйек","қазан","қараша","желтоқсан"],
+    loginTitle:"Google арқылы кіру", loginGuest:"👤 Қонақ ретінде кіру",
+    continueAs:"Жалғастыру", guestProgress:"Қонақ прогресі тек осы браузерде сақталады",
+    welcome:"Қош келдің,", welcomeBack:"Қайта оралдың,",
+    profile:"Профиль", changeAvatar:"Аватар ауыстыру", changeLanguage:"Тіл",
+    logout:"Шығу", lessonDone:"Сабақ өтілді!", tryAgain:"Қайта көріп бақ!",
+    wellDone:"Жарайсың,", dontGiveUp:"Бас тартпа, сен жасай аласың!",
+    correct:"Дұрыс!", correctAns:"Дұрыс жауап:",
+    checkBtn:"Тексеру", nextBtn:"Келесі", skipBtn:"Өткізу →",
+    listenBtn:"🔊 Тыңда", micHint:"Микрофонды басып сөйле!",
+    micError:"Микрофон қолдалмайды 😢", micFail:"Естідім:",
+    micOk:"✅ Тамаша! Дұрыс!",
+    allPairs:"Барлық жұп табылды!", pairsLabel:"Жұптарды тап!",
+    sentenceLabel:'Аудар:', insertLetter:"Жетіспейтін әріпті енгіз!",
+    listenPick:"Сөзді тыңдап суретті таңда!",
+    unitLabel:"Бөлім", questionsCount:"сұрақ", done:"Өтілді ✓", locked:"Жабық",
+    streak:"күн", xp:"ОП", lives:"Өмір",
+    storyTitle:"Сабақ хикаясы 📖", storyLoading:"Хикая жасалуда...",
+    chatPlaceholder:"Бірдеңе сұра...",
+    signOut:"Аккаунттан шығасыз ба?",
+    mechNames:{mcq:"Жауапты таңда",truefalse:"Рас па әлде жалған ба?",listen:"Тыңда және таңда",fillgap:"Әріпті енгіз",sentence:"Сөйлем құра",match:"Жұп тап",voice:"Дауыстап айт"},
+    tfYes:"✅ Иә", tfNo:"❌ Жоқ",
+  }
+};
+let lang = localStorage.getItem('darabala_lang') || 'ru';
+function t(key){ return T[lang][key] || T['ru'][key] || key; }
+function setLang(l){
+  lang = l;
+  localStorage.setItem('darabala_lang', l);
+  applyLang();
+}
+function applyLang(){
+  // Update all elements with data-t attribute
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    el.textContent = t(key);
+  });
+  document.querySelectorAll('[data-tp]').forEach(el => {
+    el.placeholder = t(el.getAttribute('data-tp'));
+  });
+}
+
+// ===================== WELCOME + PROFILE + AVATAR CHANGE =====================
+
+function showWelcomeBack(name){
+  // Already logged in — go straight to subject or dashboard
+  const subjectChoice = sessionStorage.getItem('darabala_subject');
+  if(subjectChoice){ currentSubject = subjectChoice; }
+  setupChatForUser();
+  showDashboard();
+  // Show welcome animation
+  setTimeout(() => {
+    const av = user.avatar ? user.avatar.emoji : '🐻';
+    document.getElementById('welcome-av').textContent   = av;
+    document.getElementById('welcome-name').textContent = t('welcomeBack') + ' ' + name + '!';
+    document.getElementById('welcome-sub').textContent  = ['Готов учиться? 🚀','Продолжаем! 💪','Сегодня будет интересно! 🌟'][Math.floor(Math.random()*3)];
+    const ov = document.getElementById('welcome-overlay');
+    ov.classList.add('show');
+  }, 400);
+}
+
+function showWelcomeNew(name, av){
+  document.getElementById('welcome-av').textContent   = av || '🐻';
+  document.getElementById('welcome-name').textContent = t('welcome') + ' ' + name + '!';
+  document.getElementById('welcome-sub').textContent  = 'Погнали учиться! 🚀';
+  const ov = document.getElementById('welcome-overlay');
+  ov.classList.add('show');
+}
+
+function closeWelcome(){
+  const ov = document.getElementById('welcome-overlay');
+  ov.style.opacity='0';
+  ov.style.transition='opacity .3s ease';
+  setTimeout(()=>{ ov.classList.remove('show'); ov.style.opacity=''; ov.style.transition=''; }, 300);
+}
+
+function openProfile(){
+  if(!user) return;
+  const p = document.getElementById('profile-panel');
+  const b = document.getElementById('profile-backdrop');
+  // Fill data
+  const picWrap = document.getElementById('profile-pic-wrap');
+  if(window._googleUser?.picture){
+    picWrap.innerHTML = `<img src="${window._googleUser.picture}" referrerpolicy="no-referrer"/>`;
+  } else {
+    picWrap.textContent = user.avatar?.emoji || '🐻';
+  }
+  document.getElementById('profile-uname').textContent  = user.name;
+  document.getElementById('profile-email').textContent  = window._googleUser?.email || 'Гостевой аккаунт';
+  document.getElementById('profile-xp-en').textContent  = progressData.english.xp;
+  document.getElementById('profile-xp-cs').textContent  = progressData.cs.xp;
+  document.getElementById('profile-streak').textContent = Math.max(progressData.english.streak, progressData.cs.streak) + '🔥';
+  updateLangBtns();
+  p.classList.add('open');
+  b.classList.add('show');
+}
+
+function closeProfile(){
+  document.getElementById('profile-panel').classList.remove('open');
+  document.getElementById('profile-backdrop').classList.remove('show');
+}
+
+function updateLangBtns(){
+  document.getElementById('lang-ru').classList.toggle('active', lang==='ru');
+  document.getElementById('lang-kz').classList.toggle('active', lang==='kz');
+  applyLang();
+}
+
+function openAvatarChange(){
+  closeProfile();
+  const modal = document.getElementById('avatar-change-modal');
+  const grid  = document.getElementById('avatar-modal-grid');
+  grid.innerHTML = '';
+  AVATARS.forEach(av => {
+    const btn = document.createElement('button');
+    btn.className = 'avatar-btn' + (user.avatar?.id===av.id?' sel':'');
+    btn.innerHTML = `<span class="av-emoji">${av.emoji}</span><span>${av.name}</span>`;
+    btn.onclick = () => {
+      user.avatar = av;
+      // Save updated profile
+      if(window._googleUser){
+        const key = 'darabala_profile_' + (window._googleUser.email||window._googleUser.name);
+        localStorage.setItem(key, JSON.stringify(user));
+      }
+      // Update UI
+      document.getElementById('tb-avatar').textContent       = av.emoji;
+      document.getElementById('chat-av').textContent         = av.emoji;
+      document.getElementById('chat-name').textContent       = av.name;
+      document.getElementById('chat-toggle-emoji').textContent = av.emoji;
+      grid.querySelectorAll('.avatar-btn').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      try{updateMascotForAvatar(av);}catch(e){}
+    };
+    grid.appendChild(btn);
+  });
+  modal.classList.add('open');
+}
+
+function closeAvatarChange(){
+  document.getElementById('avatar-change-modal').classList.remove('open');
+}
+
+function setupChatForUser(){
+  if(!user) return;
+  const av = currentSubject==='cs' ? {emoji:'🐍', name:'Питон'} : (user.avatar || AVATARS[0]);
+  const el1 = document.getElementById('chat-av');
+  const el2 = document.getElementById('chat-name');
+  const el3 = document.getElementById('chat-toggle-emoji');
+  const el4 = document.getElementById('chat-widget');
+  if(el1) el1.textContent = av.emoji;
+  if(el2) el2.textContent = av.name;
+  if(el3) el3.textContent = av.emoji;
+  if(el4) el4.style.display = 'block';
+}
+
 // ===================== GOOGLE OAUTH =====================
+
 
 // REPLACE THIS with your Google Cloud Console Client ID:
 const GOOGLE_CLIENT_ID = '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com';
 
 function initGoogleAuth(){
+  applyLang();
   // Check localStorage for saved user
   const saved = localStorage.getItem('darabala_user');
   if(saved){
     try{
       const u = JSON.parse(saved);
+      // Check if full profile (name+avatar) already set → skip onboarding
+      const profileKey = 'darabala_profile_' + (u.email || u.name);
+      const savedProfile = localStorage.getItem(profileKey);
+      if(savedProfile){
+        const profile = JSON.parse(savedProfile);
+        window._googleUser = u;
+        user = profile;
+        // Load progress
+        const sp = localStorage.getItem('darabala_progress_' + (u.email || u.name));
+        if(sp){
+          const spd = JSON.parse(sp);
+          progressData.english = { completed: new Set(spd.english?.completed||[]), streak: spd.english?.streak||0, xp: spd.english?.xp||0 };
+          progressData.cs      = { completed: new Set(spd.cs?.completed||[]),      streak: spd.cs?.streak||0,      xp: spd.cs?.xp||0 };
+        }
+        showWelcomeBack(profile.name);
+        return;
+      }
       showReturningUser(u);
     }catch(e){ localStorage.removeItem('darabala_user'); }
   }
@@ -823,7 +1165,7 @@ function saveProgress(){
 }
 
 function signOut(){
-  if(confirm('Выйти из аккаунта?')){
+  if(confirm(t('signOut'))){
     saveProgress();
     localStorage.removeItem('darabala_user');
     window._googleUser = null;
@@ -1000,6 +1342,7 @@ const CS_MODULES = [
 let currentSubject = "english"; // "english" or "cs"
 
 function selectSubject(subject) {
+  sessionStorage.setItem('darabala_subject', subject);
   currentSubject = subject;
   const titleEl = document.getElementById("ob-logo-title");
   const subEl   = document.getElementById("ob-logo-sub");
@@ -1247,6 +1590,11 @@ function goStep(n){
 function finishOnboarding(){
   const dobVal = window.drumState ? `${window.drumState.year}-${String(window.drumState.month).padStart(2,'0')}-${String(window.drumState.day).padStart(2,'0')}` : '';
   user = { name: document.getElementById("input-name").value.trim(), dob: dobVal, avatar: user.avatar };
+  // Save full profile to localStorage
+  if(window._googleUser){
+    const profileKey = 'darabala_profile_' + (window._googleUser.email || window._googleUser.name);
+    localStorage.setItem(profileKey, JSON.stringify(user));
+  }
   document.getElementById("chat-av").textContent = user.avatar.emoji;
   document.getElementById("chat-name").textContent = user.avatar.name;
   document.getElementById("chat-toggle-emoji").textContent = user.avatar.emoji;
@@ -1263,20 +1611,26 @@ function finishOnboarding(){
     chip.onclick = () => { document.getElementById("chat-input").value = c; sendChat(); };
     chipsEl.appendChild(chip);
   });
+  setupChatForUser();
   setTimeout(() => {
-    addBotMessage(`Привет, ${user.name}! 👋 Я ${user.avatar.name} — твой помощник! Спрашивай меня про английский! 🌟`);
+    const greet = currentSubject==='cs'
+      ? `Привет, ${user.name}! 🐍 Я Питон — твой учитель информатики! Задавай вопросы! 💻`
+      : `Привет, ${user.name}! 👋 Я ${user.avatar.name} — твой помощник по английскому! 🌟`;
+    addBotMessage(greet);
     document.getElementById("chat-dot").classList.add("show");
   }, 800);
   showDashboard();
+  setTimeout(() => showWelcomeNew(user.name, currentSubject==='cs'?'🐍':user.avatar.emoji), 600);
 }
 
 // ===================== DASHBOARD =====================
 function showDashboard(){
   switchView("dashboard");
-  document.getElementById("tb-avatar").textContent = user.avatar.emoji;
+  document.getElementById("tb-avatar").textContent = user.avatar ? user.avatar.emoji : '🐻';
   document.getElementById("tb-name").textContent = user.name;
   updateTopbar();
   buildMap();
+  generateDashboardStory();
 }
 
 function updateTopbar(){
@@ -1299,6 +1653,7 @@ function buildMap(){
     const mh = document.createElement("div");
     mh.className = `module-header mc-${mi}`;
     mh.innerHTML = `<div style="position:relative;z-index:1"><h3>Unit ${mod.id} ${mod.icon}</h3><p>${mod.title}${mod.par ? " · " + mod.par : ""}</p></div><div class="mod-icon">${mod.icon}</div>`;
+    mh.style.animation = `fadeSlide .4s ease ${mi*0.08}s both`;
     container.appendChild(mh);
 
     const col = document.createElement("div");
@@ -1328,8 +1683,9 @@ function buildMap(){
     const badge = document.createElement("div");
     badge.style.cssText = `text-align:center;font-size:12px;font-weight:800;
       color:${done?"#8bc34a":locked?"#aaa":"#555"};margin-top:6px`;
-    badge.textContent = done ? "Пройдено ✓" : locked ? "Закрыто" : `${mod.lessons.length} вопросов`;
+    badge.textContent = done ? t("done") : locked ? t("locked") : `${mod.lessons.length} ${t("questionsCount")}`;
 
+    btn.style.animation = `popIn .4s cubic-bezier(.175,.885,.32,1.275) ${mi*0.1}s both`;
     wrap.appendChild(btn);
     wrap.appendChild(badge);
     col.appendChild(wrap);
@@ -1371,12 +1727,12 @@ function renderQuestion(q){
   content.innerHTML = "";
   setFooter("neutral","");
   document.getElementById("btn-check").disabled = true;
-  document.getElementById("btn-check").textContent = "Проверить";
+  document.getElementById("btn-check").textContent = t("checkBtn");
   document.getElementById("btn-check").className = "btn-check green";
   document.getElementById("btn-check").onclick = handleCheck;
   lesson.checked = false; lesson.sel = null;
 
-  const mechNames = {mcq:"Выбери ответ",truefalse:"Правда или Ложь?",listen:"Послушай и выбери",fillgap:"Вставь букву",sentence:"Составь фразу",match:"Найди пару",voice:"Произнеси вслух"};
+  const mechNames = t("mechNames");
   const label = document.createElement("div"); label.className = "mech-label"; label.textContent = mechNames[q.type]||""; content.appendChild(label);
 
   if(q.type === "mcq") renderMCQ(q, content);
@@ -1391,7 +1747,7 @@ function renderQuestion(q){
 // MCQ
 function renderMCQ(q, el){
   const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop";
-  qEl.textContent = q.question;
+  qEl.textContent = (lang==="kz" && q.questionKz) ? q.questionKz : q.question;
   if(q.img){ const em=document.createElement("div"); em.style.cssText="font-size:60px;text-align:center;margin-bottom:12px"; em.textContent=q.img; el.insertBefore(em,el.firstChild); }
   el.appendChild(qEl);
   const grid = document.createElement("div"); grid.className = "options-grid"; el.appendChild(grid);
@@ -1406,7 +1762,8 @@ function renderMCQ(q, el){
 // True/False
 function renderTrueFalse(q, el){
   const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop";
-  qEl.innerHTML = `<div style="font-size:72px;margin-bottom:12px">${q.emoji}</div>${q.question}`;
+  const qText = (lang==="kz" && q.questionKz) ? q.questionKz : q.question;
+  qEl.innerHTML = `<div style="font-size:72px;margin-bottom:12px">${q.emoji}</div>${qText}`;
   el.appendChild(qEl);
   const timerWrap = document.createElement("div"); timerWrap.className = "timer-bar-wrap"; el.appendChild(timerWrap);
   const timerBar = document.createElement("div"); timerBar.className = "timer-bar"; timerBar.style.cssText="width:100%;transition:width 5s linear"; timerWrap.appendChild(timerBar);
@@ -1414,7 +1771,7 @@ function renderTrueFalse(q, el){
   lesson.tfTimer = setTimeout(() => { if(!lesson.checked) checkTF(false, null); }, 5100);
 
   const wrap = document.createElement("div"); wrap.className = "tf-wrap"; el.appendChild(wrap);
-  ["✅ Да","❌ Нет"].forEach((txt,i) => {
+  [t("tfYes"),t("tfNo")].forEach((txt,i) => {
     const btn = document.createElement("button"); btn.className = "tf-btn " + (i===0?"yes":"no"); btn.textContent = txt;
     btn.onclick = () => { clearTimeout(lesson.tfTimer); checkTF(i===0, btn); };
     wrap.appendChild(btn);
@@ -1429,14 +1786,14 @@ function checkTF(userSaidYes, btn){
   const q = lesson.question;
   const correct = userSaidYes === q.correctIs;
   document.querySelectorAll(".tf-btn").forEach(b=>b.disabled=true);
-  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
-  else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
-  const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+  if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> ${t("correct")}</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+  else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">${t("correctAns")}</div><div class="fb-main bad">${q.correctIs?"Да ✅":"Нет ❌"} — это ${q.answer}</div>`); }
+  const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent=t("nextBtn"); cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
 }
 
 // Listen & Tap
 function renderListen(q, el){
-  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Послушай слово и выбери картинку!"; el.appendChild(qEl);
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = lang==="kz" ? "Сөзді тыңда және суретті таңда!" : "Послушай слово и выбери картинку!"; el.appendChild(qEl);
   const lisBtn = document.createElement("button"); lisBtn.className = "listen-btn"; lisBtn.innerHTML = "🔊";
   lisBtn.onclick = () => { speakWord(q.word); lisBtn.classList.add("playing"); setTimeout(()=>lisBtn.classList.remove("playing"),1500); };
   el.appendChild(lisBtn);
@@ -1452,7 +1809,7 @@ function renderListen(q, el){
 
 // Fill the Gap
 function renderFillGap(q, el){
-  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Вставь пропущенную букву!"; el.appendChild(qEl);
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = lang==="kz" ? "Жетіспейтін әріпті енгіз!" : "Вставь пропущенную букву!"; el.appendChild(qEl);
   const wordEl = document.createElement("div"); wordEl.className = "gap-word-display";
   let html = "";
   for(let i=0;i<q.word.length;i++) html += i===q.gapIdx ? `<span class="gap" id="gap-slot">_</span>` : q.word[i];
@@ -1466,9 +1823,9 @@ function renderFillGap(q, el){
       lesson.checked = true; lesson.sel = ch;
       document.querySelectorAll(".letter-btn").forEach(b=>b.disabled=true);
       document.getElementById("gap-slot").textContent = ch;
-      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+      if(correct){ btn.classList.add("correct"); lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> ${t("correct")}</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
       else { btn.classList.add("wrong"); document.getElementById("gap-slot").style.color="#ef5350"; loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
-      const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+      const cb = document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent=t("nextBtn"); cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
     };
     choicesEl.appendChild(btn);
   });
@@ -1477,7 +1834,7 @@ function renderFillGap(q, el){
 
 // Sentence Builder
 function renderSentence(q, el){
-  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = `Переведи: "${q.translation}"`; el.appendChild(qEl);
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; const trText = (lang==="kz" && q.translationKz) ? q.translationKz : q.translation; qEl.textContent = (lang==="kz" ? "Аударыңыз: " : "Переведи: ") + `"${trText}"`; el.appendChild(qEl);
   const target = document.createElement("div"); target.className = "sentence-target"; target.id = "sent-target"; el.appendChild(target);
   const bank = document.createElement("div"); bank.className = "word-bank"; bank.id = "word-bank"; el.appendChild(bank);
   const shuffled = [...q.words].sort(()=>Math.random()-.5);
@@ -1498,7 +1855,7 @@ function toggleWord(chip, word, target, bank, q){
 
 // Match Pairs
 function renderMatch(q, el){
-  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Найди пары!"; el.appendChild(qEl);
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = lang==="kz" ? "Жұптарды тап!" : "Найди пары!"; el.appendChild(qEl);
   const wrap = document.createElement("div"); wrap.className = "match-wrap"; el.appendChild(wrap);
   const leftCol = document.createElement("div"); leftCol.className = "match-col";
   const rightCol = document.createElement("div"); rightCol.className = "match-col";
@@ -1528,7 +1885,7 @@ function selectMatchItem(item, pairs){
   if(prev.dataset.key === item.dataset.key){
     prev.classList.add("matched"); item.classList.add("matched");
     state.matched++;
-    if(state.matched === state.total){ lesson.score++; lesson.checked=true; setTimeout(()=>{ spawnConfetti(); setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Все пары найдены!</div>`); const cb=document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; }, 300); }
+    if(state.matched === state.total){ lesson.score++; lesson.checked=true; setTimeout(()=>{ spawnConfetti(); setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> ${lang==="kz"?"Барлық жұп табылды!":"Все пары найдены!"}</div>`); const cb=document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent=t("nextBtn"); cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; }, 300); }
   } else {
     prev.classList.add("wrong-flash"); item.classList.add("wrong-flash");
     loseLife();
@@ -1538,19 +1895,19 @@ function selectMatchItem(item, pairs){
 
 // Voice
 function renderVoice(q, el){
-  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = "Произнеси вслух!"; el.appendChild(qEl);
+  const qEl = document.createElement("div"); qEl.className = "lesson-question anim-pop"; qEl.textContent = lang==="kz" ? "Дауыстап айт!" : "Произнеси вслух!"; el.appendChild(qEl);
   const area = document.createElement("div"); area.className = "mic-area"; el.appendChild(area);
   const wordEl = document.createElement("div"); wordEl.className = "word-to-say"; wordEl.textContent = q.word; area.appendChild(wordEl);
   const transEl = document.createElement("div"); transEl.className = "word-translation"; transEl.textContent = q.translation; area.appendChild(transEl);
   const lisBtn = document.createElement("button"); lisBtn.style.cssText="padding:10px 20px;border-radius:14px;border:none;background:#e3f2fd;color:#1565c0;font-family:Nunito,sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px";
-  lisBtn.textContent = "🔊 Послушать"; lisBtn.onclick = () => speakWord(q.word); area.appendChild(lisBtn);
+  lisBtn.textContent = t("listenBtn"); lisBtn.onclick = () => speakWord(q.word); area.appendChild(lisBtn);
   const micBtn = document.createElement("button"); micBtn.className = "mic-btn"; micBtn.innerHTML = "🎤"; area.appendChild(micBtn);
-  const result = document.createElement("div"); result.className = "mic-result"; result.textContent = "Нажми на микрофон и говори!"; area.appendChild(result);
+  const result = document.createElement("div"); result.className = "mic-result"; result.textContent = t("micHint"); area.appendChild(result);
   lesson.voiceSkipped = false;
   micBtn.onclick = () => startListening(micBtn, result, q);
   // Skip button
   const skipBtn = document.createElement("button"); skipBtn.style.cssText="padding:8px 20px;border-radius:12px;border:none;background:#f5f5f5;color:#888;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px";
-  skipBtn.textContent = "Пропустить →"; skipBtn.onclick = () => { lesson.voiceSkipped=true; nextQuestion(); }; area.appendChild(skipBtn);
+  skipBtn.textContent = t("skipBtn"); skipBtn.onclick = () => { lesson.voiceSkipped=true; nextQuestion(); }; area.appendChild(skipBtn);
   document.getElementById("btn-check").style.display="none";
 }
 
@@ -1559,14 +1916,14 @@ function startListening(micBtn, resultEl, q){
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   const recognition = new SR();
   recognition.lang = "en-US"; recognition.interimResults = false; recognition.maxAlternatives = 3;
-  micBtn.classList.add("listening"); resultEl.textContent = "Слушаю..."; resultEl.className = "mic-result";
+  micBtn.classList.add("listening"); resultEl.textContent = (lang==="kz"?"Тыңдап жатырмын...":"Слушаю..."); resultEl.className = "mic-result";
   recognition.start();
   recognition.onresult = (event) => {
     micBtn.classList.remove("listening");
     const transcripts = Array.from(event.results[0]).map(r=>r.transcript.toLowerCase().trim());
     const target = q.word.toLowerCase();
     const ok = transcripts.some(t => t.includes(target) || target.includes(t) || similarity(t,target)>0.7);
-    if(ok){ resultEl.textContent = "✅ Отлично! Правильно!"; resultEl.className="mic-result ok"; lesson.score++; spawnConfetti(); const cb=document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent="Дальше"; cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Отлично произнёс!`); }
+    if(ok){ resultEl.textContent = "✅ Отлично! Правильно!"; resultEl.className="mic-result ok"; lesson.score++; spawnConfetti(); const cb=document.getElementById("btn-check"); cb.style.display="flex"; cb.textContent=t("nextBtn"); cb.className="btn-check green"; cb.disabled=false; cb.onclick=nextQuestion; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Отлично произнёс!`); }
     else { resultEl.textContent = `❌ Услышал: "${transcripts[0]}". Попробуй ещё!`; resultEl.className="mic-result fail"; }
   };
   recognition.onerror = () => { micBtn.classList.remove("listening"); resultEl.textContent="Ошибка микрофона. Попробуй ещё!"; };
@@ -1582,16 +1939,16 @@ function handleCheck(){
   if(q.type==="mcq"||q.type==="listen"){
     const correct = lesson.sel === q.ans;
     document.querySelectorAll(".opt-btn").forEach(b=>{ b.disabled=true; const idx=parseInt(b.dataset.idx); if(idx===q.ans)b.classList.add("correct"); else if(idx===lesson.sel&&!correct){b.classList.remove("sel");b.classList.add("wrong");} else b.classList.add("dim"); });
-    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
-    else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
-    const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> ${t("correct")}</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+    else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">${t("correctAns")}</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
+    const cb=document.getElementById("btn-check"); cb.textContent=t("nextBtn"); cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   } else if(q.type==="sentence"){
     const target=document.getElementById("sent-target");
     const inSentence=[...target.querySelectorAll(".word-chip")].map(c=>c.textContent);
     const correct=JSON.stringify(inSentence)===JSON.stringify(q.correct);
-    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
+    if(correct){ lesson.score++; setFooter("good",`<div class="fb-main good"><span class="check-icon">✅</span> ${t("correct")}</div>`); spawnConfetti(); try{setMascotMood('correct');}catch(e){} }
     else { loseLife(); try{setMascotMood('wrong');}catch(e){} setFooter("bad",`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(" ")}</div>`); }
-    const cb=document.getElementById("btn-check"); cb.textContent="Дальше"; cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
+    const cb=document.getElementById("btn-check"); cb.textContent=t("nextBtn"); cb.className="btn-check "+(correct?"green":"red"); cb.disabled=false; cb.onclick=nextQuestion;
   }
 }
 
@@ -1615,6 +1972,10 @@ function nextQuestion(){
 function loseLife(){
   lesson.lives = Math.max(0, lesson.lives-1);
   renderLives();
+  // Track weakness for adaptive repetition
+  const wKey = 'weak_' + currentSubject + '_mod' + lesson.modIdx;
+  const weakCount = (parseInt(localStorage.getItem(wKey))||0) + 1;
+  localStorage.setItem(wKey, weakCount);
 }
 
 function showComplete(passed){
@@ -1627,13 +1988,43 @@ function showComplete(passed){
     setTimeout(saveProgress, 500);
   }
   document.getElementById("comp-emoji").textContent = passed ? "🏆" : "💪";
-  document.getElementById("comp-title").textContent = passed ? "Урок пройден!" : "Попробуй ещё раз!";
-  document.getElementById("comp-sub").textContent = passed ? `Молодец, ${user.name}!` : "Не сдавайся, ты справишься!";
+  document.getElementById("comp-title").textContent = passed ? t("lessonDone") : t("tryAgain");
+  document.getElementById("comp-sub").textContent = passed ? t("wellDone")+" "+user.name+"!" : t("dontGiveUp");
   document.getElementById("comp-xp").textContent = "+" + earned;
   document.getElementById("comp-score").textContent = lesson.score + " правильно";
   document.getElementById("comp-streak").textContent = "🔥" + p.streak;
   if(passed) spawnConfetti(80);
   switchView("complete");
+  document.querySelector('.complete-card').style.animation='popIn .5s cubic-bezier(.175,.885,.32,1.275) .1s both';
+}
+
+// ===================== MINI-STORY GENERATOR =====================
+async function generateDashboardStory(){
+  const storyEl = document.getElementById('dashboard-story');
+  if(!storyEl) return;
+  const activeModules = currentSubject==='cs' ? CS_MODULES : MODULES;
+  // Pick the current module (first incomplete)
+  const p = prog();
+  let modIdx = 0;
+  for(let i=0;i<activeModules.length;i++){ if(!p.completed.has('mod_'+i)){ modIdx=i; break; } }
+  const mod = activeModules[modIdx];
+  storyEl.style.display = 'block';
+  storyEl.innerHTML = `<div style="font-size:13px;font-weight:800;color:#8bc34a;margin-bottom:6px">📖 ${t('storyTitle')}</div>
+    <div style="color:#bbb;font-size:13px;font-style:italic">${t('storyLoading')}</div>`;
+  try {
+    const langHint = lang==='kz' ? 'на казахском языке' : 'на русском языке';
+    const resp = await fetch(WORKER_URL+'/chat', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ message:
+        `Напиши мини-историю (2-3 предложения) ${langHint} для темы "${mod.title}" для ${currentSubject==='cs'?'7':'3'} класса. Обязательно вставь имя "${user.name}" в текст. Только сама история, без заголовков.`
+      })
+    });
+    const data = await resp.json();
+    if(data.reply){
+      storyEl.innerHTML = `<div style="font-size:13px;font-weight:800;color:#8bc34a;margin-bottom:6px">📖 ${t('storyTitle')}</div>
+        <div style="font-size:14px;line-height:1.6;color:#444;font-weight:700">${data.reply}</div>`;
+    } else { storyEl.style.display='none'; }
+  } catch(e){ storyEl.style.display='none'; }
 }
 
 // ===================== UTILS =====================
@@ -1656,7 +2047,14 @@ function spawnConfetti(count=40){
 
 function setFooter(state,html){ document.getElementById("lesson-footer").className="lesson-footer "+state; document.getElementById("feedback-area").innerHTML=html; }
 function exitLesson(){ switchView("dashboard"); buildMap(); }
-function switchView(name){ document.querySelectorAll(".view").forEach(v=>v.classList.remove("active")); document.getElementById("view-"+name).classList.add("active"); window.scrollTo(0,0); }
+function switchView(name){
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById("view-"+name).classList.add("active");
+  window.scrollTo(0,0);
+  // Disable chat during lesson
+  const cw = document.getElementById("chat-widget");
+  if(cw) cw.style.display = (name==="lesson" || name==="complete") ? "none" : (user ? "block" : "none");
+}
 
 // ===================== AI CHAT =====================
 
@@ -1686,6 +2084,7 @@ function changeSubject(subj){
     chip.onclick = () => { document.getElementById("chat-input").value = c; sendChat(); };
     chipsEl.appendChild(chip);
   }); }
+  sessionStorage.setItem('darabala_subject', subj);
   buildMap();
 }
 
@@ -1806,7 +2205,7 @@ async function sendChat(){
   document.getElementById("chat-send-btn").disabled=true;
   addUserMessage(text); showTyping();
   const systemPrompt = currentSubject === "cs"
-    ? `Ты ${user.avatar.name} — терпеливый учитель информатики. Помогаешь ученику 7 класса учить Python. Отвечай по-русски с эмодзи. Объясняй концепции, но НЕ пиши весь код за ученика — наводи на мысль. НЕ отвечай на темы не связанные с программированием и учёбой. Имя ученика: ${user.name}.`
+    ? `Ты Питон 🐍 — строгий но добрый учитель информатики для 7 класса. Твоя задача — помочь ученику понять Python. Отвечай по-русски с эмодзи. ВАЖНО: никогда не пиши готовый код за ученика — только объясняй логику, задавай наводящие вопросы и указывай на ошибки. Не отвечай на темы не связанные с учёбой. Ученик: ${user.name}.`
     : `Ты ${user.avatar.name} — ${user.avatar.personality}. Помогаешь ученику 3 класса учить английский. Отвечай коротко, по-русски, с эмодзи. Имя ученика: ${user.name}.`;
   try{
     const response=await fetch(WORKER_URL+"/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:systemPrompt+"\n\nВопрос: "+text})});
