@@ -2127,7 +2127,12 @@ async function speakAsAvatar(text, teacher){
   _ttsAudio = null;
 }
 
+// Cache: worker supports ElevenLabs?
+let _elWorkerReady = null; // null=unknown, true=yes, false=no
+
 async function playElevenLabs(text, avatarId){
+  // Skip immediately if we already know worker doesn't support it
+  if(_elWorkerReady === false) return false;
   try{
     const resp = await fetch(WORKER_URL + '/tts', {
       method: 'POST',
@@ -2135,19 +2140,32 @@ async function playElevenLabs(text, avatarId){
       body: JSON.stringify({ text, avatarId })
     });
 
-    // If worker returns JSON it's an error
+    // 403/404 = old worker, mark as unavailable
+    if(resp.status === 403 || resp.status === 404){
+      console.warn('[TTS] Worker /tts not available ('+resp.status+') — update worker code!');
+      _elWorkerReady = false;
+      return false;
+    }
+
     const ctype = resp.headers.get('content-type') || '';
     if(ctype.includes('application/json')){
       const err = await resp.json();
-      if(err.error === 'NO_ELEVENLABS_KEY') console.warn('ElevenLabs key not set — using fallback');
+      console.warn('[TTS] ElevenLabs error:', err.error || JSON.stringify(err));
+      if(err.error === 'NO_ELEVENLABS_KEY') _elWorkerReady = false;
       return false;
     }
 
     if(!resp.ok) return false;
+
     const blob = await resp.blob();
-    const url  = URL.createObjectURL(blob);
+    if(blob.size < 100) return false;
+    _elWorkerReady = true;
+    const url = URL.createObjectURL(blob);
     return await playAudioUrl(url, true);
-  }catch(e){ return false; }
+  }catch(e){
+    console.error('[TTS] exception:', e.message);
+    return false;
+  }
 }
 
 async function playGoogleTTS(text){
@@ -2200,7 +2218,7 @@ function switchView(name){
   document.getElementById("view-"+name).classList.add("active");
   window.scrollTo(0,0);
   // Stop any playing TTS when changing views
-  stopTTS();
+  try{ stopTTS(); }catch(e){}
   // Disable chat during lesson
   const cw = document.getElementById("chat-widget");
   if(cw) cw.style.display = (name==="lesson" || name==="complete") ? "none" : (user ? "block" : "none");
