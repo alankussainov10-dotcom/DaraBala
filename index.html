@@ -19,7 +19,7 @@
   #view-login .login-card { position: relative; z-index: 1; background: rgba(255,255,255,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:28px; padding:36px 28px; width:90%; max-width:400px; box-shadow:0 8px 40px rgba(0,0,0,0.18); text-align:center; }
 
   /* ===== LOGIN ===== */
-  .login-flag { font-size: 48px; margin-bottom: 8px; }
+  .login-flag { display:flex; justify-content:center; margin-bottom:12px; }
   .login-title { font-size: 32px; font-weight: 900; color: #33691e; margin-bottom: 4px; }
   .login-sub   { font-size: 14px; color: #888; font-weight: 700; margin-bottom: 24px; line-height:1.4; }
   .login-divider { display:flex;align-items:center;gap:10px;color:#ccc;font-size:13px;
@@ -379,17 +379,19 @@
   .mc-6{background:#7e57c2} .mc-7{background:#ab47bc} .mc-8{background:#e040fb}
 
   /* ONBOARDING MASCOT */
-  .ob-logo { display:flex; align-items:center; justify-content:center;
-    gap:12px; margin-bottom:20px; }
+  .ob-logo { display:flex; align-items:center; gap:10px;
+    padding-bottom:16px; margin-bottom:16px;
+    border-bottom:1.5px solid #f0f0f0; }
   .mascot-wrap { position:relative; display:inline-block; flex-shrink:0; }
-  .mascot-bubble { position:absolute; top:-12px; left:50%; transform:translateX(-50%);
-    background:#fff; border-radius:12px; padding:4px 10px; font-size:11px; font-weight:800;
-    color:#558b2f; box-shadow:0 2px 8px rgba(0,0,0,0.12); white-space:nowrap;
-    z-index:10; border:1.5px solid #c5e1a5; }
+  .mascot-bubble { position:absolute; top:-10px; left:50%;
+    transform:translateX(-50%); background:#fff; border-radius:10px;
+    padding:3px 8px; font-size:10px; font-weight:800; color:#558b2f;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1); white-space:nowrap; z-index:10;
+    border:1.5px solid #c5e1a5; pointer-events:none; }
   .mascot-bubble::after { content:''; position:absolute; left:-6px; top:50%;
     transform:translateY(-50%); border:6px solid transparent;
     border-right-color:#fff; }
-  #mascot-lottie { width:64px; height:64px; }
+  #mascot-lottie { width:52px; height:52px; flex-shrink:0; }
 
   .input-wrap { position:relative; margin-bottom:16px; }
   .input-wrap .icon { position:absolute; left:14px; top:50%; transform:translateY(-50%);
@@ -416,7 +418,9 @@
   #ob-logo-title { font-size:22px; font-weight:900; color:#33691e; margin:0; }
   #ob-logo-sub   { font-size:13px; color:#888; font-weight:700; margin:2px 0 0; }
 
-  .google-logo { width:22px; height:22px; flex-shrink:0; }
+  .google-logo { width:20px; height:20px; flex-shrink:0; }
+
+  .ob-step h2 { font-size:20px; font-weight:900; color:#33691e; margin-bottom:16px; }
 </style>
 </head>
 <body>
@@ -451,7 +455,14 @@
 <div id="view-login" class="view active">
   <div class="login-bg-tint"></div>
   <div class="login-card" style="animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both;background:rgba(255,255,255,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 40px rgba(0,0,0,0.18);">
-    <div class="login-flag">🇰🇿</div>
+    <div class="login-flag">
+      <svg viewBox="0 0 60 40" width="60" height="40" style="border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15)">
+        <rect width="60" height="40" fill="#00AFCA"/>
+        <circle cx="30" cy="20" r="8" fill="#FFE700" opacity="0.9"/>
+        <text x="30" y="25" text-anchor="middle" font-size="10" fill="#00AFCA" font-weight="bold">☀</text>
+        <line x1="0" y1="6" x2="60" y2="6" stroke="#FFE700" stroke-width="2"/>
+      </svg>
+    </div>
     <div class="login-title">DaraBala</div>
     <div class="login-sub">Умная платформа для учёбы.<br>Войди чтобы сохранить прогресс!</div>
 
@@ -487,12 +498,26 @@
 <!-- SUBJECT SELECT -->
 <div id="view-subject" class="view">
   <div class="subject-card anim-pop">
-    <div style="font-size:56px;margin-bottom:12px">🇰🇿</div>
+    <div style="margin-bottom:12px">
+      <svg viewBox="0 0 90 60" width="72" height="48" style="border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15)">
+        <rect width="90" height="60" fill="#00AFCA"/>
+        <circle cx="45" cy="30" r="12" fill="#FFE700" opacity="0.95"/>
+        <line x1="0" y1="9" x2="90" y2="9" stroke="#FFE700" stroke-width="3"/>
+      </svg>
+    </div>
     <h1>Выбери предмет</h1>
     <p>Что будем учить сегодня?</p>
     <div class="subject-choices">
       <button class="subject-btn english" onclick="selectSubject('english')">
-        <div class="subject-btn-icon">🇬🇧</div>
+        <div class="subject-btn-icon">
+      <svg viewBox="0 0 60 40" width="40" height="27" style="border-radius:4px">
+        <rect width="60" height="40" fill="#012169"/>
+        <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
+        <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4"/>
+        <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="12"/>
+        <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="7"/>
+      </svg>
+    </div>
         <div class="subject-btn-info">
           <div class="subject-btn-title">Английский язык</div>
           <div class="subject-btn-sub">3–4 класс · 9 модулей · 60+ уроков</div>
@@ -519,9 +544,9 @@
         <div id="mascot-lottie"></div>
         <div class="mascot-bubble" id="mascot-bubble">Привет! 👋</div>
       </div>
-      <div>
-        <div id="ob-logo-title" style="font-size:24px;font-weight:900;color:#33691e;margin:0">DaraBala</div>
-        <div id="ob-logo-sub" style="font-size:13px;color:#888;font-weight:700;margin-top:2px">Давай учиться вместе!</div>
+      <div style="line-height:1.2">
+        <div id="ob-logo-title" style="font-size:20px;font-weight:900;color:#33691e;margin:0">DaraBala</div>
+        <div id="ob-logo-sub" style="font-size:12px;color:#aaa;font-weight:700">Давай учиться вместе!</div>
       </div>
     </div>
     <div id="ob-step1" class="ob-step active">
