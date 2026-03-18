@@ -11,15 +11,27 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .view { display: none !important; }
   .view.active { display: block !important; }
-  #view-login.active, #view-subject.active, #view-onboarding.active { display: flex !important; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; position:relative; }
+  
   .login-bg-tint {
     position: absolute; inset: 0; pointer-events: none; z-index: 0;
     background: linear-gradient(to bottom, rgba(80,210,200,0.2) 0%, rgba(160,220,140,0.18) 55%, rgba(60,40,30,0.1) 100%);
   }
-  #view-login .login-card { position: relative; z-index: 1; background: rgba(255,255,255,0.92); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-radius:28px; padding:36px 28px; width:90%; max-width:400px; box-shadow:0 8px 40px rgba(0,0,0,0.18); text-align:center; }
+  #view-login .login-card {
+    background: rgba(255,255,255,0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 28px;
+    padding: 36px 28px 32px;
+    width: calc(100% - 32px);
+    max-width: 420px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
 
   /* ===== LOGIN ===== */
-  .login-flag { font-size:52px; margin-bottom:10px; display:block; line-height:1; }
+  .login-flag { display:flex; justify-content:center; margin-bottom:16px; }
   .login-title { font-size: 32px; font-weight: 900; color: #33691e; margin-bottom: 4px; }
   .login-sub   { font-size: 14px; color: #888; font-weight: 700; margin-bottom: 24px; line-height:1.4; }
   .login-divider { display:flex;align-items:center;gap:10px;color:#ccc;font-size:13px;
@@ -47,8 +59,16 @@
   .btn-green:disabled { background:#ccc;box-shadow:none;transform:none;cursor:not-allowed; }
 
   /* ===== ONBOARDING ===== */
-  .card { background:#fff;border-radius:28px;padding:32px 24px;width:90%;
-    max-width:480px;box-shadow:0 8px 32px rgba(0,0,0,0.12); }
+  .card {
+    background: #fff;
+    border-radius: 28px;
+    padding: 28px 24px 24px;
+    width: calc(100% - 32px);
+    max-width: 440px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
   .ob-step { display:none; }
   .ob-step.active { display:block; width:100%; }
   .ob-title { font-size:22px;font-weight:900;color:#33691e;margin-bottom:20px;text-align:center; }
@@ -77,19 +97,46 @@
     margin-top:8px; }
 
   /* ===== AVATARS ===== */
-  .avatar-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
-    max-height:280px;overflow-y:auto;padding:4px; }
-  .avatar-btn  { display:flex;flex-direction:column;align-items:center;gap:4px;
-    padding:10px 6px;border-radius:16px;border:2.5px solid transparent;background:#fafafa;
-    cursor:pointer;transition:all .15s;font-family:Nunito,sans-serif;font-size:11px;
-    font-weight:800;color:#555; }
+  .avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 4px 2px;
+  }
+  .avatar-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    background: #fafafa;
+    cursor: pointer;
+    font-family: Nunito, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: #666;
+    transition: all .15s cubic-bezier(.175,.885,.32,1.275);
+  }
   .avatar-btn:hover { border-color:#c5e1a5;background:#f1f8e9; }
   .avatar-btn.sel   { border-color:#8bc34a;background:#f1f8e9;color:#33691e; }
-  .av-emoji { font-size:32px;line-height:1; }
+  .av-emoji { font-size: 28px; line-height: 1; }
 
   /* ===== SUBJECT SELECT ===== */
-  .subject-card { background:#fff;border-radius:28px;padding:32px 24px;
-    width:90%;max-width:420px;box-shadow:0 8px 32px rgba(0,0,0,0.12);text-align:center; }
+  .subject-card {
+    background: #fff;
+    border-radius: 28px;
+    padding: 32px 24px;
+    width: calc(100% - 32px);
+    max-width: 420px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    text-align: center;
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
   .subject-card h1 { font-size:22px;font-weight:900;color:#33691e;margin-bottom:8px; }
   .subject-card p  { font-size:14px;color:#888;font-weight:700;margin-bottom:24px; }
   .subject-btn { width:100%;padding:18px;border-radius:18px;border:2.5px solid #e0e0e0;
@@ -435,7 +482,7 @@
   
   
 
-  .google-logo { width:22px; height:22px; flex-shrink:0; }
+  .google-logo { width: 22px; height: 22px; flex-shrink: 0; }
 
   .ob-step h2 { font-size:20px; font-weight:900; color:#33691e; margin-bottom:16px; }
 
@@ -461,7 +508,14 @@
   #view-login.active .login-card,
   #view-subject.active .subject-card,
   #view-onboarding.active .card {
-    animation: cardIn .45s cubic-bezier(.175,.885,.32,1.275) .05s both;
+    background: #fff;
+    border-radius: 28px;
+    padding: 28px 24px 24px;
+    width: calc(100% - 32px);
+    max-width: 440px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12);
+    margin: 0 auto;
+    box-sizing: border-box;
   }
 
   /* Lesson node stagger handled by JS inline styles */
@@ -493,7 +547,22 @@
   .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,195,74,.4); }
   .btn-green:active { transform: translateY(1px); }
   .guest-btn:hover { transform: translateY(-1px); }
-  .avatar-btn { transition: all .15s cubic-bezier(.175,.885,.32,1.275); }
+  .avatar-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px;
+    border-radius: 14px;
+    border: 2px solid transparent;
+    background: #fafafa;
+    cursor: pointer;
+    font-family: Nunito, sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    color: #666;
+    transition: all .15s cubic-bezier(.175,.885,.32,1.275);
+  }
   .avatar-btn:hover { transform: scale(1.08); }
   .avatar-btn.sel { transform: scale(1.05); }
   .lesson-node { transition: transform .2s cubic-bezier(.175,.885,.32,1.275), box-shadow .2s ease; }
@@ -501,6 +570,56 @@
   .lesson-node:not(.locked):active { transform: scale(0.95); }
   .subject-btn { transition: all .15s ease; }
   .subject-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+
+  #view-login.active {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+  #view-subject.active {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+  #view-onboarding.active {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 24px 16px 40px;
+    box-sizing: border-box;
+  }
+
+  #avatar-preview-wrap {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  #avatar-big {
+    font-size: 72px !important;
+    line-height: 1 !important;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.12));
+  }
+  #avatar-big-name {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    color: #33691e !important;
+    margin-top: 8px !important;
+  }
+  #avatar-big-phrase {
+    font-size: 12px !important;
+    color: #689f38 !important;
+    font-style: italic !important;
+    margin-top: 2px !important;
+  }
 </style>
 </head>
 <body>
@@ -536,11 +655,16 @@
   <div class="login-bg-tint"></div>
   <div class="login-card" style="animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both;background:rgba(255,255,255,0.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 40px rgba(0,0,0,0.18);">
     <div class="login-flag">
-      <svg viewBox="0 0 60 40" width="60" height="40" style="border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15)">
-        <rect width="60" height="40" fill="#00AFCA"/>
-        <circle cx="30" cy="20" r="8" fill="#FFE700" opacity="0.9"/>
-        <text x="30" y="25" text-anchor="middle" font-size="10" fill="#00AFCA" font-weight="bold">☀</text>
-        <line x1="0" y1="6" x2="60" y2="6" stroke="#FFE700" stroke-width="2"/>
+      <svg viewBox="0 0 80 80" width="80" height="80">
+        <defs>
+          <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#8bc34a"/>
+            <stop offset="100%" style="stop-color:#33691e"/>
+          </linearGradient>
+        </defs>
+        <circle cx="40" cy="40" r="38" fill="url(#logoGrad)" />
+        <text x="40" y="52" text-anchor="middle" font-size="36" font-family="Nunito,Arial,sans-serif"
+              font-weight="900" fill="white">D</text>
       </svg>
     </div>
     <div class="login-title">DaraBala</div>
@@ -578,13 +702,7 @@
 <!-- SUBJECT SELECT -->
 <div id="view-subject" class="view">
   <div class="subject-card anim-pop">
-    <div style="margin-bottom:12px">
-      <svg viewBox="0 0 90 60" width="72" height="48" style="border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15)">
-        <rect width="90" height="60" fill="#00AFCA"/>
-        <circle cx="45" cy="30" r="12" fill="#FFE700" opacity="0.95"/>
-        <line x1="0" y1="9" x2="90" y2="9" stroke="#FFE700" stroke-width="3"/>
-      </svg>
-    </div>
+    
     <h1>Выбери предмет</h1>
     <p>Что будем учить сегодня?</p>
     <div class="subject-choices">
