@@ -379,19 +379,36 @@
   .mc-6{background:#7e57c2} .mc-7{background:#ab47bc} .mc-8{background:#e040fb}
 
   /* ONBOARDING MASCOT */
-  .ob-logo { display:flex; flex-direction:column; align-items:center;
-    padding-bottom:16px; margin-bottom:16px; border-bottom:1.5px solid #f0f0f0;
-    text-align:center; }
-  .mascot-wrap { position:relative; display:inline-block; margin-bottom:8px; }
-  .mascot-bubble { position:absolute; top:-10px; left:50%;
-    transform:translateX(-50%); background:#fff; border-radius:10px;
-    padding:3px 8px; font-size:10px; font-weight:800; color:#558b2f;
-    box-shadow:0 2px 6px rgba(0,0,0,0.1); white-space:nowrap; z-index:10;
-    border:1.5px solid #c5e1a5; pointer-events:none; }
-  .mascot-bubble::after { content:''; position:absolute; left:-6px; top:50%;
-    transform:translateY(-50%); border:6px solid transparent;
-    border-right-color:#fff; }
-  #mascot-lottie { width:72px; height:72px; }
+  .ob-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1.5px solid #f0f0f0;
+  }
+  .mascot-wrap {
+    position: relative;
+    width: 88px; height: 88px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+  }
+  .mascot-bubble {
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    border: 1.5px solid #c5e1a5;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px; font-weight: 800; color: #558b2f;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    z-index: 10;
+    pointer-events: none;
+  }
+  
+  #mascot-lottie { width:88px; height:88px; display:block; }
 
   .input-wrap { position:relative; margin-bottom:16px; }
   .input-wrap .icon { position:absolute; left:14px; top:50%; transform:translateY(-50%);
@@ -415,12 +432,75 @@
 
   .drum-picker { display:flex; gap:12px; justify-content:center; align-items:flex-start; margin:16px 0; }
 
-  #ob-logo-title { font-size:22px; font-weight:900; color:#33691e; margin:0; }
-  #ob-logo-sub   { font-size:13px; color:#888; font-weight:700; margin:2px 0 0; }
+  
+  
 
-  .google-logo { width:20px; height:20px; flex-shrink:0; }
+  .google-logo { width:22px; height:22px; flex-shrink:0; }
 
   .ob-step h2 { font-size:20px; font-weight:900; color:#33691e; margin-bottom:16px; }
+
+  #ob-logo-title { font-size:20px; font-weight:900; color:#33691e; margin:0 0 4px; text-align:center; }
+  #ob-logo-sub   { font-size:13px; color:#aaa; font-weight:700; margin:0; text-align:center; }
+
+  /* ── PAGE TRANSITIONS ── */
+  @keyframes pageIn {
+    from { opacity:0; transform:translateY(24px) scale(0.97); }
+    to   { opacity:1; transform:translateY(0)    scale(1);    }
+  }
+  @keyframes pageOut {
+    from { opacity:1; transform:translateY(0) scale(1); }
+    to   { opacity:0; transform:translateY(-16px) scale(0.97); }
+  }
+  .view.active { animation: pageIn .35s cubic-bezier(.25,.46,.45,.94) both; }
+
+  /* Card bounce-in for login, subject, onboarding cards */
+  @keyframes cardIn {
+    from { opacity:0; transform:translateY(32px) scale(0.94); }
+    to   { opacity:1; transform:translateY(0)    scale(1); }
+  }
+  #view-login.active .login-card,
+  #view-subject.active .subject-card,
+  #view-onboarding.active .card {
+    animation: cardIn .45s cubic-bezier(.175,.885,.32,1.275) .05s both;
+  }
+
+  /* Lesson node stagger handled by JS inline styles */
+  @keyframes nodePop {
+    from { opacity:0; transform:scale(0.7); }
+    to   { opacity:1; transform:scale(1); }
+  }
+  /* Complete card */
+  @keyframes completeIn {
+    from { opacity:0; transform:scale(0.8) translateY(20px); }
+    to   { opacity:1; transform:scale(1)   translateY(0); }
+  }
+  .complete-card { animation: completeIn .5s cubic-bezier(.175,.885,.32,1.275) .1s both; }
+
+  /* Topbar slide down */
+  .topbar { animation: topbarIn .4s ease both; }
+  @keyframes topbarIn {
+    from { opacity:0; transform:translateY(-100%); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Welcome overlay card */
+  #welcome-overlay.show .welcome-card {
+    animation: cardIn .5s cubic-bezier(.175,.885,.32,1.275) both !important;
+  }
+
+  /* Smooth hover on all buttons */
+  button { transition: transform .12s ease, box-shadow .12s ease, background .15s ease; }
+  .btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139,195,74,.4); }
+  .btn-green:active { transform: translateY(1px); }
+  .guest-btn:hover { transform: translateY(-1px); }
+  .avatar-btn { transition: all .15s cubic-bezier(.175,.885,.32,1.275); }
+  .avatar-btn:hover { transform: scale(1.08); }
+  .avatar-btn.sel { transform: scale(1.05); }
+  .lesson-node { transition: transform .2s cubic-bezier(.175,.885,.32,1.275), box-shadow .2s ease; }
+  .lesson-node:not(.locked):hover { transform: scale(1.1) rotate(-2deg); }
+  .lesson-node:not(.locked):active { transform: scale(0.95); }
+  .subject-btn { transition: all .15s ease; }
+  .subject-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
 </style>
 </head>
 <body>
@@ -544,10 +624,8 @@
         <div id="mascot-lottie"></div>
         <div class="mascot-bubble" id="mascot-bubble">Привет! 👋</div>
       </div>
-      <div style="line-height:1.2">
-        <div id="ob-logo-title" style="font-size:20px;font-weight:900;color:#33691e;margin:0">DaraBala</div>
-        <div id="ob-logo-sub" style="font-size:12px;color:#aaa;font-weight:700">Давай учиться вместе!</div>
-      </div>
+      <div id="ob-logo-title">DaraBala</div>
+      <div id="ob-logo-sub">Давай учиться вместе!</div>
     </div>
     <div id="ob-step1" class="ob-step active">
       <h2>Как тебя зовут?</h2>
@@ -2341,12 +2419,23 @@ function spawnConfetti(count=40){
 function setFooter(state,html){ document.getElementById("lesson-footer").className="lesson-footer "+state; document.getElementById("feedback-area").innerHTML=html; }
 function exitLesson(){ switchView("dashboard"); buildMap(); }
 function switchView(name){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById("view-"+name).classList.add("active");
-  window.scrollTo(0,0);
-  // Stop any playing TTS when changing views
+  const current = document.querySelector(".view.active");
+  const next = document.getElementById("view-"+name);
+  if(!next) return;
+  if(current && current !== next){
+    current.style.animation = 'pageOut .2s ease forwards';
+    setTimeout(()=>{
+      current.classList.remove("active");
+      current.style.animation = '';
+      next.classList.add("active");
+      window.scrollTo({top:0,behavior:'smooth'});
+    }, 180);
+  } else {
+    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+    next.classList.add("active");
+    window.scrollTo(0,0);
+  }
   try{ stopTTS(); }catch(e){}
-  // Disable chat during lesson
   const cw = document.getElementById("chat-widget");
   if(cw) cw.style.display = (name==="lesson" || name==="complete") ? "none" : (user ? "block" : "none");
 }
