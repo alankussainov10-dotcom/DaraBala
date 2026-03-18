@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-<style>
+<style><style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .view { display: none !important; }
   .view.active { display: block !important; }
@@ -59,10 +59,11 @@
 
   /* ===== DRUM PICKER ===== */
   .drum-wrap { display:flex;gap:8px;justify-content:center;margin:16px 0; }
-  .drum-col   { display:flex;flex-direction:column;align-items:center;gap:4px; }
+  .drum-col { display:flex; flex-direction:column; align-items:center; gap:6px; }
   .drum-label { font-size:12px;font-weight:900;color:#888;text-transform:uppercase; }
-  .drum-scroll { height:132px;overflow:hidden;position:relative;width:80px;
-    border-radius:14px;border:2px solid #e0e0e0;background:#fafafa;cursor:grab; }
+  .drum-scroll { height:132px; overflow:hidden; position:relative; width:72px;
+    border-radius:14px; border:2px solid #e0e0e0; background:#fafafa; cursor:grab;
+    touch-action:none; user-select:none; }
   .drum-scroll:active { cursor:grabbing; }
   .drum-items  { position:absolute;top:0;left:0;right:0;transition:transform .15s ease;
     user-select:none; }
@@ -96,10 +97,10 @@
     font-weight:900;color:#333;display:flex;align-items:center;gap:12px;
     transition:all .15s;margin-bottom:12px; }
   .subject-btn:hover { border-color:#8bc34a;background:#f9fbe7;transform:scale(1.01); }
-  .subject-btn .sb-icon { font-size:36px;flex-shrink:0; }
-  .subject-btn .sb-text { text-align:left; }
-  .subject-btn .sb-title { font-size:17px;font-weight:900;color:#33691e; }
-  .subject-btn .sb-sub   { font-size:12px;font-weight:700;color:#888;margin-top:2px; }
+  
+  
+  
+  
 
   body {
     font-family: "Nunito", sans-serif;
@@ -378,16 +379,44 @@
   .mc-6{background:#7e57c2} .mc-7{background:#ab47bc} .mc-8{background:#e040fb}
 
   /* ONBOARDING MASCOT */
-  .ob-logo { display:flex; justify-content:center; margin-bottom:16px; }
-  .mascot-wrap { position:relative; display:inline-block; }
-  .mascot-bubble { position:absolute; top:-8px; right:-60px; background:#fff;
-    border-radius:12px; padding:6px 10px; font-size:12px; font-weight:800;
-    color:#558b2f; box-shadow:0 2px 8px rgba(0,0,0,0.1); white-space:nowrap;
-    min-width:80px; }
+  .ob-logo { display:flex; align-items:center; justify-content:center;
+    gap:12px; margin-bottom:20px; }
+  .mascot-wrap { position:relative; display:inline-block; flex-shrink:0; }
+  .mascot-bubble { position:absolute; top:-12px; left:50%; transform:translateX(-50%);
+    background:#fff; border-radius:12px; padding:4px 10px; font-size:11px; font-weight:800;
+    color:#558b2f; box-shadow:0 2px 8px rgba(0,0,0,0.12); white-space:nowrap;
+    z-index:10; border:1.5px solid #c5e1a5; }
   .mascot-bubble::after { content:''; position:absolute; left:-6px; top:50%;
     transform:translateY(-50%); border:6px solid transparent;
     border-right-color:#fff; }
-  #mascot-lottie { width:80px; height:80px; }
+  #mascot-lottie { width:64px; height:64px; }
+
+  .input-wrap { position:relative; margin-bottom:16px; }
+  .input-wrap .icon { position:absolute; left:14px; top:50%; transform:translateY(-50%);
+    width:20px; height:20px; color:#aaa; pointer-events:none; }
+  .input-wrap input { padding-left:44px; }
+
+  .subject-btn { width:100%; padding:16px 18px; border-radius:18px;
+    border:2px solid #e8e8e8; background:#fff; cursor:pointer;
+    font-family:Nunito,sans-serif; display:flex; align-items:center; gap:14px;
+    transition:all .15s; margin-bottom:12px; text-align:left; }
+  .subject-btn:hover { border-color:#8bc34a; background:#f9fbe7; transform:scale(1.01); }
+  .subject-btn-icon { font-size:36px; flex-shrink:0; }
+  .subject-btn-info { flex:1; }
+  .subject-btn-title { font-size:17px; font-weight:900; color:#33691e; }
+  .subject-btn-sub   { font-size:12px; font-weight:700; color:#888; margin-top:2px; }
+  .subject-btn-badge { font-size:12px; font-weight:900; border-radius:10px;
+    padding:4px 10px; flex-shrink:0; }
+  .badge-green { background:#e8f5e9; color:#388e3c; }
+  .badge-blue  { background:#e3f2fd; color:#1565c0; }
+  .subject-choices { display:flex; flex-direction:column; gap:0; margin-top:20px; }
+
+  .drum-picker { display:flex; gap:12px; justify-content:center; align-items:flex-start; margin:16px 0; }
+
+  #ob-logo-title { font-size:22px; font-weight:900; color:#33691e; margin:0; }
+  #ob-logo-sub   { font-size:13px; color:#888; font-weight:700; margin:2px 0 0; }
+
+  .google-logo { width:22px; height:22px; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -490,8 +519,10 @@
         <div id="mascot-lottie"></div>
         <div class="mascot-bubble" id="mascot-bubble">Привет! 👋</div>
       </div>
-      <h1 id="ob-logo-title">DaraBala</h1>
-      <p id="ob-logo-sub">Давай учиться вместе!</p>
+      <div>
+        <div id="ob-logo-title" style="font-size:24px;font-weight:900;color:#33691e;margin:0">DaraBala</div>
+        <div id="ob-logo-sub" style="font-size:13px;color:#888;font-weight:700;margin-top:2px">Давай учиться вместе!</div>
+      </div>
     </div>
     <div id="ob-step1" class="ob-step active">
       <h2>Как тебя зовут?</h2>
