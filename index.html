@@ -7,10 +7,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
-<style><style>
+<style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   .view { display: none !important; }
   .view.active { display: block !important; }
+  #view-dashboard.active {
+    display: block !important;
+    min-height: 100vh;
+  }
   
   .login-bg-tint {
     position: absolute; inset: 0; pointer-events: none; z-index: 0;
@@ -83,14 +87,36 @@
   .drum-wrap { display:flex;gap:8px;justify-content:center;margin:16px 0; }
   .drum-col { display:flex; flex-direction:column; align-items:center; gap:6px; }
   .drum-label { font-size:12px;font-weight:900;color:#888;text-transform:uppercase; }
-  .drum-scroll { height:132px; overflow:hidden; position:relative; width:72px;
-    border-radius:14px; border:2px solid #e0e0e0; background:#fafafa; cursor:grab;
-    touch-action:none; user-select:none; }
+  .drum-scroll {
+    height: 132px;
+    overflow: hidden;
+    position: relative;
+    cursor: grab;
+    border-radius: 14px;
+    border: 2px solid #e8f5e9;
+    background: #fff;
+    touch-action: none;
+  }
+  .drum-scroll:active { cursor: grabbing; }
   .drum-scroll:active { cursor:grabbing; }
   .drum-items  { position:absolute;top:0;left:0;right:0;transition:transform .15s ease;
     user-select:none; }
-  .drum-item   { height:44px;display:flex;align-items:center;justify-content:center;
-    font-size:15px;font-weight:700;color:#555;transition:all .1s; }
+  .drum-item {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #aaa;
+    transition: color .15s, font-size .15s;
+    pointer-events: none;
+  }
+  .drum-item.selected {
+    color: #33691e !important;
+    font-size: 20px !important;
+    font-weight: 900 !important;
+  }
   .drum-item.selected { color:#33691e;font-weight:900;font-size:17px; }
   .drum-highlight { position:absolute;top:44px;left:0;right:0;height:44px;
     background:rgba(139,195,74,0.15);border-radius:8px;pointer-events:none;
@@ -277,8 +303,32 @@
 
   /* LESSON */
 
-  #view-lesson { background: #fff; }
-  .lesson-topbar { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 2px solid #f0f0f0; padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
+  #view-lesson {
+    position: fixed !important;
+    inset: 0;
+    background: #fff;
+    display: none;
+    flex-direction: column;
+    z-index: 100;
+    overflow-y: auto;
+  }
+  #view-lesson.active {
+    display: flex !important;
+  }
+  .lesson-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: #fff;
+    border-bottom: 2px solid #f0f0f0;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
   .close-btn { background: none; border: none; cursor: pointer; color: #aaa; padding: 4px; flex-shrink: 0; }
   .close-btn svg { width: 24px; height: 24px; display: block; }
   .progress-bar-wrap { flex: 1; height: 20px; background: #eee; border-radius: 10px; overflow: hidden; }
@@ -287,7 +337,15 @@
   .lives { display: flex; gap: 4px; flex-shrink: 0; }
   .heart { font-size: 22px; transition: opacity .3s; }
   .heart.lost { opacity: .25; filter: grayscale(1); }
-  .lesson-content { flex: 1; max-width: 640px; width: 100%; margin: 0 auto; padding: 24px 20px 0; }
+  .lesson-content {
+    flex: 1;
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 24px 20px 16px;
+    display: flex;
+    flex-direction: column;
+  }
   .mech-label { text-align: center; font-size: 13px; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
   .lesson-question { font-size: 24px; font-weight: 900; color: #1a1a1a; text-align: center; margin-bottom: 24px; line-height: 1.3; }
 
@@ -358,7 +416,17 @@
   .mic-result.fail { color: #c62828; }
 
   /* FOOTER */
-  .lesson-footer { padding: 16px 20px; border-top: 2px solid; transition: background .25s, border-color .25s; position: sticky; bottom: 0; z-index: 40; }
+  .lesson-footer {
+    padding: 16px 20px;
+    border-top: 2px solid;
+    transition: background .25s, border-color .25s;
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
   .lesson-footer.neutral { background: #fff; border-color: #f0f0f0; }
   .lesson-footer.good { background: #f1f8e9; border-color: #aed581; }
   .lesson-footer.bad { background: #ffebee; border-color: #ef9a9a; }
@@ -377,7 +445,21 @@
   .btn-check:disabled { background: #d9d9d9; border-bottom-color: #bbb; cursor: not-allowed; opacity: .7; }
 
   /* COMPLETE SCREEN */
-  #view-complete { align-items: center; justify-content: center; padding: 24px; background: linear-gradient(135deg,#f1f8e9,#e8f5e9); }
+  #view-complete {
+    position: fixed !important;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: linear-gradient(135deg,#f1f8e9,#e8f5e9);
+    z-index: 100;
+    overflow-y: auto;
+  }
+  #view-complete.active {
+    display: flex !important;
+  }
   .complete-card { background: #fff; border-radius: 32px; padding: 40px 32px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 8px 40px rgba(0,0,0,.12); }
   .complete-emoji { font-size: 80px; margin-bottom: 16px; animation: bounceLoop 2s ease-in-out infinite; }
   .complete-title { font-size: 32px; font-weight: 900; color: #33691e; margin-bottom: 8px; }
@@ -432,12 +514,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 8px;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    padding-top: 4px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
     border-bottom: 1.5px solid #f0f0f0;
   }
+  .ob-logo #ob-logo-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: #33691e;
+    margin-top: 4px;
+  }
+  .ob-logo #ob-logo-sub {
+    font-size: 13px;
+    color: #888;
+    font-weight: 700;
+  }
+  
+  .mascot-emoji-anim {
+    font-size: 72px;
+    line-height: 1;
+    animation: mascotBob 2s ease-in-out infinite;
+    display: block;
+    text-align: center;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    cursor: default;
+    user-select: none;
+  }
+  @keyframes mascotBob {
+    0%,100% { transform: translateY(0) rotate(-3deg) scale(1); }
+    25%     { transform: translateY(-10px) rotate(2deg) scale(1.05); }
+    50%     { transform: translateY(-6px) rotate(-1deg) scale(1.02); }
+    75%     { transform: translateY(-12px) rotate(3deg) scale(1.07); }
+  }
   .mascot-wrap {
+    position: relative;
+    width: 96px; height: 96px;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+.mascot-wrap {
     position: relative;
     width: 96px; height: 96px;
     margin-top: 20px;
@@ -518,8 +638,8 @@
   #view-onboarding.active .card {
     background: #fff;
     border-radius: 28px;
-    padding: 28px 24px 24px;
-    width: calc(100% - 32px);
+    padding: 20px 20px 20px;
+    width: calc(100% - 24px);
     max-width: 440px;
     box-shadow: 0 8px 32px rgba(0,0,0,.12);
     margin: 0 auto;
@@ -670,6 +790,15 @@
     40%     { transform: rotate(8deg) scale(1.1); }
     60%     { transform: rotate(-5deg); }
     80%     { transform: rotate(5deg); }
+  }
+  @keyframes mascotJump {
+    from { transform: translateY(0) scale(1); }
+    to   { transform: translateY(-16px) scale(1.1); }
+  }
+  @keyframes mascotShake {
+    0%,100% { transform: translateX(0); }
+    25%     { transform: translateX(-6px) rotate(-5deg); }
+    75%     { transform: translateX(6px) rotate(5deg); }
   }
   @keyframes bubbleFloat {
     0%,100% { transform: translateX(-50%) translateY(0); }
@@ -1038,61 +1167,40 @@ const MASCOT_MESSAGES = {
 };
 
 function initMascot(){
+  showEmojiMascot();
+}
+
+function showEmojiMascot(){
   const el = document.getElementById('mascot-lottie');
   if(!el) return;
-
-  // Try Lottie first
-  if(window.lottie){
-    try{
-      const anim = lottie.loadAnimation({
-        container: el,
-        renderer: 'svg',
-        loop: true,
-        autoplay: true,
-        path: 'https://assets10.lottiefiles.com/packages/lf20_ysrn2iwp.json'
-      });
-      anim.addEventListener('data_failed', () => showEmojiMascot(el));
-      return;
-    }catch(e){ showEmojiMascot(el); }
-  } else {
-    showEmojiMascot(el);
-  }
+  const av = user?.avatar || AVATARS[0];
+  el.innerHTML = `<div class="mascot-emoji-anim" id="mascot-emoji-el">${av.emoji}</div>`;
 }
 
-function showEmojiMascot(el){
-  if(!el) el = document.getElementById('mascot-lottie');
-  if(!el) return;
-  el.style.display = 'flex';
-  el.style.alignItems = 'center';
-  el.style.justifyContent = 'center';
-  el.innerHTML = `<div id="mascot-emoji" style="
-    font-size: 80px;
-    line-height: 1;
-    animation: mascotBounce 2.5s ease-in-out infinite;
-    filter: drop-shadow(0 6px 20px rgba(139,195,74,.4));
-    cursor: pointer;
-    user-select: none;
-    display: block;"
-    onclick="try{setMascotMood('idle')}catch(e){}">🐻</div>`;
+function updateMascotForAvatar(av){
+  const el = document.getElementById('mascot-emoji-el');
+  if(el) el.textContent = av.emoji;
 }
+
 
 function setMascotMood(mood){
-  const msgs = MASCOT_MESSAGES[mood] || MASCOT_MESSAGES.idle;
-  const msg = msgs[Math.floor(Math.random()*msgs.length)];
+  const el = document.getElementById('mascot-emoji-el');
   const bubble = document.getElementById('mascot-bubble');
-  if(bubble){ bubble.textContent = msg; }
-  const em = document.getElementById('mascot-emoji');
-  if(em){
-    const base = user?.avatar?.emoji || '🐻';
-    const overlays = { correct: base, wrong: base, thinking: base, idle: base };
-    em.textContent = overlays[mood] || base;
-    em.style.animation = 'none';
-    em.offsetHeight;
-    em.style.animation = mood === 'correct'
-      ? 'mascotWiggle 0.4s ease 3, mascotBounce 2s ease-in-out 1.2s infinite'
-      : 'mascotBounce 2s ease-in-out infinite';
-  }
+  if(!el) return;
+  const av = user?.avatar || AVATARS[0];
+  const moods = {
+    idle:    { emoji: av.emoji, anim:'mascotBob 2s ease-in-out infinite',    text: av.greet?.(user?.name||'') || 'Привет! 👋' },
+    correct: { emoji: '🎉',     anim:'mascotJump .4s ease infinite alternate', text: 'Правильно! Отлично!' },
+    wrong:   { emoji: '😅',     anim:'mascotShake .3s ease infinite',          text: 'Почти! Попробуй ещё!' },
+    thinking:{ emoji: '🤔',     anim:'mascotBob 1s ease-in-out infinite',      text: 'Думаем...' },
+  };
+  const m = moods[mood] || moods.idle;
+  el.textContent = m.emoji;
+  el.style.animation = 'none';
+  setTimeout(()=>{ el.style.animation = m.anim; }, 10);
+  if(bubble) bubble.textContent = m.text;
 }
+
 
 // Update mascot based on avatar choice - show in onboarding
 function updateMascotForAvatar(av){
@@ -1106,17 +1214,75 @@ function updateMascotForAvatar(av){
 window.drumState = { day: new Date().getDate(), month: new Date().getMonth()+1, year: new Date().getFullYear()-10 };
 const ITEM_H = 44;
 
+function daysInMonth(month, year){
+  return new Date(year, month, 0).getDate();
+}
+
 function initDrums(){
-  const days   = Array.from({length:31},(_,i)=>String(i+1).padStart(2,'0'));
   const months = ['Январь','Февраль','Март','Апрель','Май','Июнь',
                   'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
   const curY   = new Date().getFullYear();
-  const years  = Array.from({length:20},(_,i)=>String(curY-5-i));
+  const years  = Array.from({length:80},(_,i)=>String(curY-5-i));
 
-  buildDrum('drum-day',   'drum-day-list',   days,   drumState.day-1,   v => { drumState.day   = parseInt(v); updateDobDisplay(); });
-  buildDrum('drum-month', 'drum-month-list', months, drumState.month-1, (v,i) => { drumState.month = i+1; updateDobDisplay(); });
-  buildDrum('drum-year',  'drum-year-list',  years,  0,                 v => { drumState.year  = parseInt(v); updateDobDisplay(); });
+  // Start with default year 2010, month 1 for day count
+  const initDayCount = daysInMonth(drumState.month, drumState.year||2010);
+  const days = Array.from({length:initDayCount},(_,i)=>String(i+1));
+
+  buildDrum('drum-day', 'drum-day-list', days,
+    Math.min(drumState.day-1, initDayCount-1),
+    v => { drumState.day = parseInt(v); updateDobDisplay(); });
+
+  buildDrum('drum-month', 'drum-month-list', months,
+    drumState.month-1,
+    (v,i) => {
+      drumState.month = i+1;
+      // Rebuild days for new month
+      const dc = daysInMonth(drumState.month, drumState.year||2010);
+      const newDays = Array.from({length:dc},(_,j)=>String(j+1));
+      rebuildDrum('drum-day','drum-day-list', newDays,
+        Math.min(drumState.day-1, dc-1),
+        dv => { drumState.day=parseInt(dv); updateDobDisplay(); });
+      updateDobDisplay();
+    });
+
+  buildDrum('drum-year', 'drum-year-list', years,
+    0,
+    v => {
+      drumState.year = parseInt(v);
+      // Rebuild days for new year (leap year changes Feb)
+      const dc = daysInMonth(drumState.month, drumState.year);
+      const newDays = Array.from({length:dc},(_,j)=>String(j+1));
+      rebuildDrum('drum-day','drum-day-list', newDays,
+        Math.min(drumState.day-1, dc-1),
+        dv => { drumState.day=parseInt(dv); updateDobDisplay(); });
+      updateDobDisplay();
+    });
   updateDobDisplay();
+}
+
+function rebuildDrum(scrollId, listId, items, initIdx, onChange){
+  const list = document.getElementById(listId);
+  if(!list) return;
+  list.innerHTML = '';
+  const scroll = document.getElementById(scrollId);
+  // remove old listeners by cloning
+  const newScroll = scroll.cloneNode(false);
+  newScroll.appendChild(list);
+  scroll.parentNode.replaceChild(newScroll, scroll);
+  // Rebuild padding and items
+  const pad = 2;
+  for(let p=0;p<pad;p++){ const d=document.createElement('div'); d.className='drum-item'; list.appendChild(d); }
+  items.forEach((item,i)=>{
+    const d=document.createElement('div');
+    d.className='drum-item'+(i===initIdx?' selected':'');
+    d.textContent=item; list.appendChild(d);
+  });
+  for(let p=0;p<pad;p++){ const d=document.createElement('div'); d.className='drum-item'; list.appendChild(d); }
+  // Restore scroll position
+  const offset = -(initIdx * ITEM_H);
+  list.style.transform = `translateY(${offset}px)`;
+  // Reattach drag logic via buildDrum's internal setup — simpler: just use scroll
+  attachDrumEvents(newScroll, list, items, initIdx, onChange);
 }
 
 function buildDrum(scrollId, listId, items, initIdx, onChange){
@@ -1188,6 +1354,32 @@ function buildDrum(scrollId, listId, items, initIdx, onChange){
     setIndex(currentIdx + (e.deltaY>0?1:-1));
   }, {passive:false});
 }
+
+function attachDrumEvents(scroll, list, items, initIdx, onChange){
+  let currentIdx = initIdx;
+  function setIndex(idx, animate=true){
+    idx = Math.max(0, Math.min(items.length-1, idx));
+    currentIdx = idx;
+    const offset = -(idx * ITEM_H);
+    list.style.transition = animate ? 'transform .2s cubic-bezier(.25,.46,.45,.94)' : 'none';
+    list.style.transform = `translateY(${offset}px)`;
+    list.querySelectorAll('.drum-item').forEach((el,i)=>
+      el.classList.toggle('selected', i-2===currentIdx));
+    onChange(items[currentIdx], currentIdx);
+  }
+  let startY=0, startIdx=0, isDragging=false;
+  function onStart(e){ isDragging=true; startY=e.touches?e.touches[0].clientY:e.clientY; startIdx=currentIdx; scroll.style.cursor='grabbing'; }
+  function onMove(e){ if(!isDragging)return; e.preventDefault(); const y=e.touches?e.touches[0].clientY:e.clientY; const delta=Math.round((startY-y)/ITEM_H); setIndex(startIdx+delta); }
+  function onEnd(){ isDragging=false; scroll.style.cursor='grab'; }
+  scroll.addEventListener('mousedown', onStart);
+  scroll.addEventListener('touchstart', onStart, {passive:true});
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, {passive:false});
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+  scroll.addEventListener('wheel', e=>{ e.preventDefault(); setIndex(currentIdx + (e.deltaY>0?1:-1)); },{passive:false});
+}
+
 
 function updateDobDisplay(){
   const months = ['января','февраля','марта','апреля','мая','июня',
@@ -1969,6 +2161,7 @@ function currentTeacher(){ return currentSubject==='cs' ? PYTHON_TEACHER : (user
     _ttsEnabled = localStorage.getItem('darabala_tts') !== '0';
     const ttsBtn = document.getElementById('tts-toggle-btn');
     if(ttsBtn) ttsBtn.textContent = _ttsEnabled ? '🔊' : '🔇';
+    switchView('login'); // show login screen first
     initGoogleAuth();
     setTimeout(initMascot, 300);
   });
@@ -2462,139 +2655,102 @@ function speakWord(word){
 
 // ── TTS ENGINE ────────────────────────────────────────────────
 let _ttsAudio = null;
-let _ttsEnabled = true; // user can mute
+let _ttsEnabled = true;
+let _cachedVoices = [];
 
-function showTTSWarning(){
-  // Show once per session
-  if(window._ttsWarnShown) return; window._ttsWarnShown = true;
-  const el = document.createElement('div');
-  el.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);'+
-    'background:#fff3cd;border:1.5px solid #ffc107;border-radius:14px;padding:10px 18px;'+
-    'font-family:Nunito,sans-serif;font-size:13px;font-weight:800;color:#856404;'+
-    'z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.1);white-space:nowrap';
-  el.textContent = '⚠️ ElevenLabs: квота исчерпана — используется Google TTS';
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(), 4000);
+function loadVoices(){
+  _cachedVoices = window.speechSynthesis?.getVoices() || [];
 }
+setTimeout(loadVoices, 200);
+if(window.speechSynthesis){ window.speechSynthesis.onvoiceschanged = loadVoices; }
 
 function stopTTS(){
-  if(_ttsAudio){ try{ _ttsAudio.pause(); _ttsAudio.src=''; }catch(e){} _ttsAudio=null; }
-  try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(e){}
+  if(_ttsAudio){ try{_ttsAudio.pause();_ttsAudio.src='';}catch(e){} _ttsAudio=null; }
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
 }
 
 function cleanForTTS(text){
   return text
-    .replace(/[\u{1F300}-\u{1FFFF}\u{2600}-\u{27BF}]/gu, '')
-    .replace(/[*_~`#>\[\]]/g, '')
-    .replace(/https?:\/\/\S+/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+    .replace(/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}]/gu,'')
+    .replace(/[*_~`#>\[\]]/g,'')
+    .replace(/https?:\/\/\S+/g,'')
+    .replace(/\s+/g,' ').trim();
 }
 
-// ElevenLabs via Cloudflare Worker — unique voice per avatar
+function pickVoice(prefer){
+  const voices = _cachedVoices.length ? _cachedVoices : (window.speechSynthesis?.getVoices()||[]);
+  const ru = voices.filter(v=>v.lang.startsWith('ru'));
+  const pool = ru.length ? ru : voices;
+  if(!pool.length) return null;
+  if(prefer==='female') return pool.find(v=>/female|woman|girl/i.test(v.name)) || pool[0];
+  if(prefer==='male')   return pool.find(v=>/male|man/i.test(v.name)) || pool[pool.length-1];
+  return pool[0];
+}
+
 async function speakStory(){
   const btn = document.getElementById('_story_speak_btn');
   const text = window._currentStoryText;
   if(!text) return;
-  if(_ttsAudio){ stopTTS(); if(btn) btn.textContent = '🔊 Читать'; return; }
-  if(btn){ btn.textContent = '⏹ Стоп'; }
+  if(window.speechSynthesis?.speaking){ stopTTS(); if(btn) btn.textContent='🔊 Читать'; return; }
+  if(btn) btn.textContent='⏹ Стоп';
   await speakAsAvatar(text, currentTeacher());
-  if(btn) btn.textContent = '🔊 Читать';
+  if(btn) btn.textContent='🔊 Читать';
 }
 
 async function speakAsAvatar(text, teacher){
-  if(!_ttsEnabled) return;
+  if(!_ttsEnabled || !window.speechSynthesis) return;
   stopTTS();
-  await new Promise(r => setTimeout(r, 50)); // let stopTTS settle
+
   const clean = cleanForTTS(text);
   if(!clean) return;
 
-  // Chunk at 200 chars — ElevenLabs free tier is more stable with smaller chunks
-  const chunks = [];
-  let rem = clean;
-  while(rem.length > 0){
-    if(rem.length <= 200){ chunks.push(rem); break; }
-    let cut = rem.lastIndexOf('. ', 200);
-    if(cut < 50) cut = rem.lastIndexOf(' ', 200);
-    if(cut < 50) cut = 200;
-    chunks.push(rem.slice(0, cut+1).trim());
-    rem = rem.slice(cut+1).trim();
-  }
+  // Distinct voice profile per avatar
+  const profiles = {
+    fox:     {pitch:1.45,rate:1.15,prefer:'female'},
+    bear:    {pitch:0.55,rate:0.80,prefer:'male'},
+    panda:   {pitch:1.0, rate:0.88,prefer:'female'},
+    tiger:   {pitch:0.85,rate:1.30,prefer:'male'},
+    lion:    {pitch:0.65,rate:0.88,prefer:'male'},
+    elephant:{pitch:0.50,rate:0.78,prefer:'male'},
+    bunny:   {pitch:1.75,rate:1.38,prefer:'female'},
+    penguin: {pitch:1.05,rate:1.02,prefer:'male'},
+    owl:     {pitch:0.72,rate:0.76,prefer:'male'},
+    cat:     {pitch:1.55,rate:1.05,prefer:'female'},
+    dog:     {pitch:1.15,rate:1.25,prefer:'male'},
+    frog:    {pitch:0.88,rate:1.10,prefer:'male'},
+    koala:   {pitch:0.78,rate:0.70,prefer:'female'},
+    unicorn: {pitch:1.65,rate:1.10,prefer:'female'},
+    dragon:  {pitch:0.42,rate:0.92,prefer:'male'},
+    hamster: {pitch:1.85,rate:1.42,prefer:'female'},
+    python:  {pitch:0.60,rate:0.86,prefer:'male'},
+  };
 
-  const avatarId = teacher?.id || 'bear';
-  _ttsSpeaking = true;
+  const id = teacher?.id || 'bear';
+  const p = profiles[id] || {pitch:1.0,rate:1.0,prefer:'female'};
+  const voice = pickVoice(p.prefer);
 
-  for(const chunk of chunks){
-    if(!_ttsEnabled || !chunk) break;
-    const played = await playElevenLabs(chunk, avatarId);
-    if(!played && _ttsEnabled) await playGoogleTTS(chunk);
-  }
-  _ttsAudio = null;
-}
-
-// Cache: worker supports ElevenLabs?
-let _elWorkerReady = null; // null=unknown, true=yes, false=no
-
-async function playElevenLabs(text, avatarId){
-  // Skip immediately if we already know worker doesn't support it
-  if(_elWorkerReady === false) return false;
-  try{
-    const resp = await fetch(WORKER_URL + '/tts', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text, avatarId })
+  const sentences = clean.match(/[^.!?]+[.!?]*/g) || [clean];
+  for(const s of sentences){
+    const t = s.trim();
+    if(!t) continue;
+    await new Promise(resolve=>{
+      const utt = new SpeechSynthesisUtterance(t);
+      utt.lang='ru-RU'; utt.pitch=p.pitch; utt.rate=p.rate; utt.volume=0.95;
+      if(voice) utt.voice=voice;
+      utt.onend=resolve; utt.onerror=resolve;
+      window.speechSynthesis.speak(utt);
     });
-
-    // 403/404 = old worker, mark as unavailable
-    if(resp.status === 403 || resp.status === 404){
-      console.warn('[TTS] Worker /tts not available ('+resp.status+') — update worker code!');
-      _elWorkerReady = false;
-      return false;
-    }
-
-    const ctype = resp.headers.get('content-type') || '';
-    if(ctype.includes('application/json')){
-      const err = await resp.json();
-      console.warn('[TTS] ElevenLabs error:', err.error || JSON.stringify(err));
-      if(err.error === 'NO_ELEVENLABS_KEY') _elWorkerReady = false;
-      return false;
-    }
-
-    if(!resp.ok) return false;
-
-    const blob = await resp.blob();
-    if(blob.size < 100) return false;
-    _elWorkerReady = true;
-    const url = URL.createObjectURL(blob);
-    return await playAudioUrl(url, true);
-  }catch(e){
-    console.error('[TTS] exception:', e.message);
-    return false;
   }
 }
 
-async function playGoogleTTS(text){
-  const ttsLang = lang === 'kz' ? 'kk' : 'ru';
-  const url = `${WORKER_URL}/tts-fallback?text=${encodeURIComponent(text.slice(0,200))}&lang=${ttsLang}`;
-  await playAudioUrl(url, false);
-  // No further fallback — Google TTS is already the fallback
+function toggleTTS(){
+  _ttsEnabled=!_ttsEnabled;
+  stopTTS();
+  const btn=document.getElementById('tts-toggle-btn');
+  if(btn) btn.textContent=_ttsEnabled?'🔊':'🔇';
+  localStorage.setItem('darabala_tts',_ttsEnabled?'1':'0');
 }
 
-function playAudioUrl(url, revokeAfter){
-  return new Promise(resolve => {
-    const audio = new Audio(url);
-    _ttsAudio = audio;
-    audio.volume = 0.92;
-    audio.onended = () => { if(revokeAfter) URL.revokeObjectURL(url); resolve(true); };
-    audio.onerror = () => resolve(false);
-    audio.play().catch(() => resolve(false));
-  });
-}
-
-function webSpeechFallback(text){
-  // Web Speech API disabled — sounds terrible, use Google TTS fallback only
-  console.log('[TTS] webSpeechFallback skipped — too robotic');
-}
 
 // Mute/unmute TTS button (shown in topbar)
 function toggleTTS(){
