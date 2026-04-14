@@ -137,21 +137,22 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
-    padding: 8px 4px;
-    border-radius: 14px;
-    border: 2px solid transparent;
+    gap: 4px;
+    padding: 8px 4px 6px;
+    border-radius: 16px;
+    border: 2.5px solid transparent;
     background: #fafafa;
     cursor: pointer;
     font-family: Nunito, sans-serif;
     font-size: 10px;
     font-weight: 800;
     color: #666;
-    transition: all .15s cubic-bezier(.175,.885,.32,1.275);
+    transition: all .2s cubic-bezier(.175,.885,.32,1.275);
+    min-width: 0;
   }
-  .avatar-btn:hover { border-color:#c5e1a5;background:#f1f8e9; }
-  .avatar-btn.sel   { border-color:#8bc34a;background:#f1f8e9;color:#33691e; }
-  .av-emoji { font-size: 28px; line-height: 1; }
+  .avatar-btn:hover { border-color:#c5e1a5;background:#f1f8e9;transform:scale(1.05); }
+  .avatar-btn.sel   { border-color:#8bc34a;background:#e8f5e9;color:#33691e;transform:scale(1.08); }
+  .av-emoji { font-size: 32px; line-height: 1; }
 
   /* ===== SUBJECT SELECT ===== */
   .subject-card {
@@ -541,6 +542,22 @@
     cursor: default;
     user-select: none;
   }
+  .mascot-gif-anim {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.18));
+    border-radius: 50%;
+    animation: mascotBob 3s ease-in-out infinite;
+  }
+  .av-gif {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    border-radius: 8px;
+    display: block;
+  }
   @keyframes mascotBob {
     0%,100% { transform: translateY(0) rotate(-3deg) scale(1); }
     25%     { transform: translateY(-10px) rotate(2deg) scale(1.05); }
@@ -804,6 +821,121 @@
     0%,100% { transform: translateX(-50%) translateY(0); }
     50%     { transform: translateX(-50%) translateY(-4px); }
   }
+
+  /* ═══════════════════════════════════════════════
+     MOBILE-FIRST RESPONSIVE DESIGN
+  ═══════════════════════════════════════════════ */
+
+  /* Base font scaling */
+  html { font-size: 16px; }
+  @media (max-width: 380px) { html { font-size: 14px; } }
+
+  /* Login screen */
+  #view-login.active {
+    padding: 16px 12px;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 20px 24px;
+    border-radius: 24px;
+  }
+  @media (max-width: 380px) {
+    .login-card { padding: 20px 16px 20px; }
+  }
+
+  /* Onboarding card */
+  #view-onboarding.active .card {
+    padding: 16px 16px 20px;
+    border-radius: 24px;
+    width: calc(100% - 16px);
+    max-width: 440px;
+  }
+  .ob-title { font-size: 20px !important; margin-bottom: 14px !important; }
+  .ob-logo { padding-bottom: 8px !important; margin-bottom: 8px !important; }
+  .mascot-wrap { width: 80px !important; height: 80px !important; margin-top: 12px !important; }
+  .mascot-gif-anim { width: 80px !important; height: 80px !important; }
+
+  /* Input fields */
+  .input-wrap input {
+    font-size: 16px !important; /* prevent iOS zoom */
+    padding: 14px 14px 14px 44px;
+  }
+
+  /* Drum date picker */
+  .drum-wrap { gap: 6px; justify-content: center; margin: 10px 0; }
+  .drum-col { min-width: 80px; max-width: 100px; flex: 1; }
+  .drum-scroll { height: 132px; }
+  .drum-item { height: 44px; font-size: 15px !important; }
+  .drum-item.selected { font-size: 18px !important; }
+  @media (max-width: 360px) {
+    .drum-col { min-width: 70px; }
+    .drum-item { font-size: 13px !important; }
+  }
+
+  /* Dashboard topbar */
+  .topbar { padding: 10px 14px; gap: 8px; }
+  .topbar-name { font-size: 14px; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .topbar-avatar { width: 36px; height: 36px; font-size: 20px; }
+  .stat-pill { padding: 5px 10px; font-size: 12px; }
+  #subject-switcher-btn { font-size: 12px !important; padding: 6px 10px !important; }
+
+  /* Dashboard story card */
+  #dashboard-story { margin: 10px 12px 0; width: calc(100% - 24px); }
+
+  /* Map nodes */
+  .lesson-node { width: 54px; height: 54px; font-size: 22px; }
+  .module-header h3 { font-size: 15px; }
+
+  /* Lesson view */
+  .lesson-topbar { padding: 10px 14px; }
+  .lesson-content { padding: 16px 14px 12px; }
+  .lesson-question { font-size: 18px !important; margin-bottom: 16px !important; }
+  .mech-label { font-size: 11px; margin-bottom: 8px; }
+
+  /* MCQ options */
+  .mcq-options { gap: 10px; margin-top: 14px; }
+  .mcq-option  { padding: 14px 12px; font-size: 15px; border-radius: 16px; }
+  @media (max-width: 380px) {
+    .mcq-options { grid-template-columns: 1fr; }
+    .mcq-option  { padding: 13px 12px; }
+  }
+
+  /* Lesson footer */
+  .lesson-footer { padding: 12px 14px; }
+  .btn-check { font-size: 15px; padding: 14px 20px; border-radius: 16px; }
+
+  /* Complete screen */
+  .complete-card { padding: 28px 20px; border-radius: 24px; }
+  .complete-emoji { font-size: 60px !important; }
+  .complete-title { font-size: 24px !important; }
+  .complete-xp   { font-size: 36px !important; }
+
+  /* Chat widget */
+  #chat-widget { bottom: 16px; right: 14px; }
+  #chat-toggle { width: 54px; height: 54px; font-size: 26px; }
+  #chat-box { width: calc(100vw - 28px); max-width: 340px; right: 0; bottom: 70px; }
+  .chat-messages { max-height: 220px; }
+
+  /* Profile panel */
+  #profile-panel { width: min(300px, 90vw); }
+
+  /* Subject overlay */
+  .subject-card { padding: 24px 20px !important; }
+
+  /* Buttons */
+  .btn-green { padding: 15px 24px; font-size: 16px; border-radius: 18px; }
+
+  /* Avatar grid in change modal */
+  .avatar-modal-grid { grid-template-columns: repeat(4,1fr); gap: 8px; }
+  @media (max-width: 380px) {
+    .avatar-modal-grid { grid-template-columns: repeat(3,1fr); }
+  }
+
+  /* Welcome overlay */
+  .welcome-card { padding: 28px 20px; border-radius: 24px; }
+  .welcome-avatar { font-size: 60px; }
+  .welcome-name { font-size: 22px; }
 </style>
 </head>
 <body>
@@ -957,23 +1089,7 @@
       <button class="btn-green" id="btn-step2" onclick="goStep(3)">Дальше</button>
     </div>
     <div id="ob-step3" class="ob-step">
-      <h2>Выбери своего героя</h2>
-      <!-- Big avatar preview -->
-      <div id="avatar-preview-wrap" style="text-align:center;margin-bottom:16px">
-        <div style="display:inline-flex;flex-direction:column;align-items:center;
-          background:linear-gradient(135deg,#f1f8e9,#dcedc8);
-          border-radius:28px;padding:20px 32px;box-shadow:0 8px 32px rgba(139,195,74,.2);
-          border:2px solid #c5e1a5;min-width:180px">
-          <div id="avatar-big" style="font-size:96px;line-height:1;
-            animation:bounceIn .4s cubic-bezier(.175,.885,.32,1.275) both;
-            filter:drop-shadow(0 8px 16px rgba(0,0,0,.15))">🐾</div>
-          <div id="avatar-big-name" style="font-size:20px;font-weight:900;color:#33691e;
-            margin-top:10px;min-height:28px;letter-spacing:0.5px"></div>
-          <div id="avatar-big-phrase" style="font-size:13px;color:#689f38;font-weight:700;
-            min-height:20px;font-style:italic;margin-top:4px;max-width:200px;line-height:1.4">
-            Выбери героя!</div>
-        </div>
-      </div>
+      <h2 style="text-align:center;margin-bottom:16px">Выбери своего героя</h2>
       <div class="avatar-grid" id="avatar-grid"></div>
       <button class="btn-green" id="btn-step3" disabled onclick="finishOnboarding()">Начать учиться!</button>
     </div>
@@ -1174,12 +1290,32 @@ function showEmojiMascot(){
   const el = document.getElementById('mascot-lottie');
   if(!el) return;
   const av = user?.avatar || AVATARS[0];
-  el.innerHTML = `<div class="mascot-emoji-anim" id="mascot-emoji-el">${av.emoji}</div>`;
+  const gifUrl = av.gif || '';
+  if(gifUrl){
+    el.innerHTML = `<img id="mascot-emoji-el" src="${gifUrl}" class="mascot-gif-anim" alt="${av.emoji}" onerror="this.outerHTML='<span class=\"mascot-emoji-anim\" id=\"mascot-emoji-el\">${av.emoji}</span>'">`;
+  } else {
+    el.innerHTML = `<span class="mascot-emoji-anim" id="mascot-emoji-el">${av.emoji}</span>`;
+  }
 }
 
 function updateMascotForAvatar(av){
   const el = document.getElementById('mascot-emoji-el');
-  if(el) el.textContent = av.emoji;
+  if(!el) return;
+  const gifUrl = av.gif || '';
+  if(el.tagName === 'IMG'){
+    el.src = gifUrl || '';
+    el.alt = av.emoji;
+    if(!gifUrl) el.outerHTML = `<span class="mascot-emoji-anim" id="mascot-emoji-el">${av.emoji}</span>`;
+  } else {
+    if(gifUrl){
+      el.outerHTML = `<img id="mascot-emoji-el" src="${gifUrl}" class="mascot-gif-anim" alt="${av.emoji}" onerror="this.outerHTML='<span class=\"mascot-emoji-anim\" id=\"mascot-emoji-el\">${av.emoji}</span>'">`;
+    } else {
+      el.textContent = av.emoji;
+    }
+  }
+  // Update mascot bubble greeting
+  const bubble = document.getElementById('mascot-bubble');
+  if(bubble && av.greet && user) bubble.textContent = av.greet(user.name || '').split('!')[0] + '! 👋';
 }
 
 
@@ -1552,7 +1688,8 @@ function openAvatarChange(){
   AVATARS.forEach(av => {
     const btn = document.createElement('button');
     btn.className = 'avatar-btn' + (user.avatar?.id===av.id?' sel':'');
-    btn.innerHTML = `<span class="av-emoji">${av.emoji}</span><span>${av.name}</span>`;
+    const gifTag = av.gif ? `<img src="${av.gif}" class="av-gif" alt="${av.emoji}">` : `<span class="av-emoji">${av.emoji}</span>`;
+    btn.innerHTML = gifTag + `<span>${av.name}</span>`;
     btn.onclick = () => {
       user.avatar = av;
       // Save updated profile
@@ -2083,71 +2220,60 @@ const MODULES = [
   }
 ];
 
+const NOTO = hex => `https://fonts.gstatic.com/s/e/notoemoji/latest/${hex}/512.gif`;
+
 const AVATARS = [
-  {id:"fox",    emoji:"🦊", name:"Лисичка",  voice:{pitch:1.4,rate:1.15},
-   greet:n=>`Хитрый план готов, ${n}! 🦊 Я Лисичка — учу английскому хитростями! Попробуй меня перехитрить 😏`,
-   sp:n=>`Ты Лисичка 🦊 — хитрая остроумная лисичка-учительница. Говоришь с намёками, иногда поддразниваешь. Используй "хм...", "а вот хитрость!", "ловушка!". Коротко, весело, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"bear",   emoji:"🐻", name:"Мишка",    voice:{pitch:0.75,rate:0.88},
-   greet:n=>`Уррр... Привет, ${n}! 🐻 Я Мишка. Медленно но верно — всё объясню по-медвежьи понятно!`,
-   sp:n=>`Ты Мишка 🐻 — добрый медлительный медведь-учитель. Говоришь спокойно, "уффф...", "не спеши". Очень терпелив. Коротко, тепло, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"panda",  emoji:"🐼", name:"Панда",    voice:{pitch:1.1,rate:0.93},
-   greet:n=>`Нихао, ${n}! 🐼 Я Панда — спокойная и мудрая. Вместе найдём путь к знаниям 🎋`,
-   sp:n=>`Ты Панда 🐼 — спокойная мудрая панда-учитель. Говоришь размеренно, "как говорит древняя панда...". Вдумчивая. Коротко, с достоинством, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"tiger",  emoji:"🐯", name:"Тигрёнок", voice:{pitch:1.2,rate:1.2},
+  {id:"fox",    emoji:"🦊",gif:NOTO("1f98a"),name:"Лисичка",
+   greet:n=>`Хитрый план готов, ${n}! 🦊 Я Лисичка — учу хитростями! Попробуй меня перехитрить 😏`,
+   sp:n=>`Ты Лисичка 🦊 — хитрая остроумная лисичка. Говоришь с намёками, поддразниваешь. "хм...", "а вот хитрость!". Коротко, весело. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"bear",   emoji:"🐻",gif:NOTO("1f43b"),name:"Мишка",
+   greet:n=>`Уррр... Привет, ${n}! 🐻 Я Мишка. Медленно, но верно — всё объясню!`,
+   sp:n=>`Ты Мишка 🐻 — добрый медлительный медведь. "Уффф...", "не спеши". Очень терпелив. Коротко, тепло. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"panda",  emoji:"🐼",gif:NOTO("1f43c"),name:"Панда",
+   greet:n=>`Нихао, ${n}! 🐼 Я Панда — спокойная и мудрая. Найдём путь к знаниям 🎋`,
+   sp:n=>`Ты Панда 🐼 — спокойная мудрая панда. "Как говорит древняя панда...". Коротко, с достоинством. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"tiger",  emoji:"🐯",gif:NOTO("1f42f"),name:"Тигрёнок",
    greet:n=>`РЫЫ! Привет, ${n}! 🐯 Я Тигрёнок — быстрый и смелый! Пройдём урок молниеносно!`,
-   sp:n=>`Ты Тигрёнок 🐯 — энергичный смелый тигрёнок-учитель. "Давай быстрее!", "ты можешь!", "вперёд!". Мотивирующий. Коротко, энергично, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"lion",   emoji:"🦁", name:"Лёвушка",  voice:{pitch:0.85,rate:0.95},
+   sp:n=>`Ты Тигрёнок 🐯 — энергичный смелый тигрёнок. "Давай быстрее!", "вперёд!". Коротко, энергично. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"lion",   emoji:"🦁",gif:NOTO("1f981"),name:"Лёвушка",
    greet:n=>`Я, Лёвушка, приветствую тебя, ${n}! 🦁 Будем учиться с королевским достоинством!`,
-   sp:n=>`Ты Лёвушка 🦁 — гордый благородный лев-учитель. "Как подобает льву...", "достойный вопрос". Коротко, с достоинством, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"elephant",emoji:"🐘",name:"Слонёнок", voice:{pitch:0.7,rate:0.87},
-   greet:n=>`Труу! Здравствуй, ${n}! 🐘 Я Слонёнок — у меня отличная память! Всё запомним навсегда!`,
-   sp:n=>`Ты Слонёнок 🐘 — добрый умный слонёнок с феноменальной памятью. "Я запомнил что...", "у слонов хорошая память". Коротко, заботливо, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"bunny",  emoji:"🐰", name:"Зайка",    voice:{pitch:1.6,rate:1.28},
+   sp:n=>`Ты Лёвушка 🦁 — гордый благородный лев. "Как подобает льву...", "достойный вопрос". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"elephant",emoji:"🐘",gif:NOTO("1f418"),name:"Слонёнок",
+   greet:n=>`Труу! Здравствуй, ${n}! 🐘 Я Слонёнок — отличная память! Всё запомним навсегда!`,
+   sp:n=>`Ты Слонёнок 🐘 — добрый умный слонёнок. "Я запомнил что...", "у слонов хорошая память". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"bunny",  emoji:"🐰",gif:NOTO("1f430"),name:"Зайка",
    greet:n=>`Прыг-скок, ${n}! 🐰 Я Зайка — быстрая как ветер! Пройдём урок за секунду!`,
-   sp:n=>`Ты Зайка 🐰 — быстрая весёлая зайка-учительница. "Прыг!", "скок!", "побежали!". Игривая. Коротко, быстро, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"penguin",emoji:"🐧", name:"Пингви",   voice:{pitch:1.0,rate:1.0},
-   greet:n=>`Кря! То есть... Привет, ${n}! 🐧 Я Пингви — неуклюжий, но очень старательный учитель!`,
-   sp:n=>`Ты Пингви 🐧 — смешной неуклюжий пингвин-учитель. "Ой, то есть...", "упс, я имел в виду...". Комичный но добросовестный. Коротко, мило, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"owl",    emoji:"🦉", name:"Совёнок",  voice:{pitch:0.9,rate:0.84},
-   greet:n=>`Уху... Добро пожаловать, ${n}. 🦉 Я Совёнок — страж знаний. Начнём по всем правилам науки.`,
-   sp:n=>`Ты Совёнок 🦉 — мудрый серьёзный совёнок-учитель. "Согласно правилам...", "между прочим...", "интересный факт:". Точный. Коротко, умно, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"cat",    emoji:"🐱", name:"Котёнок",  voice:{pitch:1.3,rate:1.05},
-   greet:n=>`Мурр... Приветик, ${n}! 🐱 Я Котёнок — игривый и ласковый. Поиграем и поучимся!`,
-   sp:n=>`Ты Котёнок 🐱 — игривый ласковый котёнок-учитель. "Мурр...", "пурр...", иногда отвлекаешься. Тёплый. Коротко, мило, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"dog",    emoji:"🐶", name:"Щенок",    voice:{pitch:1.25,rate:1.15},
-   greet:n=>`ГАВ-ГАВ! ${n}, привет! 🐶 Я Щенок — твой самый верный друг и учитель!`,
-   sp:n=>`Ты Щенок 🐶 — верный восторженный щенок-учитель. "ОТЛИЧНО!", "ВАУ!", иногда "гав!". Безгранично предан ученику. Коротко, с энтузиазмом, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"frog",   emoji:"🐸", name:"Лягушка",  voice:{pitch:1.1,rate:1.1},
-   greet:n=>`Ква-ква! Привет, ${n}! 🐸 Я Лягушка — прыгаю по темам, но всегда попадаю в цель!`,
-   sp:n=>`Ты Лягушка 🐸 — весёлая лягушка-учительница. "Ква!", "прыгаем к следующему!". Энергичная. Коротко, задорно, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"koala",  emoji:"🐨", name:"Коала",    voice:{pitch:0.95,rate:0.8},
+   sp:n=>`Ты Зайка 🐰 — быстрая весёлая зайка. "Прыг!", "скок!", "побежали!". Коротко, быстро. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"penguin",emoji:"🐧",gif:NOTO("1f427"),name:"Пингви",
+   greet:n=>`Кря! То есть... Привет, ${n}! 🐧 Я Пингви — неуклюжий, но старательный!`,
+   sp:n=>`Ты Пингви 🐧 — смешной неуклюжий пингвин. "Ой, то есть...", "упс, я имел в виду...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"owl",    emoji:"🦉",gif:NOTO("1f989"),name:"Совёнок",
+   greet:n=>`Уху... Добро пожаловать, ${n}. 🦉 Я Совёнок — страж знаний.`,
+   sp:n=>`Ты Совёнок 🦉 — мудрый серьёзный совёнок. "Согласно правилам...", "интересный факт:". Коротко, умно. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"cat",    emoji:"🐱",gif:NOTO("1f431"),name:"Котёнок",
+   greet:n=>`Мурр... Приветик, ${n}! 🐱 Я Котёнок — игривый и ласковый!`,
+   sp:n=>`Ты Котёнок 🐱 — игривый ласковый котёнок. "Мурр...", "пурр...". Тёплый. Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"dog",    emoji:"🐶",gif:NOTO("1f436"),name:"Щенок",
+   greet:n=>`ГАВ-ГАВ! ${n}, привет! 🐶 Я Щенок — твой самый верный друг!`,
+   sp:n=>`Ты Щенок 🐶 — верный восторженный щенок. "ОТЛИЧНО!", "ВАУ!", "гав!". Коротко, с энтузиазмом. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"frog",   emoji:"🐸",gif:NOTO("1f438"),name:"Лягушка",
+   greet:n=>`Ква-ква! Привет, ${n}! 🐸 Я Лягушка — прыгаю по темам, но попадаю в цель!`,
+   sp:n=>`Ты Лягушка 🐸 — весёлая лягушка. "Ква!", "прыгаем!". Коротко, задорно. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"koala",  emoji:"🐨",gif:NOTO("1f428"),name:"Коала",
    greet:n=>`Ммм... Привет, ${n}... 🐨 Я Коала. Учимся не спеша... зато всё хорошо усвоим...`,
-   sp:n=>`Ты Коала 🐨 — спокойная сонная мудрая коала-учительница. "Мммм...", "ну... давай подумаем...". Невозмутимая. Коротко, неспешно, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"unicorn",emoji:"🦄", name:"Единорог", voice:{pitch:1.5,rate:1.1},
-   greet:n=>`✨ Магия началась, ${n}! 🦄 Я Единорог — превращаю уроки в волшебное приключение!`,
-   sp:n=>`Ты Единорог 🦄 — волшебный восторженный единорог-учитель. "По волшебству...", "✨ магия языка...". Вдохновляющий. Коротко, сказочно, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"dragon", emoji:"🐲", name:"Дракончик",voice:{pitch:0.8,rate:1.05},
-   greet:n=>`РРРР! Слушай, ${n}! 🐲 Я Дракончик — огнедышащий учитель! Взгляд строгий, сердце доброе!`,
-   sp:n=>`Ты Дракончик 🐲 — храбрый грозный дракончик-учитель. "Докажи что умеешь!", "достоин ли знаний?". Строгий снаружи, добрый внутри. Коротко, с огнём, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
-  {id:"hamster",emoji:"🐹", name:"Хомяк",    voice:{pitch:1.45,rate:1.2},
-   greet:n=>`Хрум-хрум! Привет, ${n}! 🐹 Я Хомяк — запасаю знания как семечки! Набьём щёчки английским!`,
-   sp:n=>`Ты Хомяк 🐹 — запасливый суетливый хомяк-учитель. "Хрум!", "запасём это знание!", "в копилку!". Трудолюбивый. Коротко, быстро, эмодзи. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+   sp:n=>`Ты Коала 🐨 — спокойная сонная коала. "Мммм...", "ну... давай подумаем...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"unicorn",emoji:"🦄",gif:NOTO("1f984"),name:"Единорог",
+   greet:n=>`✨ Магия началась, ${n}! 🦄 Я Единорог — превращаю уроки в волшебство!`,
+   sp:n=>`Ты Единорог 🦄 — волшебный восторженный единорог. "По волшебству...", "✨ магия языка...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"dragon", emoji:"🐲",gif:NOTO("1f432"),name:"Дракончик",
+   greet:n=>`РРРР! Слушай, ${n}! 🐲 Я Дракончик — огнедышащий учитель! Строгий, но добрый!`,
+   sp:n=>`Ты Дракончик 🐲 — грозный дракончик. "Докажи что умеешь!", "достоин ли знаний?". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
+  {id:"hamster",emoji:"🐹",gif:NOTO("1f439"),name:"Хомяк",
+   greet:n=>`Хрум-хрум! Привет, ${n}! 🐹 Я Хомяк — запасаю знания как семечки!`,
+   sp:n=>`Ты Хомяк 🐹 — запасливый суетливый хомяк. "Хрум!", "запасём это знание!". Коротко, быстро. Ученик 3 класса, имя: ${n}. Учишь английскому.`},
 ];
-
-// ===================== STATE =====================
-let user = null;
-let progressData = {
-  english: { completed:new Set(), streak:0, xp:0 },
-  cs:      { completed:new Set(), streak:0, xp:0 }
-};
-function prog(){ return progressData[currentSubject]; }
-function lesKey(mi,li){ return mi+'_'+li; }
-let lesson = { modIdx:0, lesIdx:0, qIdx:0, questions:[], score:0, total:0, lives:3 };
-let chatOpen = false, chatWaiting = false;
-let chatHistories = { english: [], cs: [] };
-
 const PYTHON_TEACHER = {
-  id:"python", emoji:"🐍", name:"Питон", voice:{pitch:0.7, rate:0.9},
+  id:"python", emoji:"🐍", gif:NOTO("1f40d"), name:"Питон", voice:{pitch:0.7, rate:0.9},
   greet: n=>`Привет, ${n}. 🐍 Я Питон — твой учитель информатики. Буду строг, но справедлив. Готов кодить?`,
   sp:    n=>`Ты Питон 🐍 — строгий точный учитель информатики 7 класса. Краток, как программист. "Хм, классическая ошибка...", "логика нарушена". НЕ пиши готовый код — только объясняй логику, задавай вопросы. Не отвечай вне темы программирования. Ученик: ${n}.`
 };
@@ -2170,7 +2296,8 @@ function currentTeacher(){ return currentSubject==='cs' ? PYTHON_TEACHER : (user
   AVATARS.forEach(av => {
     const btn = document.createElement("button");
     btn.className = "avatar-btn";
-    btn.innerHTML = `<span class="av-emoji">${av.emoji}</span><span>${av.name}</span>`;
+    const gifTag = av.gif ? `<img src="${av.gif}" class="av-gif" alt="${av.emoji}" onerror="this.outerHTML='<span class=\"av-emoji\">${av.emoji}</span>'">` : `<span class="av-emoji">${av.emoji}</span>`;
+    btn.innerHTML = gifTag + `<span>${av.name}</span>`;
     btn.onclick = () => {
       user = user || {};
       user.avatar = av;
