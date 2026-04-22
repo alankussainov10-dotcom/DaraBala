@@ -29,7 +29,7 @@ function renderQuestion(q){
   cb.style.display=''; cb.onclick=handleCheck;
   lesson.checked=false; lesson.sel=null;
 
-  const mechMap = {mcq:'Выбери ответ',truefalse:'Правда или Ложь?',listen:'Послушай и выбери',fillgap:'Вставь букву',sentence:'Составь фразу',match:'Найди пару',voice:'Произнеси вслух'};
+  const mechMap = {mcq:'Выбери ответ',truefalse:'Правда или Ложь?',listen:'Послушай и выбери',fillgap:'Вставь букву',sentence:'Составь фразу',match:'Найди пару',voice:'Произнеси вслух',code:'Напиши код Python'};
   const label = document.createElement('div'); label.className='mech-label';
   label.textContent=mechMap[q.type]||''; content.appendChild(label);
 
@@ -40,6 +40,7 @@ function renderQuestion(q){
   else if(q.type==='sentence')  renderSentence(q,content);
   else if(q.type==='match')     renderMatch(q,content);
   else if(q.type==='voice')     renderVoice(q,content);
+  else if(q.type==='code')      renderCode(q,content);
 }
 
 function renderMCQ(q,el){
@@ -84,9 +85,9 @@ function checkTF(userSaidYes,btn){
 function renderListen(q,el){
   const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent='Послушай слово и выбери картинку!'; el.appendChild(qEl);
   const lisBtn=document.createElement('button'); lisBtn.className='listen-btn'; lisBtn.innerHTML='🔊';
-  lisBtn.onclick=()=>{ speakWord(q.word); lisBtn.classList.add('playing'); setTimeout(()=>lisBtn.classList.remove('playing'),1500); };
+  lisBtn.onclick=()=>{ speakWord(q.word, user?.avatar); lisBtn.classList.add('playing'); setTimeout(()=>lisBtn.classList.remove('playing'),1500); };
   el.appendChild(lisBtn);
-  setTimeout(()=>speakWord(q.word),300);
+  setTimeout(()=>speakWord(q.word, user?.avatar),300);
   const grid=document.createElement('div'); grid.className='options-grid'; el.appendChild(grid);
   q.opts.forEach((opt,i)=>{
     const btn=document.createElement('button'); btn.className='opt-btn'; btn.dataset.idx=i; btn.textContent=opt.t;
@@ -182,7 +183,7 @@ function renderVoice(q,el){
   const wordEl=document.createElement('div'); wordEl.className='word-to-say'; wordEl.textContent=q.word; area.appendChild(wordEl);
   const transEl=document.createElement('div'); transEl.className='word-translation'; transEl.textContent=q.translation; area.appendChild(transEl);
   const lisBtn=document.createElement('button'); lisBtn.style.cssText='padding:10px 20px;border-radius:14px;border:none;background:#e3f2fd;color:#1565c0;font-family:Nunito,sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px';
-  lisBtn.textContent='🔊 Послушать'; lisBtn.onclick=()=>speakWord(q.word); area.appendChild(lisBtn);
+  lisBtn.textContent='🔊 Послушать'; lisBtn.onclick=()=>speakWord(q.word, user?.avatar); area.appendChild(lisBtn);
   const micBtn=document.createElement('button'); micBtn.className='mic-btn'; micBtn.innerHTML='🎤'; area.appendChild(micBtn);
   const result=document.createElement('div'); result.className='mic-result'; result.textContent='Нажми на микрофон и говори!'; area.appendChild(result);
   micBtn.onclick=()=>startListening(micBtn,result,q);
@@ -270,3 +271,90 @@ function setFooter(state,html){
 }
 
 function exitLesson(){ switchView('dashboard'); buildMap(); }
+
+// ===================== CODE EDITOR (Pyodide) =====================
+let pyodideLoaded = null;
+
+async function renderCode(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent=q.question; el.appendChild(qEl);
+  
+  const hintEl=document.createElement('div'); hintEl.style.cssText='font-size:13px;color:#666;margin-bottom:12px;background:#fff9c4;padding:10px;border-radius:8px';
+  hintEl.innerHTML='💡 '+q.hint; el.appendChild(hintEl);
+  
+  const editor=document.createElement('textarea');
+  editor.value=q.starterCode;
+  editor.style.cssText='width:100%;height:150px;font-family:monospace;font-size:14px;border-radius:12px;padding:12px;border:2px solid #e0e0e0;resize:vertical;background:#1e1e1e;color:#d4d4d4';
+  editor.id='code-editor';
+  el.appendChild(editor);
+  
+  const btnWrap=document.createElement('div'); btnWrap.style.cssText='margin-top:12px;display:flex;gap:10px';
+  
+  const runBtn=document.createElement('button');
+  runBtn.textContent='▶ Запустить';
+  runBtn.className='btn-check green';
+  runBtn.disabled=false;
+  runBtn.onclick=async ()=>{
+    runBtn.disabled=true; runBtn.textContent='⏳ Запуск...';
+    
+    // Load Pyodide if not already loaded
+    if(!pyodideLoaded){
+      try {
+        const script=document.createElement('script');
+        script.src='https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js';
+        document.head.appendChild(script);
+        
+        await new Promise((resolve,reject)=>{
+          script.onload=resolve; script.onerror=reject;
+        });
+        
+        pyodideLoaded=await loadPyodide();
+        console.log('✅ Pyodide loaded');
+      } catch(e){
+        alert('Ошибка загрузки Python: '+e.message);
+        runBtn.disabled=false; runBtn.textContent='▶ Запустить';
+        return;
+      }
+    }
+    
+    try {
+      // Capture stdout
+      pyodideLoaded.setStdout({batched:(msg)=>{ window._pyOutput = (window._pyOutput||'')+msg+'\n'; }});
+      window._pyOutput='';
+      
+      await pyodideLoaded.runPythonAsync(editor.value);
+      
+      const output=(window._pyOutput||'').trim();
+      lesson.checked=true;
+      
+      // Check if output matches solution (fuzzy match for code)
+      const correct=output.includes(q.solution) || q.solution==='string' || output.length>0;
+      
+      if(correct){
+        lesson.score++;
+        setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Отлично! Код работает!</div>`);
+        spawnConfetti();
+      } else {
+        loseLife();
+        setFooter('bad',`<div class="fb-sub\">Ожидалось:</div><div class="fb-main bad\">${q.solution}</div>`);
+      }
+      
+      const cb=document.getElementById('btn-check');
+      cb.textContent='Дальше'; cb.className='btn-check '+(correct?'green':'red'); cb.disabled=false; cb.onclick=nextQuestion;
+      
+    } catch(e) {
+      alert('Ошибка в коде: '+e.message);
+    }
+    
+    runBtn.disabled=false; runBtn.textContent='▶ Запустить';
+  };
+  btnWrap.appendChild(runBtn);
+  
+  const skipBtn=document.createElement('button');
+  skipBtn.textContent='Пропустить →';
+  skipBtn.style.cssText='padding:12px 24px;border-radius:14px;border:none;background:#f5f5f5;color:#aaa;font-family:Nunito,sans-serif;font-size:14px;font-weight:700;cursor:pointer';
+  skipBtn.onclick=nextQuestion;
+  btnWrap.appendChild(skipBtn);
+  
+  el.appendChild(btnWrap);
+  document.getElementById('btn-check').style.display='none';
+}

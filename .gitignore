@@ -1,0 +1,1 @@
+Nothing needs to be added to .gitignore since the changes only include markdown files (.md) and source code files (.js, .html), which should not be ignored according to the rules.
