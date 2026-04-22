@@ -212,11 +212,49 @@ function completeLogin(googleUser){
 
 function saveProgress(){
   if(!window._googleUser) return;
-  const key='darabala_progress_'+(window._googleUser.email||window._googleUser.name);
-  localStorage.setItem(key,JSON.stringify({
+  const localData = {
     english:{completed:[...progressData.english.completed],streak:progressData.english.streak,xp:progressData.english.xp},
     cs:{completed:[...progressData.cs.completed],streak:progressData.cs.streak,xp:progressData.cs.xp}
-  }));
+  };
+  
+  // Save to localStorage (fallback)
+  const key='darabala_progress_'+(window._googleUser.email||window._googleUser.name);
+  localStorage.setItem(key,JSON.stringify(localData));
+  
+  // Save to Firebase Firestore (if available)
+  if(db && firebase.auth().currentUser){
+    const uid = firebase.auth().currentUser.uid;
+    db.doc(`users/${uid}`).set({
+      name: user?.name || window._googleUser.name,
+      avatar: user?.avatar?.id,
+      email: window._googleUser.email,
+      progress: {
+        english: {
+          completed: [...progressData.english.completed],
+          xp: progressData.english.xp,
+          streak: progressData.english.streak,
+          lastActivity: firebase.firestore.FieldValue.serverTimestamp()
+        },
+        cs: {
+          completed: [...progressData.cs.completed],
+          xp: progressData.cs.xp,
+          streak: progressData.cs.streak
+        }
+      }
+    }, { merge: true }).catch(e => console.warn('Firestore save error:', e));
+  }
+}
+
+// Load progress from Firebase
+async function loadProgressFromFirebase(uid){
+  if(!db) return null;
+  try {
+    const doc = await db.doc(`users/${uid}`).get();
+    if(doc.exists) return doc.data().progress;
+  } catch(e) {
+    console.warn('Firestore load error:', e);
+  }
+  return null;
 }
 
 function signOut(){
@@ -385,10 +423,62 @@ async function generateDashboardStory(){
 }
 
 // ===================== UTILS =====================
-function speakWord(word){
+function speakWord(word, avatar){
   if(!window.speechSynthesis) return;
-  const utt=new SpeechSynthesisUtterance(word); utt.lang='en-US'; utt.rate=0.85;
-  window.speechSynthesis.cancel(); window.speechSynthesis.speak(utt);
+  
+  // Get voice based on avatar personality (if provided)
+  const voices = window.speechSynthesis.getVoices();
+  let selectedVoice = null;
+  
+  // Avatar-specific voice selection for character personality
+  if(avatar && avatar.id){
+    const voiceMap = {
+      'fox': ['en-US', 1.1],         // Лисичка - быстрый, хитрый голос
+      'bear': ['en-US', 0.85],       // Мишка - низкий, спокойный
+      'panda': ['en-US', 0.9],       // Панда - мягкий, добрый
+      'tiger': ['en-US', 1.0],       // Тигрёнок - уверенный
+      'lion': ['en-US', 0.95],       // Лёвушка - громкий, лидер
+      'elephant': ['en-US', 0.8],    // Слонёнок - медленный, мудрый
+      'bunny': ['en-US', 1.2],       // Зайка - быстрый, весёлый
+      'penguin': ['en-GB', 1.0],     // Пингви - британский акцент
+      'owl': ['en-US', 0.85],        // Совёнок - умный, спокойный
+      'cat': ['en-US', 1.1],         // Котёнок - игривый
+      'dog': ['en-US', 1.0],         // Щенок - энергичный
+      'frog': ['en-US', 1.05],       // Лягушка - квакающий тембр
+      'koala': ['en-AU', 0.9],       // Коала - австралийский акцент
+      'unicorn': ['en-US', 1.15],    // Единорог - волшебный, высокий
+      'dragon': ['en-US', 0.75],     // Дракончик - низкий, рычащий
+      'hamster': ['en-US', 1.3]      // Хомяк - очень быстрый, писклявый
+    };
+    
+    const [lang, rate] = voiceMap[avatar.id] || ['en-US', 0.9];
+    
+    // Try to find a matching voice
+    selectedVoice = voices.find(v => v.lang.startsWith(lang.split('-')[0])) || null;
+    
+    const utt = new SpeechSynthesisUtterance(word);
+    utt.lang = lang;
+    utt.rate = rate;
+    if(selectedVoice) utt.voice = selectedVoice;
+    
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utt);
+    return;
+  }
+  
+  // Default fallback
+  const utt = new SpeechSynthesisUtterance(word);
+  utt.lang = 'en-US';
+  utt.rate = 0.85;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utt);
+}
+
+// Preload voices when page loads
+if(window.speechSynthesis){
+  window.speechSynthesis.onvoiceschanged = () => {
+    // Voices are loaded
+  };
 }
 
 function switchView(name){

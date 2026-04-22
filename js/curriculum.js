@@ -194,4 +194,11 @@ const CS_MODULES = [
     {type:"fillgap",word:"DEF",gapIdx:0,choices:["D","B","P"]},
     {type:"match",pairs:[{en:"def",ru:"Объявить функцию"},{en:"return",ru:"Вернуть значение"},{en:"()",ru:"Скобки параметров"},{en:"fn()",ru:"Вызов функции"}]},
   ]},
+  { id:9, title:"Практикум Python", icon:"💻", par:"Code Editor", lessons:[
+    {type:"code",question:"Напиши программу которая выводит 'Hello World'",starterCode:"# Напиши свой код здесь\nprint(",solution:"Hello World",hint:"Используй функцию print()"},
+    {type:"code",question:"Создай переменную name и присвой ей своё имя",starterCode:"# Создай переменную\nname = ",solution:"string",hint:"Просто напиши текст в кавычках: \"Алан\""},
+    {type:"code",question:"Напиши программу: спроси имя и поприветствуй",starterCode:"# Спроси имя и выведи приветствие\nname = input()\nprint(",solution:"Привет",hint:"Используй input() и print('Привет,', name)"},
+    {type:"code",question:"Проверь: если число больше 10, выведи 'Много'",starterCode:"x = 15\nif x > 10:\n    print(",solution:"Много",hint:"print('Много') внутри if"},
+    {type:"code",question:"Выведи числа от 1 до 5 используя цикл for",starterCode:"for i in range(\n    print(i)",solution:"1\n2\n3\n4\n5",hint:"range(1,6) даст числа 1-5"},
+  ]},
 ];

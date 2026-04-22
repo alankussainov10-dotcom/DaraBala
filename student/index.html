@@ -4,10 +4,15 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#8bc34a"/>
-<title>DaraBala</title>
-<link rel="manifest" href="manifest.json"/>
-<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<title>DaraBala - Ученик</title>
+<link rel="manifest" href="../manifest.json"/>
+<link rel="apple-touch-icon" href="../icons/icon-192.png"/>
+<link rel="stylesheet" href="../css/style.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Nunito",sans-serif;min-height:100vh;background:linear-gradient(160deg,#b2ebf2 0%,#c8e6c9 45%,#e8d5b7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
@@ -40,14 +45,14 @@ body{font-family:"Nunito",sans-serif;min-height:100vh;background:linear-gradient
   <div class="title">DaraBala</div>
   <div class="sub">Умная платформа для учёбы<br>English · Python · Казахстан</div>
 
-  <a href="student/" class="btn btn-student">
+  <a href="./" class="btn btn-student">
     🎒 Мир Ученика
     <span class="badge">3-7 класс</span>
   </a>
 
   <div class="divider">для педагогов</div>
 
-  <a href="teacher/" class="btn btn-teacher">
+  <a href="../teacher/" class="btn btn-teacher">
     📋 Кабинет Учителя
   </a>
 
@@ -60,8 +65,28 @@ body{font-family:"Nunito",sans-serif;min-height:100vh;background:linear-gradient
 </div>
 
 <script>
+// ===================== FIREBASE CONFIG =====================
+const firebaseConfig = {
+  apiKey: "AIzaSyD-YOUR-API-KEY-HERE",
+  authDomain: "darabala.firebaseapp.com",
+  projectId: "darabala",
+  storageBucket: "darabala.appspot.com",
+  messagingSenderId: "YOUR-SENDER-ID",
+  appId: "YOUR-APP-ID"
+};
+
+// Initialize Firebase (will fail gracefully if config not set)
+let db = null;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  console.log('✅ Firebase initialized');
+} catch(e) {
+  console.warn('⚠️ Firebase not configured yet, using localStorage');
+}
+
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/DaraBala/sw.js').catch(()=>{});
+  navigator.serviceWorker.register('../sw.js').catch(()=>{});
 }
 </script>
 </body>
