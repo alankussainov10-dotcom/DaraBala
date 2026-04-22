@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#8bc34a"/>
+<title>DaraBala</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",sans-serif;min-height:100vh;background:linear-gradient(160deg,#b2ebf2 0%,#c8e6c9 45%,#e8d5b7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+.bg-blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.15;pointer-events:none;animation:bFloat 18s ease-in-out infinite alternate}
+@keyframes bFloat{0%{transform:translate(0,0)}100%{transform:translate(var(--tx,30px),var(--ty,-40px))}}
+@keyframes popIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-radius:36px;padding:40px 32px;width:100%;max-width:420px;text-align:center;box-shadow:0 16px 60px rgba(0,0,0,.14);animation:popIn .6s cubic-bezier(.175,.885,.32,1.275) both;z-index:1;position:relative}
+.logo{font-size:52px;animation:bob 2.5s ease-in-out infinite;display:block;margin-bottom:4px}
+.title{font-size:38px;font-weight:900;color:#2e7d32;letter-spacing:-1px;margin-bottom:4px}
+.sub{font-size:14px;color:#aaa;font-weight:700;margin-bottom:32px;line-height:1.5}
+.divider{font-size:12px;color:#ccc;font-weight:700;margin:20px 0;display:flex;align-items:center;gap:10px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#eee}
+.btn{width:100%;padding:18px;border-radius:22px;border:none;font-family:"Nunito",sans-serif;font-size:18px;font-weight:900;cursor:pointer;transition:all .2s;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:12px;text-decoration:none}
+.btn-student{background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;box-shadow:0 6px 24px rgba(139,195,74,.45);border-bottom:5px solid rgba(0,0,0,.15)}
+.btn-student:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(139,195,74,.55)}
+.btn-teacher{background:#fff;color:#2e7d32;border:2.5px solid #c5e1a5;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.btn-teacher:hover{background:#f1f8e9;border-color:#8bc34a;transform:translateY(-2px)}
+.badge{display:inline-block;font-size:11px;font-weight:900;border-radius:10px;padding:4px 10px;background:#e8f5e9;color:#388e3c;margin-left:8px;vertical-align:middle}
+.features{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.feat{font-size:12px;font-weight:800;color:#888;display:flex;align-items:center;gap:5px}
+</style>
+</head>
+<body>
+<div class="bg-blob" style="width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,#8bc34a,#33691e);--tx:40px;--ty:-30px"></div>
+<div class="bg-blob" style="width:400px;height:400px;bottom:-80px;right:-80px;background:radial-gradient(circle,#aed581,#558b2f);--tx:-50px;--ty:40px;animation-duration:14s"></div>
+
+<div class="hero">
+  <span class="logo">🌟</span>
+  <div class="title">DaraBala</div>
+  <div class="sub">Умная платформа для учёбы<br>English · Python · Казахстан</div>
+
+  <a href="student/" class="btn btn-student">
+    🎒 Мир Ученика
+    <span class="badge">3-7 класс</span>
+  </a>
+
+  <div class="divider">для педагогов</div>
+
+  <a href="teacher/" class="btn btn-teacher">
+    📋 Кабинет Учителя
+  </a>
+
+  <div class="features">
+    <div class="feat">🎮 Геймификация</div>
+    <div class="feat">🤖 ИИ-помощник</div>
+    <div class="feat">📊 Прогресс</div>
+    <div class="feat">📱 Офлайн</div>
+  </div>
+</div>
+
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/DaraBala/sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
