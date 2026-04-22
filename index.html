@@ -2,280 +2,67 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#8bc34a"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-<title>DaraBala — Мир Ученика</title>
-<link rel="manifest" href="../manifest.json"/>
-<link rel="apple-touch-icon" href="../icons/icon-192.png"/>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="../css/style.css"/>
-<script src="https://accounts.google.com/gsi/client" async></script>
+<title>DaraBala</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="icons/icon-192.png"/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",sans-serif;min-height:100vh;background:linear-gradient(160deg,#b2ebf2 0%,#c8e6c9 45%,#e8d5b7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+.bg-blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.15;pointer-events:none;animation:bFloat 18s ease-in-out infinite alternate}
+@keyframes bFloat{0%{transform:translate(0,0)}100%{transform:translate(var(--tx,30px),var(--ty,-40px))}}
+@keyframes popIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero{background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-radius:36px;padding:40px 32px;width:100%;max-width:420px;text-align:center;box-shadow:0 16px 60px rgba(0,0,0,.14);animation:popIn .6s cubic-bezier(.175,.885,.32,1.275) both;z-index:1;position:relative}
+.logo{font-size:52px;animation:bob 2.5s ease-in-out infinite;display:block;margin-bottom:4px}
+.title{font-size:38px;font-weight:900;color:#2e7d32;letter-spacing:-1px;margin-bottom:4px}
+.sub{font-size:14px;color:#aaa;font-weight:700;margin-bottom:32px;line-height:1.5}
+.divider{font-size:12px;color:#ccc;font-weight:700;margin:20px 0;display:flex;align-items:center;gap:10px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#eee}
+.btn{width:100%;padding:18px;border-radius:22px;border:none;font-family:"Nunito",sans-serif;font-size:18px;font-weight:900;cursor:pointer;transition:all .2s;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:12px;text-decoration:none}
+.btn-student{background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;box-shadow:0 6px 24px rgba(139,195,74,.45);border-bottom:5px solid rgba(0,0,0,.15)}
+.btn-student:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(139,195,74,.55)}
+.btn-teacher{background:#fff;color:#2e7d32;border:2.5px solid #c5e1a5;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.btn-teacher:hover{background:#f1f8e9;border-color:#8bc34a;transform:translateY(-2px)}
+.badge{display:inline-block;font-size:11px;font-weight:900;border-radius:10px;padding:4px 10px;background:#e8f5e9;color:#388e3c;margin-left:8px;vertical-align:middle}
+.features{display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.feat{font-size:12px;font-weight:800;color:#888;display:flex;align-items:center;gap:5px}
+</style>
 </head>
 <body>
+<div class="bg-blob" style="width:500px;height:500px;top:-100px;left:-100px;background:radial-gradient(circle,#8bc34a,#33691e);--tx:40px;--ty:-30px"></div>
+<div class="bg-blob" style="width:400px;height:400px;bottom:-80px;right:-80px;background:radial-gradient(circle,#aed581,#558b2f);--tx:-50px;--ty:40px;animation-duration:14s"></div>
 
-<!-- ANIMATED BACKGROUND -->
-<div id="bg-canvas">
-  <div class="bg-bubble" style="width:500px;height:500px;top:-80px;left:-120px;background:radial-gradient(circle,#8bc34a,#33691e);--dur:20s;--tx:40px;--ty:-50px;--tx2:-30px;--ty2:30px"></div>
-  <div class="bg-bubble" style="width:360px;height:360px;top:30%;right:-80px;background:radial-gradient(circle,#aed581,#558b2f);--dur:16s;--tx:-50px;--ty:40px;--tx2:20px;--ty2:-60px"></div>
-  <div class="bg-bubble" style="width:280px;height:280px;bottom:-60px;left:20%;background:radial-gradient(circle,#c5e1a5,#7cb342);--dur:22s;--tx:30px;--ty:-30px;--tx2:-40px;--ty2:20px"></div>
-</div>
-<div class="bg-leaf" style="top:8%;left:3%;--ld:17s;--lx:25px;--ly:-35px;--lr:30deg">🍃</div>
-<div class="bg-leaf" style="top:20%;right:4%;--ld:21s;--lx:-20px;--ly:25px;--lr:-20deg">🌿</div>
-<div class="bg-leaf" style="bottom:15%;right:3%;--ld:19s;--lx:-30px;--ly:15px;--lr:-35deg">🌱</div>
+<div class="hero">
+  <span class="logo">🌟</span>
+  <div class="title">DaraBala</div>
+  <div class="sub">Умная платформа для учёбы<br>English · Python · Казахстан</div>
 
-<!-- ===================== LOGIN ===================== -->
-<div id="view-login" class="view active">
-  <div class="login-bg-tint"></div>
-  <div class="login-card">
-    <div class="login-flag">
-      <svg viewBox="0 0 80 80" width="76" height="76">
-        <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8bc34a"/><stop offset="100%" style="stop-color:#2e7d32"/></linearGradient></defs>
-        <circle cx="40" cy="40" r="38" fill="url(#logoGrad)"/>
-        <text x="40" y="52" text-anchor="middle" font-size="36" font-family="Nunito,Arial,sans-serif" font-weight="900" fill="white">D</text>
-      </svg>
-    </div>
-    <div class="login-title">DaraBala</div>
-    <div class="login-sub">Умная платформа для учёбы.<br>Войди чтобы сохранить прогресс!</div>
+  <a href="student/" class="btn btn-student">
+    🎒 Мир Ученика
+    <span class="badge">3-7 класс</span>
+  </a>
 
-    <div id="login-returning-user" style="display:none">
-      <div class="login-user-card" id="login-user-preview"></div>
-      <button class="btn-green" onclick="continueAsUser()" style="margin-bottom:12px">
-        Продолжить как <span id="continue-name"></span>
-      </button>
-      <div class="login-divider">или</div>
-    </div>
+  <div class="divider">для педагогов</div>
 
-    <button class="google-btn" onclick="signInWithGoogle()">
-      <svg class="google-logo" viewBox="0 0 24 24">
-        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
-        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-      </svg>
-      Войти через Google
-    </button>
-    <div class="login-divider">или</div>
-    <button class="guest-btn" onclick="signInAsGuest()">👤 Войти как гость</button>
-    <div style="font-size:11px;color:#ccc;font-weight:700;margin-top:16px;line-height:1.5;text-align:center">
-      Прогресс гостя сохраняется только в этом браузере
-    </div>
+  <a href="teacher/" class="btn btn-teacher">
+    📋 Кабинет Учителя
+  </a>
+
+  <div class="features">
+    <div class="feat">🎮 Геймификация</div>
+    <div class="feat">🤖 ИИ-помощник</div>
+    <div class="feat">📊 Прогресс</div>
+    <div class="feat">📱 Офлайн</div>
   </div>
 </div>
 
-<!-- ===================== SUBJECT SELECT ===================== -->
-<div id="view-subject" class="view">
-  <div class="subject-card">
-    <h1>Выбери предмет</h1>
-    <p>Что будем учить сегодня?</p>
-    <button class="subject-btn" onclick="selectSubject('english')">
-      <div class="subject-btn-icon">
-        <svg viewBox="0 0 60 40" width="44" height="30" style="border-radius:5px">
-          <rect width="60" height="40" fill="#012169"/>
-          <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
-          <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4"/>
-          <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="12"/>
-          <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="7"/>
-        </svg>
-      </div>
-      <div class="subject-btn-info">
-        <div class="subject-btn-title">Английский язык</div>
-        <div class="subject-btn-sub">3–4 класс · 9 модулей · 60+ уроков</div>
-      </div>
-      <span class="subject-btn-badge badge-green">3-4 класс</span>
-    </button>
-    <button class="subject-btn" onclick="selectSubject('cs')">
-      <div class="subject-btn-icon">🐍</div>
-      <div class="subject-btn-info">
-        <div class="subject-btn-title">Информатика · Python</div>
-        <div class="subject-btn-sub">7 класс · §18–34 · Программирование</div>
-      </div>
-      <span class="subject-btn-badge badge-blue">7 класс</span>
-    </button>
-  </div>
-</div>
-
-<!-- ===================== ONBOARDING ===================== -->
-<div id="view-onboarding" class="view">
-  <div class="card">
-    <div class="ob-logo">
-      <div class="mascot-wrap">
-        <div class="mascot-bubble" id="mascot-bubble">Привет! 👋</div>
-        <span class="mascot-emoji" id="mascot-emoji">🦊</span>
-      </div>
-      <div class="ob-logo-title" id="ob-logo-title">DaraBala</div>
-      <div class="ob-logo-sub"   id="ob-logo-sub">Давай учиться вместе!</div>
-    </div>
-    <!-- STEP 1: Name -->
-    <div id="ob-step1" class="ob-step active">
-      <div class="ob-title">Как тебя зовут?</div>
-      <div class="name-input-wrap">
-        <span class="name-input-icon">✏️</span>
-        <input type="text" id="input-name" class="name-input" placeholder="Введи своё имя"
-          autocomplete="off" autocorrect="off" spellcheck="false" oninput="checkStep1()"/>
-      </div>
-      <button class="btn-green" id="btn-step1" disabled onclick="goStep(2)">Дальше →</button>
-    </div>
-    <!-- STEP 2: Birthday -->
-    <div id="ob-step2" class="ob-step">
-      <div class="ob-title">День рождения 🎂</div>
-      <div class="drum-picker">
-        <div class="drum-col"><label>День</label><div class="drum-scroll" id="drum-day"><div class="drum-highlight"></div><div class="drum-items" id="drum-day-list"></div></div></div>
-        <div class="drum-col"><label>Месяц</label><div class="drum-scroll" id="drum-month"><div class="drum-highlight"></div><div class="drum-items" id="drum-month-list"></div></div></div>
-        <div class="drum-col"><label>Год</label><div class="drum-scroll" id="drum-year"><div class="drum-highlight"></div><div class="drum-items" id="drum-year-list"></div></div></div>
-      </div>
-      <div style="text-align:center;font-size:14px;font-weight:800;color:#8bc34a;margin-bottom:18px" id="dob-display">Выбери дату</div>
-      <button class="btn-green" onclick="goStep(3)">Дальше →</button>
-    </div>
-    <!-- STEP 3: Avatar -->
-    <div id="ob-step3" class="ob-step">
-      <div class="ob-title">Выбери своего героя 🦸</div>
-      <div class="avatar-grid" id="avatar-grid"></div>
-      <button class="btn-green" id="btn-step3" disabled onclick="finishOnboarding()">Начать учиться! 🚀</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== DASHBOARD ===================== -->
-<div id="view-dashboard" class="view">
-  <div class="topbar">
-    <div class="topbar-user">
-      <div class="topbar-avatar" id="tb-avatar" onclick="openProfile()" title="Профиль">🐻</div>
-      <span class="topbar-name" id="tb-name"></span>
-    </div>
-    <div class="topbar-stats">
-      <div class="stat-pill xp">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-        <span id="xp-val">0 XP</span>
-      </div>
-      <div class="stat-pill streak dead" id="stat-streak">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="flame-icon"><path d="M12 2c0 0-5 5-5 11a5 5 0 0 0 10 0C17 7 12 2 12 2z"/></svg>
-        <span id="streak-val">0</span>
-      </div>
-    </div>
-    <button id="subject-switcher-btn" onclick="switchSubjectPrompt()"
-      style="font-family:Nunito,sans-serif;font-size:12px;font-weight:900;padding:7px 12px;border-radius:14px;border:2px solid #e0e0e0;background:#fff;cursor:pointer;display:flex;align-items:center;gap:6px;color:#555;transition:all .15s;white-space:nowrap">
-      <span id="subject-switcher-icon">🇬🇧</span>
-      <span id="subject-switcher-label">Английский</span>
-    </button>
-  </div>
-
-  <div id="subject-overlay" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.45);align-items:center;justify-content:center;padding:24px">
-    <div style="background:#fff;border-radius:28px;padding:32px 24px;width:100%;max-width:380px;box-shadow:0 12px 48px rgba(0,0,0,.2)">
-      <h2 style="font-size:22px;font-weight:900;text-align:center;margin-bottom:20px;color:#222">Сменить предмет</h2>
-      <div style="display:flex;flex-direction:column;gap:12px">
-        <button class="subject-btn" onclick="changeSubject('english')" style="border-color:#8bc34a;background:#f1f8e9"><span style="font-size:36px">🇬🇧</span><div><div style="font-size:17px;font-weight:900;color:#222">Английский язык</div><div style="font-size:12px;font-weight:700;color:#aaa">3–4 класс · 9 модулей</div></div></button>
-        <button class="subject-btn" onclick="changeSubject('cs')" style="border-color:#42a5f5;background:#e3f2fd"><span style="font-size:36px">🐍</span><div><div style="font-size:17px;font-weight:900;color:#222">Информатика · Python</div><div style="font-size:12px;font-weight:700;color:#aaa">7 класс · §18–34</div></div></button>
-        <button onclick="document.getElementById('subject-overlay').style.display='none'" style="padding:12px;border-radius:16px;border:2px solid #e0e0e0;background:#f9f9f9;font-family:Nunito,sans-serif;font-size:15px;font-weight:800;cursor:pointer;color:#aaa">Отмена</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="dashboard-story"></div>
-  <div class="map-container" id="map-container"></div>
-</div>
-
-<!-- ===================== LESSON ===================== -->
-<div id="view-lesson" class="view">
-  <div class="lesson-topbar">
-    <button class="close-btn" onclick="exitLesson()">
-      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="lesson-progress-fill" style="width:0%"></div></div>
-    <div class="lives" id="lives-display"></div>
-  </div>
-  <div class="lesson-content" id="lesson-content"></div>
-  <div class="lesson-footer neutral" id="lesson-footer">
-    <div class="footer-inner">
-      <div class="feedback-text" id="feedback-area"></div>
-      <button class="btn-check green" id="btn-check" disabled onclick="handleCheck()">Проверить</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===================== COMPLETE ===================== -->
-<div id="view-complete" class="view">
-  <div class="complete-card">
-    <div class="complete-emoji" id="comp-emoji">🏆</div>
-    <div class="complete-title" id="comp-title">Урок пройден!</div>
-    <div class="complete-sub"   id="comp-sub">Отличная работа!</div>
-    <div class="complete-stats">
-      <div class="complete-stat"><div class="val" id="comp-xp">+10</div><div class="lbl">XP</div></div>
-      <div class="complete-stat"><div class="val" id="comp-score">5/5</div><div class="lbl">Правильно</div></div>
-      <div class="complete-stat"><div class="val" id="comp-streak">🔥1</div><div class="lbl">Дней</div></div>
-    </div>
-    <button class="btn-green" onclick="showDashboard()">На карту уроков</button>
-  </div>
-</div>
-
-<!-- ===================== CHAT WIDGET ===================== -->
-<div id="chat-widget" style="display:none">
-  <div id="chat-box">
-    <div class="chat-header">
-      <div class="chat-header-avatar" id="chat-av">🦊</div>
-      <div><div class="chat-header-name" id="chat-name">Лисичка</div><div class="chat-header-status">Учитель английского 🌟</div></div>
-    </div>
-    <div class="chat-messages" id="chat-messages"></div>
-    <div id="chat-chips" style="padding:8px 12px 0;display:flex;flex-wrap:wrap;gap:6px;border-top:1px solid #f0f0f0"></div>
-    <div class="chat-input-wrap">
-      <input class="chat-input" id="chat-input" placeholder="Спроси что-нибудь..." onkeydown="if(event.key==='Enter')sendChat()"/>
-      <button class="chat-send" id="chat-send-btn" onclick="sendChat()">➤</button>
-    </div>
-  </div>
-  <button id="chat-toggle" onclick="toggleChat()"><span id="chat-toggle-emoji">🦊</span></button>
-  <div id="chat-dot"></div>
-</div>
-
-<!-- ===================== WELCOME OVERLAY ===================== -->
-<div id="welcome-overlay">
-  <div class="welcome-card">
-    <div class="welcome-avatar" id="welcome-av">🐻</div>
-    <div class="welcome-name"   id="welcome-name">Привет!</div>
-    <div class="welcome-sub"    id="welcome-sub">Готов учиться?</div>
-    <button class="btn-green" onclick="closeWelcome()">Поехали! 🚀</button>
-  </div>
-</div>
-
-<!-- PROFILE -->
-<div id="profile-backdrop" onclick="closeProfile()"></div>
-<div id="profile-panel">
-  <div class="profile-header">
-    <div class="profile-pic" id="profile-pic-wrap"></div>
-    <div class="profile-uname" id="profile-uname">—</div>
-    <div class="profile-email" id="profile-email"></div>
-    <div class="profile-stats">
-      <div class="profile-stat"><div class="sv" id="profile-xp-en">0</div><div class="sl">XP 🇬🇧</div></div>
-      <div class="profile-stat"><div class="sv" id="profile-xp-cs">0</div><div class="sl">XP 🐍</div></div>
-      <div class="profile-stat"><div class="sv" id="profile-streak">0🔥</div><div class="sl">Streak</div></div>
-    </div>
-  </div>
-  <div class="profile-body">
-    <div class="profile-section-title">Настройки</div>
-    <div class="profile-row" onclick="openAvatarChange()"><div class="profile-row-icon green">🦊</div><span>Сменить аватара</span></div>
-    <div class="profile-section-title">Язык</div>
-    <div class="lang-options">
-      <button class="lang-btn active" id="lang-ru" onclick="setLang('ru');updateLangBtns()">🇷🇺 Русский</button>
-      <button class="lang-btn" id="lang-kz" onclick="setLang('kz');updateLangBtns()">🇰🇿 Қазақша</button>
-    </div>
-    <div class="profile-section-title">Аккаунт</div>
-    <div class="profile-row" onclick="signOut()"><div class="profile-row-icon red">🚪</div><span>Выйти</span></div>
-  </div>
-</div>
-
-<div id="avatar-change-modal">
-  <div class="avatar-modal-card">
-    <h3>Выбери нового героя</h3>
-    <div class="avatar-modal-grid" id="avatar-modal-grid"></div>
-    <button class="btn-green" style="margin-top:16px" onclick="closeAvatarChange()">Закрыть</button>
-  </div>
-</div>
-
-<!-- ===================== SCRIPTS ===================== -->
-<script src="../js/curriculum.js"></script>
-<script src="../js/lesson.js"></script>
-<script src="../js/chat.js"></script>
-<script src="../js/app.js"></script>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/DaraBala/sw.js').catch(()=>{});
+}
+</script>
 </body>
 </html>
