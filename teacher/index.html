@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DaraBala — Кабинет Учителя</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Nunito",sans-serif;min-height:100vh;background:#f5f5f5;color:#333}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.topbar{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.topbar-logo{font-size:28px}
+.topbar-title{font-size:20px;font-weight:900}
+.topbar-back{margin-left:auto;padding:8px 16px;border-radius:12px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font-family:"Nunito",sans-serif;font-size:14px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .15s}
+.topbar-back:hover{background:rgba(255,255,255,.2)}
+.main{max-width:800px;margin:0 auto;padding:24px 20px 60px}
+h2{font-size:22px;font-weight:900;color:#2e7d32;margin-bottom:6px}
+.section-sub{font-size:14px;color:#aaa;font-weight:700;margin-bottom:20px}
+.card{background:#fff;border-radius:24px;padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:20px;animation:fadeIn .4s ease both}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:520px){.form-row{grid-template-columns:1fr}}
+label{display:block;font-size:13px;font-weight:900;color:#555;margin-bottom:6px}
+select,input[type=text],textarea{width:100%;padding:12px 14px;border-radius:14px;border:2px solid #e0e0e0;font-family:"Nunito",sans-serif;font-size:15px;font-weight:700;color:#333;background:#fafafa;outline:none;transition:border-color .2s}
+select:focus,input:focus,textarea:focus{border-color:#8bc34a;background:#fff}
+textarea{height:100px;resize:vertical;line-height:1.5}
+.btn-gen{background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;border:none;border-radius:16px;padding:15px 28px;font-family:"Nunito",sans-serif;font-size:17px;font-weight:900;cursor:pointer;width:100%;transition:all .2s;box-shadow:0 4px 16px rgba(139,195,74,.4);border-bottom:4px solid rgba(0,0,0,.15)}
+.btn-gen:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,195,74,.5)}
+.btn-gen:disabled{background:#d0d0d0;box-shadow:none;cursor:not-allowed;border-bottom-color:rgba(0,0,0,.08)}
+.result-box{background:#f9fbe7;border:1.5px solid #c5e1a5;border-radius:18px;padding:20px;margin-top:16px;display:none;white-space:pre-wrap;font-size:14px;line-height:1.8;color:#333;font-family:"Nunito",sans-serif;font-weight:700}
+.result-box.show{display:block;animation:fadeIn .4s ease both}
+.copy-btn{margin-top:12px;padding:10px 20px;border-radius:12px;border:2px solid #c5e1a5;background:#fff;font-family:"Nunito",sans-serif;font-size:14px;font-weight:800;color:#2e7d32;cursor:pointer;transition:all .15s}
+.copy-btn:hover{background:#f1f8e9}
+.spinner{display:none;text-align:center;padding:20px;font-size:14px;color:#8bc34a;font-weight:800}
+.spinner.show{display:block}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:10px 20px;border-radius:14px;border:2px solid #e0e0e0;background:#fff;font-family:"Nunito",sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#888;transition:all .15s}
+.tab.active{border-color:#8bc34a;background:#f1f8e9;color:#2e7d32}
+.tip{background:#e3f2fd;border-radius:14px;padding:14px 16px;font-size:13px;font-weight:700;color:#1565c0;margin-bottom:16px;line-height:1.6}
+.tip span{font-size:18px;vertical-align:middle;margin-right:6px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="topbar-logo">📋</span>
+  <div class="topbar-title">Кабинет Учителя</div>
+  <a href="../" class="topbar-back">← На главную</a>
+</div>
+
+<div class="main">
+  <h2>Добро пожаловать, педагог!</h2>
+  <div class="section-sub">Инструменты для подготовки уроков с помощью ИИ</div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('ksp')">📝 Генератор КСП</button>
+    <button class="tab" onclick="showTab('quiz')">🎯 Генератор теста</button>
+    <button class="tab" onclick="showTab('story')">📖 Генератор истории</button>
+  </div>
+
+  <!-- TAB: КСП -->
+  <div id="tab-ksp">
+    <div class="tip"><span>💡</span>ИИ создаст краткосрочный план урока по стандартам МОН РК. Заполните поля и нажмите «Сгенерировать».</div>
+    <div class="card">
+      <div class="form-row">
+        <div>
+          <label>Предмет</label>
+          <select id="ksp-subject">
+            <option value="Английский язык">Английский язык</option>
+            <option value="Информатика / Python">Информатика / Python</option>
+            <option value="Русский язык">Русский язык</option>
+            <option value="Казахский язык">Казахский язык</option>
+            <option value="Математика">Математика</option>
+          </select>
+        </div>
+        <div>
+          <label>Класс</label>
+          <select id="ksp-grade">
+            <option>3 класс</option><option>4 класс</option><option>5 класс</option>
+            <option>6 класс</option><option selected>7 класс</option><option>8 класс</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Раздел / Unit</label>
+          <input type="text" id="ksp-unit" placeholder='Например: "My School" или "Переменные"'/>
+        </div>
+        <div>
+          <label>Тема урока</label>
+          <input type="text" id="ksp-topic" placeholder='Например: "School objects" или "Цикл while"'/>
+        </div>
+      </div>
+      <div style="margin-bottom:16px">
+        <label>Цели урока (необязательно)</label>
+        <textarea id="ksp-goals" placeholder="Опишите цели или оставьте пустым — ИИ определит сам"></textarea>
+      </div>
+      <button class="btn-gen" onclick="generateKSP()">🤖 Сгенерировать КСП</button>
+      <div class="spinner" id="ksp-spinner">⏳ Генерирую КСП...</div>
+      <div class="result-box" id="ksp-result"></div>
+      <button class="copy-btn" id="ksp-copy" style="display:none" onclick="copyResult('ksp-result')">📋 Скопировать КСП</button>
+    </div>
+  </div>
+
+  <!-- TAB: QUIZ -->
+  <div id="tab-quiz" style="display:none">
+    <div class="tip"><span>🎯</span>ИИ создаст тест с вопросами по теме — можно распечатать или использовать на уроке.</div>
+    <div class="card">
+      <div class="form-row">
+        <div>
+          <label>Тема теста</label>
+          <input type="text" id="quiz-topic" placeholder='Например: "Weather vocabulary"'/>
+        </div>
+        <div>
+          <label>Количество вопросов</label>
+          <select id="quiz-count">
+            <option>5</option><option selected>10</option><option>15</option><option>20</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label>Тип вопросов</label>
+          <select id="quiz-type">
+            <option value="mcq">Выбор ответа (MCQ)</option>
+            <option value="truefalse">Правда / Ложь</option>
+            <option value="mixed">Смешанный</option>
+          </select>
+        </div>
+        <div>
+          <label>Сложность</label>
+          <select id="quiz-level">
+            <option>Лёгкий</option><option selected>Средний</option><option>Сложный</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-gen" onclick="generateQuiz()">🤖 Сгенерировать тест</button>
+      <div class="spinner" id="quiz-spinner">⏳ Создаю вопросы...</div>
+      <div class="result-box" id="quiz-result"></div>
+      <button class="copy-btn" id="quiz-copy" style="display:none" onclick="copyResult('quiz-result')">📋 Скопировать тест</button>
+    </div>
+  </div>
+
+  <!-- TAB: STORY -->
+  <div id="tab-story" style="display:none">
+    <div class="tip"><span>📖</span>ИИ создаст мини-историю с именами учеников класса — повышает вовлечённость.</div>
+    <div class="card">
+      <div style="margin-bottom:14px">
+        <label>Тема истории</label>
+        <input type="text" id="story-topic" placeholder='Например: "Hello, English!" или "Что такое переменная"'/>
+      </div>
+      <div style="margin-bottom:14px">
+        <label>Имена учеников класса (через запятую)</label>
+        <input type="text" id="story-names" placeholder="Алан, Дина, Марат, Айгерим, Тимур"/>
+      </div>
+      <div style="margin-bottom:16px">
+        <label>Язык истории</label>
+        <select id="story-lang">
+          <option value="ru">Русский</option>
+          <option value="kz">Казахский</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      <button class="btn-gen" onclick="generateStory()">🤖 Создать историю</button>
+      <div class="spinner" id="story-spinner">⏳ Пишу историю...</div>
+      <div class="result-box" id="story-result"></div>
+      <button class="copy-btn" id="story-copy" style="display:none" onclick="copyResult('story-result')">📋 Скопировать</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
+
+function showTab(name){
+  ['ksp','quiz','story'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display = t===name?'block':'none';
+    document.querySelectorAll('.tab').forEach((el,i)=>{
+      el.classList.toggle('active', ['ksp','quiz','story'][i]===name);
+    });
+  });
+}
+
+async function callAI(prompt, spinnerId, resultId, copyId){
+  const spinner = document.getElementById(spinnerId);
+  const result  = document.getElementById(resultId);
+  const copyBtn = document.getElementById(copyId);
+  spinner.classList.add('show');
+  result.classList.remove('show');
+  if(copyBtn) copyBtn.style.display='none';
+  try{
+    const resp = await fetch(WORKER_URL+'/chat',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({message: prompt})
+    });
+    const data = await resp.json();
+    result.textContent = data.reply || 'Нет ответа';
+    result.classList.add('show');
+    if(copyBtn) copyBtn.style.display='inline-block';
+  }catch(e){
+    result.textContent = 'Ошибка соединения. Проверьте интернет.';
+    result.classList.add('show');
+  }
+  spinner.classList.remove('show');
+}
+
+function generateKSP(){
+  const subject = document.getElementById('ksp-subject').value;
+  const grade   = document.getElementById('ksp-grade').value;
+  const unit    = document.getElementById('ksp-unit').value || 'по программе';
+  const topic   = document.getElementById('ksp-topic').value || 'по теме';
+  const goals   = document.getElementById('ksp-goals').value;
+  const prompt  = `Создай краткосрочный план урока (КСП) по стандартам МОН РК.
+Предмет: ${subject}, ${grade}
+Раздел/Unit: ${unit}
+Тема урока: ${topic}
+${goals?'Цели: '+goals:''}
+КСП должен включать: цели урока (знать, уметь, применять), ход урока (начало/середина/конец), виды деятельности, формативное оценивание, ресурсы.
+Формат: чёткие блоки с временными рамками. Язык: русский.`;
+  callAI(prompt,'ksp-spinner','ksp-result','ksp-copy');
+}
+
+function generateQuiz(){
+  const topic = document.getElementById('quiz-topic').value || 'по общей теме';
+  const count = document.getElementById('quiz-count').value;
+  const type  = document.getElementById('quiz-type').value;
+  const level = document.getElementById('quiz-level').value;
+  const typeMap = {mcq:'с вариантами ответа (MCQ)',truefalse:'Правда/Ложь',mixed:'смешанного типа'};
+  const prompt = `Создай тест ${typeMap[type]} по теме "${topic}".
+Количество вопросов: ${count}. Сложность: ${level}.
+Для MCQ: 4 варианта, отметь правильный. Для Правда/Ложь: чёткое утверждение.
+В конце дай ответы. Язык: русский.`;
+  callAI(prompt,'quiz-spinner','quiz-result','quiz-copy');
+}
+
+function generateStory(){
+  const topic = document.getElementById('story-topic').value || 'об учёбе';
+  const names = document.getElementById('story-names').value || 'Алан, Дина, Марат';
+  const lang  = document.getElementById('story-lang').value;
+  const langMap = {ru:'русском',kz:'казахском',en:'английском'};
+  const prompt = `Напиши увлекательную мини-историю (4-6 предложений) на ${langMap[lang]} языке по теме "${topic}".
+Обязательно включи имена этих учеников в текст: ${names}.
+История должна быть интересной, немного юмористической, подходящей для школьников. Только сама история.`;
+  callAI(prompt,'story-spinner','story-result','story-copy');
+}
+
+function copyResult(id){
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✅ Скопировано!';
+    setTimeout(()=>btn.textContent=orig,2000);
+  });
+}
+</script>
+</body>
+</html>
