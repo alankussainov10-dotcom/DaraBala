@@ -12,6 +12,7 @@
 <link rel="apple-touch-icon" href="/DaraBala/icons/icon-192.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
+
 /* ===================== RESET & BASE ===================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; }
@@ -479,10 +480,11 @@ body {
   .tf-btn         { padding:14px; font-size:20px; }
 }
 
+
 </style>
-<script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <body>
+
 
 <!-- ANIMATED BACKGROUND -->
 <div id="bg-canvas">
@@ -493,45 +495,6 @@ body {
 <div class="bg-leaf" style="top:8%;left:3%;--ld:17s;--lx:25px;--ly:-35px;--lr:30deg">🍃</div>
 <div class="bg-leaf" style="top:20%;right:4%;--ld:21s;--lx:-20px;--ly:25px;--lr:-20deg">🌿</div>
 <div class="bg-leaf" style="bottom:15%;right:3%;--ld:19s;--lx:-30px;--ly:15px;--lr:-35deg">🌱</div>
-
-<!-- ===================== LOGIN ===================== -->
-<div id="view-login" class="view active">
-  <div class="login-bg-tint"></div>
-  <div class="login-card">
-    <div class="login-flag">
-      <svg viewBox="0 0 80 80" width="76" height="76">
-        <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8bc34a"/><stop offset="100%" style="stop-color:#2e7d32"/></linearGradient></defs>
-        <circle cx="40" cy="40" r="38" fill="url(#logoGrad)"/>
-        <text x="40" y="52" text-anchor="middle" font-size="36" font-family="Nunito,Arial,sans-serif" font-weight="900" fill="white">D</text>
-      </svg>
-    </div>
-    <div class="login-title">DaraBala</div>
-    <div class="login-sub">Умная платформа для учёбы.<br>Войди чтобы сохранить прогресс!</div>
-
-    <div id="login-returning-user" style="display:none">
-      <div class="login-user-card" id="login-user-preview"></div>
-      <button class="btn-green" onclick="continueAsUser()" style="margin-bottom:12px">
-        Продолжить как <span id="continue-name"></span>
-      </button>
-      <div class="login-divider">или</div>
-    </div>
-
-    <button class="google-btn" onclick="signInWithGoogle()">
-      <svg class="google-logo" viewBox="0 0 24 24">
-        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
-        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-      </svg>
-      Войти через Google
-    </button>
-    <div class="login-divider">или</div>
-    <button class="guest-btn" onclick="signInAsGuest()">👤 Войти как гость</button>
-    <div style="font-size:11px;color:#ccc;font-weight:700;margin-top:16px;line-height:1.5;text-align:center">
-      Прогресс гостя сохраняется только в этом браузере
-    </div>
-  </div>
-</div>
 
 <!-- ===================== SUBJECT SELECT ===================== -->
 <div id="view-subject" class="view">
@@ -1717,6 +1680,1040 @@ function spawnConfetti(count=40){
     document.body.appendChild(p); setTimeout(()=>p.remove(),3000);
   }
 }
+
+</script>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+
+// ===================== AVATARS =====================
+const AVATARS = [
+  { id:'fox',      emoji:'🦊', name:'Лисичка',
+    greet: n=>`Хитрый план готов, ${n}! 🦊 Я Лисичка!`,
+    sp:    n=>`Ты Лисичка 🦊 — хитрая весёлая лисичка-учитель. Говоришь с намёками, поддразниваешь. Коротко, весело. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'bear',     emoji:'🐻', name:'Мишка',
+    greet: n=>`Уррр... Привет, ${n}! 🐻 Я Мишка!`,
+    sp:    n=>`Ты Мишка 🐻 — добрый медлительный медведь. "Уффф...". Терпелив. Коротко, тепло. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'panda',    emoji:'🐼', name:'Панда',
+    greet: n=>`Нихао, ${n}! 🐼 Я Панда!`,
+    sp:    n=>`Ты Панда 🐼 — спокойная мудрая панда. Коротко, с достоинством. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'tiger',    emoji:'🐯', name:'Тигрёнок',
+    greet: n=>`РЫЫ! Привет, ${n}! 🐯 Я Тигрёнок!`,
+    sp:    n=>`Ты Тигрёнок 🐯 — энергичный смелый тигрёнок. "Вперёд!". Коротко, энергично. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'lion',     emoji:'🦁', name:'Лёвушка',
+    greet: n=>`Я, Лёвушка, приветствую тебя, ${n}! 🦁`,
+    sp:    n=>`Ты Лёвушка 🦁 — гордый благородный лев. "Достойный вопрос". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'elephant', emoji:'🐘', name:'Слонёнок',
+    greet: n=>`Труу! Здравствуй, ${n}! 🐘 Я Слонёнок!`,
+    sp:    n=>`Ты Слонёнок 🐘 — добрый умный слонёнок. "Я запомнил что...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'bunny',    emoji:'🐰', name:'Зайка',
+    greet: n=>`Прыг-скок, ${n}! 🐰 Я Зайка!`,
+    sp:    n=>`Ты Зайка 🐰 — быстрая весёлая зайка. "Прыг!", "скок!". Коротко, быстро. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'penguin',  emoji:'🐧', name:'Пингви',
+    greet: n=>`Кря! То есть... Привет, ${n}! 🐧 Я Пингви!`,
+    sp:    n=>`Ты Пингви 🐧 — смешной пингвин. "Ой, то есть...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'owl',      emoji:'🦉', name:'Совёнок',
+    greet: n=>`Уху... Добро пожаловать, ${n}. 🦉 Я Совёнок.`,
+    sp:    n=>`Ты Совёнок 🦉 — мудрый серьёзный совёнок. "Интересный факт:". Коротко, умно. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'cat',      emoji:'🐱', name:'Котёнок',
+    greet: n=>`Мурр... Приветик, ${n}! 🐱 Я Котёнок!`,
+    sp:    n=>`Ты Котёнок 🐱 — игривый ласковый котёнок. "Мурр...". Тёплый. Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'dog',      emoji:'🐶', name:'Щенок',
+    greet: n=>`ГАВ-ГАВ! ${n}, привет! 🐶 Я Щенок!`,
+    sp:    n=>`Ты Щенок 🐶 — верный восторженный щенок. "ОТЛИЧНО!", "гав!". Коротко, с энтузиазмом. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'frog',     emoji:'🐸', name:'Лягушка',
+    greet: n=>`Ква-ква! Привет, ${n}! 🐸 Я Лягушка!`,
+    sp:    n=>`Ты Лягушка 🐸 — весёлая лягушка. "Ква!". Коротко, задорно. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'koala',    emoji:'🐨', name:'Коала',
+    greet: n=>`Ммм... Привет, ${n}... 🐨 Я Коала.`,
+    sp:    n=>`Ты Коала 🐨 — спокойная сонная коала. "Мммм...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'unicorn',  emoji:'🦄', name:'Единорог',
+    greet: n=>`✨ Магия началась, ${n}! 🦄 Я Единорог!`,
+    sp:    n=>`Ты Единорог 🦄 — волшебный восторженный единорог. "✨ магия языка...". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'dragon',   emoji:'🐲', name:'Дракончик',
+    greet: n=>`РРРР! Слушай, ${n}! 🐲 Я Дракончик!`,
+    sp:    n=>`Ты Дракончик 🐲 — грозный дракончик. "Докажи что умеешь!". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+  { id:'hamster',  emoji:'🐹', name:'Хомяк',
+    greet: n=>`Хрум-хрум! Привет, ${n}! 🐹 Я Хомяк!`,
+    sp:    n=>`Ты Хомяк 🐹 — запасливый суетливый хомяк. "Хрум!", "запасём это знание!". Коротко. Ученик 3 класса, имя: ${n}. Учишь английскому.` },
+];
+
+const PYTHON_TEACHER = {
+  id:'python', emoji:'🐍', name:'Питон',
+  greet: n=>`Привет, ${n}. 🐍 Я Питон — твой учитель информатики.`,
+  sp:    n=>`Ты Питон 🐍 — строгий точный учитель информатики 7 класса. Краток. НЕ пиши готовый код — только объясняй логику. Ученик: ${n}.`
+};
+
+function currentTeacher(){ return currentSubject==='cs' ? PYTHON_TEACHER : (user?.avatar || AVATARS[0]); }
+
+// ===================== ENGLISH MODULES =====================
+const MODULES = [
+  { id:1, title:"Hello, English!", icon:"👋", lessons:[
+    {type:"mcq",question:"Как сказать «Привет»?",opts:[{t:"Hello",e:"👋"},{t:"Goodbye",e:"🚶"},{t:"Apple",e:"🍎"},{t:"Dog",e:"🐶"}],ans:0},
+    {type:"mcq",question:"Как сказать «До свидания»?",opts:[{t:"Hello",e:"👋"},{t:"Goodbye",e:"🚶"},{t:"Please",e:"🙏"},{t:"Thank you",e:"😊"}],ans:1},
+    {type:"truefalse",question:"Это красный цвет?",emoji:"🔴",answer:"Red",correctIs:true},
+    {type:"truefalse",question:"Это синий цвет?",emoji:"🟢",answer:"Blue",correctIs:false},
+    {type:"listen",word:"Apple",emoji:"🍎",opts:[{t:"Apple",e:"🍎"},{t:"Book",e:"📚"},{t:"Cat",e:"🐱"},{t:"Dog",e:"🐶"}],ans:0},
+    {type:"fillgap",word:"HELLO",gapIdx:1,choices:["E","A","O"]},
+    {type:"sentence",translation:"Привет, я [Имя]!",words:["Hello","I","am","Name"],correct:["Hello","I","am","Name"]},
+    {type:"match",pairs:[{en:"Hello",ru:"Привет"},{en:"Goodbye",ru:"Пока"},{en:"Red",ru:"Красный"},{en:"Blue",ru:"Синий"}]},
+  ]},
+  { id:2, title:"My School", icon:"🏫", lessons:[
+    {type:"mcq",question:"Что это?",img:"🎒",opts:[{t:"Schoolbag",e:"🎒"},{t:"Book",e:"📚"},{t:"Pen",e:"🖊️"},{t:"Ruler",e:"📏"}],ans:0},
+    {type:"mcq",question:"Как сказать «Ручка»?",opts:[{t:"Pencil",e:"✏️"},{t:"Rubber",e:"🧽"},{t:"Pen",e:"🖊️"},{t:"Book",e:"📚"}],ans:2},
+    {type:"truefalse",question:"Это карандаш (pencil)?",emoji:"✏️",answer:"Pencil",correctIs:true},
+    {type:"listen",word:"Pencil",emoji:"✏️",opts:[{t:"Pen",e:"🖊️"},{t:"Pencil",e:"✏️"},{t:"Rubber",e:"🧽"},{t:"Book",e:"📚"}],ans:1},
+    {type:"fillgap",word:"BOOK",gapIdx:2,choices:["O","A","U"]},
+    {type:"sentence",translation:"Открой свою книгу!",words:["your","Open","book","please"],correct:["Open","your","book","please"]},
+    {type:"match",pairs:[{en:"Book",ru:"Книга"},{en:"Pen",ru:"Ручка"},{en:"Pencil",ru:"Карандаш"},{en:"Bag",ru:"Сумка"}]},
+    {type:"voice",word:"Open your book",translation:"Открой свою книгу"},
+  ]},
+  { id:3, title:"My Family", icon:"👨‍👩‍👧", lessons:[
+    {type:"mcq",question:"Как сказать «Мама»?",opts:[{t:"Daddy",e:"👨"},{t:"Mummy",e:"👩"},{t:"Sister",e:"👧"},{t:"Brother",e:"👦"}],ans:1},
+    {type:"mcq",question:"Как сказать «Брат»?",opts:[{t:"Mummy",e:"👩"},{t:"Sister",e:"👧"},{t:"Brother",e:"👦"},{t:"Daddy",e:"👨"}],ans:2},
+    {type:"truefalse",question:"Это папа (daddy)?",emoji:"👨",answer:"Daddy",correctIs:true},
+    {type:"listen",word:"Mummy",emoji:"👩",opts:[{t:"Daddy",e:"👨"},{t:"Mummy",e:"👩"},{t:"Brother",e:"👦"},{t:"Sister",e:"👧"}],ans:1},
+    {type:"fillgap",word:"DADDY",gapIdx:2,choices:["D","T","B"]},
+    {type:"sentence",translation:"Это моя мама",words:["my","This","is","mummy"],correct:["This","is","my","mummy"]},
+    {type:"match",pairs:[{en:"Mummy",ru:"Мама"},{en:"Daddy",ru:"Папа"},{en:"Sister",ru:"Сестра"},{en:"Brother",ru:"Брат"}]},
+    {type:"voice",word:"This is my mummy",translation:"Это моя мама"},
+  ]},
+  { id:4, title:"Weather", icon:"⛅", lessons:[
+    {type:"mcq",question:"Как сказать «Солнечно»?",opts:[{t:"Raining",e:"🌧️"},{t:"Sunny",e:"☀️"},{t:"Snowing",e:"❄️"},{t:"Cloudy",e:"☁️"}],ans:1},
+    {type:"truefalse",question:"Это солнечная погода?",emoji:"☀️",answer:"Sunny",correctIs:true},
+    {type:"listen",word:"Sunny",emoji:"☀️",opts:[{t:"Raining",e:"🌧️"},{t:"Snowing",e:"❄️"},{t:"Sunny",e:"☀️"},{t:"Windy",e:"💨"}],ans:2},
+    {type:"fillgap",word:"SUNNY",gapIdx:3,choices:["N","M","H"]},
+    {type:"sentence",translation:"Сегодня солнечно",words:["sunny","It","today","is"],correct:["It","is","sunny","today"]},
+    {type:"match",pairs:[{en:"Sunny",ru:"Солнечно"},{en:"Raining",ru:"Дождь"},{en:"Snowing",ru:"Снег"},{en:"Cold",ru:"Холодно"}]},
+  ]},
+  { id:5, title:"Free Time", icon:"⚽", lessons:[
+    {type:"mcq",question:"Как сказать «Читать»?",opts:[{t:"Read",e:"📖"},{t:"Play",e:"⚽"},{t:"Swim",e:"🏊"},{t:"Dance",e:"💃"}],ans:0},
+    {type:"truefalse",question:"Swim — это плавать?",emoji:"🏊",answer:"Swim = плавать",correctIs:true},
+    {type:"listen",word:"Read",emoji:"📖",opts:[{t:"Write",e:"✍️"},{t:"Read",e:"📖"},{t:"Draw",e:"🎨"},{t:"Sing",e:"🎤"}],ans:1},
+    {type:"fillgap",word:"PLAY",gapIdx:2,choices:["A","E","I"]},
+    {type:"sentence",translation:"Я люблю плавать",words:["swim","I","to","like"],correct:["I","like","to","swim"]},
+    {type:"match",pairs:[{en:"Read",ru:"Читать"},{en:"Play",ru:"Играть"},{en:"Swim",ru:"Плавать"},{en:"Dance",ru:"Танцевать"}]},
+  ]},
+  { id:6, title:"Health", icon:"🏥", lessons:[
+    {type:"mcq",question:"Как сказать «Голова»?",opts:[{t:"Arm",e:"💪"},{t:"Leg",e:"🦵"},{t:"Head",e:"🤕"},{t:"Hand",e:"✋"}],ans:2},
+    {type:"truefalse",question:"Это рука (hand)?",emoji:"✋",answer:"Hand",correctIs:true},
+    {type:"listen",word:"Head",emoji:"🤕",opts:[{t:"Hand",e:"✋"},{t:"Leg",e:"🦵"},{t:"Head",e:"🤕"},{t:"Arm",e:"💪"}],ans:2},
+    {type:"fillgap",word:"HAND",gapIdx:2,choices:["N","M","D"]},
+    {type:"sentence",translation:"У меня болит голова",words:["head","My","hurts","aches"],correct:["My","head","hurts"]},
+    {type:"match",pairs:[{en:"Head",ru:"Голова"},{en:"Hand",ru:"Рука"},{en:"Leg",ru:"Нога"},{en:"Arm",ru:"Плечо"}]},
+  ]},
+  { id:7, title:"Buildings", icon:"🏙️", lessons:[
+    {type:"mcq",question:"Как сказать «Школа»?",opts:[{t:"Hospital",e:"🏥"},{t:"School",e:"🏫"},{t:"Shop",e:"🏪"},{t:"Park",e:"🌳"}],ans:1},
+    {type:"truefalse",question:"Это парк (park)?",emoji:"🌳",answer:"Park",correctIs:true},
+    {type:"listen",word:"School",emoji:"🏫",opts:[{t:"Hospital",e:"🏥"},{t:"Park",e:"🌳"},{t:"School",e:"🏫"},{t:"Shop",e:"🏪"}],ans:2},
+    {type:"fillgap",word:"PARK",gapIdx:1,choices:["A","E","O"]},
+    {type:"sentence",translation:"Я иду в школу",words:["to","I","school","go"],correct:["I","go","to","school"]},
+    {type:"match",pairs:[{en:"School",ru:"Школа"},{en:"Hospital",ru:"Больница"},{en:"Park",ru:"Парк"},{en:"Shop",ru:"Магазин"}]},
+  ]},
+  { id:8, title:"My Holidays", icon:"✈️", lessons:[
+    {type:"mcq",question:"Как сказать «Пляж»?",opts:[{t:"Mountain",e:"⛰️"},{t:"Forest",e:"🌲"},{t:"Beach",e:"🏖️"},{t:"City",e:"🌆"}],ans:2},
+    {type:"truefalse",question:"Это горы (mountains)?",emoji:"⛰️",answer:"Mountains",correctIs:true},
+    {type:"listen",word:"Beach",emoji:"🏖️",opts:[{t:"Mountain",e:"⛰️"},{t:"Beach",e:"🏖️"},{t:"Forest",e:"🌲"},{t:"City",e:"🌆"}],ans:1},
+    {type:"fillgap",word:"BEACH",gapIdx:2,choices:["A","E","I"]},
+    {type:"sentence",translation:"Я люблю каникулы",words:["love","I","my","holidays"],correct:["I","love","my","holidays"]},
+    {type:"match",pairs:[{en:"Beach",ru:"Пляж"},{en:"Mountain",ru:"Гора"},{en:"Travel",ru:"Путешествие"},{en:"Holiday",ru:"Каникулы"}]},
+  ]},
+  { id:9, title:"Nature", icon:"🌿", lessons:[
+    {type:"mcq",question:"Как сказать «Животное»?",opts:[{t:"Plant",e:"🌿"},{t:"Animal",e:"🐾"},{t:"Water",e:"💧"},{t:"Tree",e:"🌳"}],ans:1},
+    {type:"truefalse",question:"Это тигр (tiger)?",emoji:"🐯",answer:"Tiger",correctIs:true},
+    {type:"listen",word:"Tiger",emoji:"🐯",opts:[{t:"Lion",e:"🦁"},{t:"Tiger",e:"🐯"},{t:"Bear",e:"🐻"},{t:"Wolf",e:"🐺"}],ans:1},
+    {type:"fillgap",word:"TIGER",gapIdx:2,choices:["G","T","K"]},
+    {type:"sentence",translation:"Берегите природу!",words:["nature","Protect","our","please"],correct:["Protect","our","nature"]},
+    {type:"match",pairs:[{en:"Tiger",ru:"Тигр"},{en:"Forest",ru:"Лес"},{en:"Animal",ru:"Животное"},{en:"Nature",ru:"Природа"}]},
+  ]},
+];
+
+// ===================== CS MODULES (Python) =====================
+const CS_MODULES = [
+  { id:1, title:"Знакомство с Python", icon:"🐍", par:"§18", lessons:[
+    {type:"mcq",question:"Какая команда выводит текст на экран?",opts:[{t:"print()",e:"📤"},{t:"show()",e:"👁️"},{t:"write()",e:"✏️"},{t:"display()",e:"🖥️"}],ans:0},
+    {type:"mcq",question:"Что напечатает: print(5 + 3)?",opts:[{t:"5 + 3",e:"📝"},{t:"8",e:"8️⃣"},{t:"53",e:"🔢"},{t:"Ошибка",e:"💥"}],ans:1},
+    {type:"truefalse",question:"print('Привет') выведет слово Привет?",emoji:"📤",answer:"Да, print выводит текст",correctIs:true},
+    {type:"fillgap",word:"PRINT",gapIdx:0,choices:["P","B","F"]},
+    {type:"match",pairs:[{en:"print()",ru:"Вывод на экран"},{en:"#",ru:"Комментарий"},{en:"+",ru:"Сложение"},{en:"*",ru:"Умножение"}]},
+  ]},
+  { id:2, title:"Переменные", icon:"📦", par:"§19", lessons:[
+    {type:"mcq",question:"Как сохранить число 10 в переменную x?",opts:[{t:"x == 10",e:"❌"},{t:"x = 10",e:"✅"},{t:"x := 10",e:"❌"},{t:"int x = 10",e:"❌"}],ans:1},
+    {type:"mcq",question:"Что делает input()?",opts:[{t:"Выводит текст",e:"📤"},{t:"Считывает ввод",e:"📥"},{t:"Считает сумму",e:"➕"},{t:"Открывает файл",e:"📂"}],ans:1},
+    {type:"truefalse",question:"input() всегда возвращает строку?",emoji:"📥",answer:"Да! input() = строка",correctIs:true},
+    {type:"fillgap",word:"INPUT",gapIdx:0,choices:["I","O","U"]},
+    {type:"match",pairs:[{en:"x = 5",ru:"Переменная x = 5"},{en:"input()",ru:"Ввод от пользователя"},{en:"int()",ru:"Строка → число"},{en:"str()",ru:"Число → строка"}]},
+  ]},
+  { id:3, title:"if / else", icon:"🔀", par:"§20-21", lessons:[
+    {type:"mcq",question:"Что ставится в конце строки if?",opts:[{t:"Точка .",e:"."},{t:"Двоеточие :",e:":"},{t:"Скобка )",e:")"},{t:"Точка с запятой ;",e:";"}],ans:1},
+    {type:"truefalse",question:"else выполняется когда условие if ЛОЖНО?",emoji:"🔀",answer:"else = иначе",correctIs:true},
+    {type:"truefalse",question:"elif — это то же самое что else if?",emoji:"🤔",answer:"Да! elif = else if",correctIs:true},
+    {type:"fillgap",word:"ELSE",gapIdx:0,choices:["E","A","I"]},
+    {type:"match",pairs:[{en:"if",ru:"Если"},{en:"elif",ru:"Иначе если"},{en:"else",ru:"Иначе"},{en:":",ru:"Начало блока кода"}]},
+  ]},
+  { id:4, title:"Сравнение", icon:"⚖️", par:"§22-23", lessons:[
+    {type:"mcq",question:"Что означает == в Python?",opts:[{t:"Присваивание",e:"="},{t:"Сравнение равенства",e:"⚖️"},{t:"Больше",e:">"},{t:"Меньше",e:"<"}],ans:1},
+    {type:"truefalse",question:"3 != 5 означает: 3 НЕ равно 5?",emoji:"≠",answer:"!= означает не равно",correctIs:true},
+    {type:"truefalse",question:"True and False равно True?",emoji:"🤔",answer:"False! Оба должны быть True",correctIs:false},
+    {type:"fillgap",word:"TRUE",gapIdx:0,choices:["T","F","R"]},
+    {type:"match",pairs:[{en:"==",ru:"Равно"},{en:"!=",ru:"Не равно"},{en:"and",ru:"И (оба true)"},{en:"or",ru:"ИЛИ (хоть один)"}]},
+  ]},
+  { id:5, title:"Файлы", icon:"📁", par:"§24-25", lessons:[
+    {type:"mcq",question:"Какая функция открывает файл?",opts:[{t:"open()",e:"📂"},{t:"read()",e:"📖"},{t:"start()",e:"▶️"},{t:"load()",e:"💾"}],ans:0},
+    {type:"truefalse",question:"f.close() закрывает файл?",emoji:"🔒",answer:"Да! Всегда закрывай файл",correctIs:true},
+    {type:"fillgap",word:"OPEN",gapIdx:0,choices:["O","A","E"]},
+    {type:"match",pairs:[{en:"'r'",ru:"Чтение файла"},{en:"'w'",ru:"Запись (с нуля)"},{en:"'a'",ru:"Добавить в конец"},{en:".read()",ru:"Прочитать файл"}]},
+  ]},
+  { id:6, title:"Цикл while", icon:"🔁", par:"§28-29", lessons:[
+    {type:"mcq",question:"i=0, while i<3: i+=1. Сколько раз выполнится?",opts:[{t:"2",e:"2️⃣"},{t:"3",e:"3️⃣"},{t:"4",e:"4️⃣"},{t:"0",e:"0️⃣"}],ans:1},
+    {type:"truefalse",question:"while True: создаёт бесконечный цикл?",emoji:"♾️",answer:"Да! True всегда истина",correctIs:true},
+    {type:"fillgap",word:"WHILE",gapIdx:0,choices:["W","V","M"]},
+    {type:"match",pairs:[{en:"while",ru:"Цикл пока условие верно"},{en:"break",ru:"Выйти из цикла"},{en:"continue",ru:"Пропустить шаг"},{en:"i += 1",ru:"i = i + 1"}]},
+  ]},
+  { id:7, title:"for и range", icon:"🔄", par:"§30-31", lessons:[
+    {type:"mcq",question:"for i in range(3): print(i). Что напечатает?",opts:[{t:"1 2 3",e:"1️⃣"},{t:"0 1 2",e:"0️⃣"},{t:"3",e:"3️⃣"},{t:"Ошибка",e:"💥"}],ans:1},
+    {type:"truefalse",question:"range(5) начинается с 0?",emoji:"0️⃣",answer:"Да! range(5) = 0,1,2,3,4",correctIs:true},
+    {type:"fillgap",word:"FOR",gapIdx:0,choices:["F","G","T"]},
+    {type:"match",pairs:[{en:"range(5)",ru:"0 1 2 3 4"},{en:"range(1,4)",ru:"1 2 3"},{en:"for i in ...",ru:"Цикл по каждому"},{en:"len(lst)",ru:"Длина списка"}]},
+  ]},
+  { id:8, title:"Функции", icon:"🔧", par:"§32-34", lessons:[
+    {type:"mcq",question:"Как объявить функцию greet?",opts:[{t:"function greet():",e:"❌"},{t:"def greet():",e:"✅"},{t:"func greet():",e:"❌"},{t:"greet = function:",e:"❌"}],ans:1},
+    {type:"truefalse",question:"def нужно писать при КАЖДОМ вызове функции?",emoji:"🔧",answer:"Нет! def только при объявлении",correctIs:false},
+    {type:"fillgap",word:"DEF",gapIdx:0,choices:["D","B","P"]},
+    {type:"match",pairs:[{en:"def",ru:"Объявить функцию"},{en:"return",ru:"Вернуть значение"},{en:"()",ru:"Скобки параметров"},{en:"fn()",ru:"Вызов функции"}]},
+  ]},
+];
+
+
+</script>
+<script>
+
+// ===================== LESSON ENGINE =====================
+function startLesson(modIdx, key){
+  const mods = currentSubject==='cs' ? CS_MODULES : MODULES;
+  const allQ = mods[modIdx].lessons;
+  const shuffled = [...allQ].sort(()=>Math.random()-.5);
+  lesson = { modIdx, lid:key, questions:shuffled, qIdx:0, lives:3, score:0, checked:false, sel:null };
+  lesson.question = shuffled[0];
+  switchView('lesson');
+  renderLives();
+  document.getElementById('lesson-progress-fill').style.width='0%';
+  renderQuestion(lesson.question);
+}
+
+function renderLives(){
+  const d = document.getElementById('lives-display'); d.innerHTML='';
+  for(let i=0;i<3;i++){
+    const h=document.createElement('span');
+    h.className='heart'+(i>=lesson.lives?' lost':'');
+    h.textContent='❤️'; d.appendChild(h);
+  }
+}
+
+function renderQuestion(q){
+  const content = document.getElementById('lesson-content');
+  content.innerHTML='';
+  setFooter('neutral','');
+  const cb = document.getElementById('btn-check');
+  cb.disabled=true; cb.textContent='Проверить'; cb.className='btn-check green';
+  cb.style.display=''; cb.onclick=handleCheck;
+  lesson.checked=false; lesson.sel=null;
+
+  const mechMap = {mcq:'Выбери ответ',truefalse:'Правда или Ложь?',listen:'Послушай и выбери',fillgap:'Вставь букву',sentence:'Составь фразу',match:'Найди пару',voice:'Произнеси вслух'};
+  const label = document.createElement('div'); label.className='mech-label';
+  label.textContent=mechMap[q.type]||''; content.appendChild(label);
+
+  if(q.type==='mcq')           renderMCQ(q,content);
+  else if(q.type==='truefalse') renderTrueFalse(q,content);
+  else if(q.type==='listen')    renderListen(q,content);
+  else if(q.type==='fillgap')   renderFillGap(q,content);
+  else if(q.type==='sentence')  renderSentence(q,content);
+  else if(q.type==='match')     renderMatch(q,content);
+  else if(q.type==='voice')     renderVoice(q,content);
+}
+
+function renderMCQ(q,el){
+  if(q.img){ const em=document.createElement('div'); em.style.cssText='font-size:58px;text-align:center;margin-bottom:10px'; em.textContent=q.img; el.appendChild(em); }
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent=q.question; el.appendChild(qEl);
+  const grid=document.createElement('div'); grid.className='options-grid'; el.appendChild(grid);
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button'); btn.className='opt-btn'; btn.dataset.idx=i;
+    btn.textContent=opt.t;
+    btn.onclick=()=>{ if(lesson.checked)return; lesson.sel=i; document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); document.getElementById('btn-check').disabled=false; };
+    grid.appendChild(btn);
+  });
+}
+
+function renderTrueFalse(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question';
+  qEl.innerHTML=`<div style="font-size:68px;margin-bottom:12px">${q.emoji}</div>${q.question}`;
+  el.appendChild(qEl);
+  const tWrap=document.createElement('div'); tWrap.className='timer-bar-wrap'; el.appendChild(tWrap);
+  const tBar=document.createElement('div'); tBar.className='timer-bar'; tBar.style.cssText='width:100%;transition:width 5s linear'; tWrap.appendChild(tBar);
+  setTimeout(()=>tBar.style.width='0%',50);
+  lesson.tfTimer=setTimeout(()=>{ if(!lesson.checked) checkTF(false,null); },5100);
+  const wrap=document.createElement('div'); wrap.className='tf-wrap'; el.appendChild(wrap);
+  ['✅ Да','❌ Нет'].forEach((txt,i)=>{
+    const btn=document.createElement('button'); btn.className='tf-btn '+(i===0?'yes':'no'); btn.textContent=txt;
+    btn.onclick=()=>{ clearTimeout(lesson.tfTimer); checkTF(i===0,btn); };
+    wrap.appendChild(btn);
+  });
+  document.getElementById('btn-check').style.display='none';
+}
+
+function checkTF(userSaidYes,btn){
+  if(lesson.checked)return; lesson.checked=true;
+  document.getElementById('btn-check').style.display='';
+  const q=lesson.question; const correct=userSaidYes===q.correctIs;
+  document.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  if(correct){ lesson.score++; setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+  else { loseLife(); setFooter('bad',`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.correctIs?'Да ✅':'Нет ❌'} — это ${q.answer}</div>`); }
+  const cb=document.getElementById('btn-check'); cb.textContent='Дальше'; cb.className='btn-check '+(correct?'green':'red'); cb.disabled=false; cb.onclick=nextQuestion;
+}
+
+function renderListen(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent='Послушай слово и выбери картинку!'; el.appendChild(qEl);
+  const lisBtn=document.createElement('button'); lisBtn.className='listen-btn'; lisBtn.innerHTML='🔊';
+  lisBtn.onclick=()=>{ speakWord(q.word); lisBtn.classList.add('playing'); setTimeout(()=>lisBtn.classList.remove('playing'),1500); };
+  el.appendChild(lisBtn);
+  setTimeout(()=>speakWord(q.word),300);
+  const grid=document.createElement('div'); grid.className='options-grid'; el.appendChild(grid);
+  q.opts.forEach((opt,i)=>{
+    const btn=document.createElement('button'); btn.className='opt-btn'; btn.dataset.idx=i; btn.textContent=opt.t;
+    btn.onclick=()=>{ if(lesson.checked)return; lesson.sel=i; document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel'); document.getElementById('btn-check').disabled=false; };
+    grid.appendChild(btn);
+  });
+}
+
+function renderFillGap(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent='Вставь пропущенную букву!'; el.appendChild(qEl);
+  const wordEl=document.createElement('div'); wordEl.className='gap-word-display';
+  let html=''; for(let i=0;i<q.word.length;i++) html+=i===q.gapIdx?`<span class="gap" id="gap-slot">_</span>`:q.word[i];
+  wordEl.innerHTML=html; el.appendChild(wordEl);
+  const choicesEl=document.createElement('div'); choicesEl.className='letter-choices'; el.appendChild(choicesEl);
+  q.choices.forEach(ch=>{
+    const btn=document.createElement('button'); btn.className='letter-btn'; btn.textContent=ch;
+    btn.onclick=()=>{
+      if(lesson.checked)return;
+      const correct=ch===q.word[q.gapIdx]; lesson.checked=true;
+      document.querySelectorAll('.letter-btn').forEach(b=>b.disabled=true);
+      document.getElementById('gap-slot').textContent=ch;
+      if(correct){ btn.classList.add('correct'); lesson.score++; setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+      else { btn.classList.add('wrong'); document.getElementById('gap-slot').style.color='#ef5350'; loseLife(); setFooter('bad',`<div class="fb-sub">Правильная буква:</div><div class="fb-main bad">${q.word[q.gapIdx]}</div>`); }
+      const cb=document.getElementById('btn-check'); cb.style.display='flex'; cb.textContent='Дальше'; cb.className='btn-check '+(correct?'green':'red'); cb.disabled=false; cb.onclick=nextQuestion;
+    };
+    choicesEl.appendChild(btn);
+  });
+  document.getElementById('btn-check').style.display='none';
+}
+
+function renderSentence(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent=`Переведи: "${q.translation}"`; el.appendChild(qEl);
+  const target=document.createElement('div'); target.className='sentence-target'; target.id='sent-target'; el.appendChild(target);
+  const bank=document.createElement('div'); bank.className='word-bank'; bank.id='word-bank'; el.appendChild(bank);
+  [...q.words].sort(()=>Math.random()-.5).forEach(w=>{
+    const chip=document.createElement('div'); chip.className='word-chip in-bank'; chip.textContent=w;
+    chip.onclick=()=>toggleWord(chip,w,target,bank,q);
+    bank.appendChild(chip);
+  });
+}
+
+function toggleWord(chip,word,target,bank,q){
+  if(lesson.checked)return;
+  if(chip.parentElement===bank){ chip.classList.replace('in-bank','in-sentence'); target.appendChild(chip); }
+  else { chip.classList.replace('in-sentence','in-bank'); bank.appendChild(chip); }
+  const inS=[...target.querySelectorAll('.word-chip')].map(c=>c.textContent);
+  document.getElementById('btn-check').disabled=inS.length===0;
+}
+
+function renderMatch(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent='Найди пары!'; el.appendChild(qEl);
+  const wrap=document.createElement('div'); wrap.className='match-wrap'; el.appendChild(wrap);
+  const lCol=document.createElement('div'); lCol.className='match-col';
+  const rCol=document.createElement('div'); rCol.className='match-col';
+  wrap.appendChild(lCol); wrap.appendChild(rCol);
+  lesson.matchState={selected:null,matched:0,total:q.pairs.length};
+  q.pairs.forEach(pair=>{
+    const li=document.createElement('div'); li.className='match-item'; li.textContent=pair.en; li.dataset.key=pair.en; li.dataset.side='left';
+    li.onclick=()=>selectMatchItem(li,q.pairs); lCol.appendChild(li);
+  });
+  [...q.pairs].sort(()=>Math.random()-.5).forEach(pair=>{
+    const ri=document.createElement('div'); ri.className='match-item'; ri.textContent=pair.ru; ri.dataset.key=pair.en; ri.dataset.side='right';
+    ri.onclick=()=>selectMatchItem(ri,q.pairs); rCol.appendChild(ri);
+  });
+  document.getElementById('btn-check').style.display='none';
+}
+
+function selectMatchItem(item){
+  if(item.classList.contains('matched'))return;
+  const st=lesson.matchState;
+  if(!st.selected){ st.selected=item; item.classList.add('selected'); return; }
+  const prev=st.selected; prev.classList.remove('selected'); st.selected=null;
+  if(prev.dataset.side===item.dataset.side){ item.classList.add('selected'); st.selected=item; return; }
+  if(prev.dataset.key===item.dataset.key){
+    prev.classList.add('matched'); item.classList.add('matched'); st.matched++;
+    if(st.matched===st.total){
+      lesson.score++; lesson.checked=true;
+      setTimeout(()=>{
+        spawnConfetti();
+        setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Все пары найдены!</div>`);
+        const cb=document.getElementById('btn-check'); cb.style.display='flex'; cb.textContent='Дальше'; cb.className='btn-check green'; cb.disabled=false; cb.onclick=nextQuestion;
+      },300);
+    }
+  } else {
+    prev.classList.add('wrong-flash'); item.classList.add('wrong-flash'); loseLife();
+    setTimeout(()=>{ prev.classList.remove('wrong-flash'); item.classList.remove('wrong-flash'); },500);
+  }
+}
+
+function renderVoice(q,el){
+  const qEl=document.createElement('div'); qEl.className='lesson-question'; qEl.textContent='Произнеси вслух!'; el.appendChild(qEl);
+  const area=document.createElement('div'); area.className='mic-area'; el.appendChild(area);
+  const wordEl=document.createElement('div'); wordEl.className='word-to-say'; wordEl.textContent=q.word; area.appendChild(wordEl);
+  const transEl=document.createElement('div'); transEl.className='word-translation'; transEl.textContent=q.translation; area.appendChild(transEl);
+  const lisBtn=document.createElement('button'); lisBtn.style.cssText='padding:10px 20px;border-radius:14px;border:none;background:#e3f2fd;color:#1565c0;font-family:Nunito,sans-serif;font-size:14px;font-weight:800;cursor:pointer;margin-bottom:8px';
+  lisBtn.textContent='🔊 Послушать'; lisBtn.onclick=()=>speakWord(q.word); area.appendChild(lisBtn);
+  const micBtn=document.createElement('button'); micBtn.className='mic-btn'; micBtn.innerHTML='🎤'; area.appendChild(micBtn);
+  const result=document.createElement('div'); result.className='mic-result'; result.textContent='Нажми на микрофон и говори!'; area.appendChild(result);
+  micBtn.onclick=()=>startListening(micBtn,result,q);
+  const skipBtn=document.createElement('button'); skipBtn.style.cssText='padding:8px 20px;border-radius:12px;border:none;background:#f5f5f5;color:#aaa;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px';
+  skipBtn.textContent='Пропустить →'; skipBtn.onclick=nextQuestion; area.appendChild(skipBtn);
+  document.getElementById('btn-check').style.display='none';
+}
+
+function startListening(micBtn,resultEl,q){
+  if(!window.SpeechRecognition&&!window.webkitSpeechRecognition){ resultEl.textContent='Микрофон не поддерживается 😢'; return; }
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const rec=new SR(); rec.lang='en-US'; rec.interimResults=false; rec.maxAlternatives=3;
+  micBtn.classList.add('listening'); resultEl.textContent='Слушаю...'; resultEl.className='mic-result';
+  rec.start();
+  rec.onresult=e=>{
+    micBtn.classList.remove('listening');
+    const trs=Array.from(e.results[0]).map(r=>r.transcript.toLowerCase().trim());
+    const target=q.word.toLowerCase();
+    const ok=trs.some(t=>t.includes(target)||target.includes(t)||similarity(t,target)>0.7);
+    if(ok){
+      resultEl.textContent='✅ Отлично! Правильно!'; resultEl.className='mic-result ok';
+      lesson.score++; spawnConfetti();
+      const cb=document.getElementById('btn-check'); cb.style.display='flex'; cb.textContent='Дальше'; cb.className='btn-check green'; cb.disabled=false; cb.onclick=nextQuestion;
+      setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Отлично произнёс!</div>`);
+    } else { resultEl.textContent=`❌ Услышал: "${trs[0]}". Попробуй!`; resultEl.className='mic-result fail'; }
+  };
+  rec.onerror=()=>{ micBtn.classList.remove('listening'); resultEl.textContent='Ошибка. Попробуй ещё!'; };
+}
+
+function similarity(a,b){ const longer=a.length>b.length?a:b; if(!longer.length)return 1; return(longer.length-editDistance(a,b))/longer.length; }
+function editDistance(a,b){ const m=a.length,n=b.length; const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0)); for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]); return dp[m][n]; }
+
+function handleCheck(){
+  if(lesson.checked)return; lesson.checked=true;
+  const q=lesson.question;
+  if(q.type==='mcq'||q.type==='listen'){
+    const correct=lesson.sel===q.ans;
+    document.querySelectorAll('.opt-btn').forEach(b=>{ b.disabled=true; const idx=parseInt(b.dataset.idx); if(idx===q.ans)b.classList.add('correct'); else if(idx===lesson.sel&&!correct){b.classList.remove('sel');b.classList.add('wrong');} else b.classList.add('dim'); });
+    if(correct){ lesson.score++; setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+    else { loseLife(); setFooter('bad',`<div class="fb-sub">Правильный ответ:</div><div class="fb-main bad">${q.opts[q.ans].t}</div>`); }
+    const cb=document.getElementById('btn-check'); cb.textContent='Дальше'; cb.className='btn-check '+(correct?'green':'red'); cb.disabled=false; cb.onclick=nextQuestion;
+  } else if(q.type==='sentence'){
+    const target=document.getElementById('sent-target');
+    const inS=[...target.querySelectorAll('.word-chip')].map(c=>c.textContent);
+    const correct=JSON.stringify(inS)===JSON.stringify(q.correct);
+    if(correct){ lesson.score++; setFooter('good',`<div class="fb-main good"><span class="check-icon">✅</span> Правильно!</div>`); spawnConfetti(); }
+    else { loseLife(); setFooter('bad',`<div class="fb-sub">Правильный порядок:</div><div class="fb-main bad">${q.correct.join(' ')}</div>`); }
+    const cb=document.getElementById('btn-check'); cb.textContent='Дальше'; cb.className='btn-check '+(correct?'green':'red'); cb.disabled=false; cb.onclick=nextQuestion;
+  }
+}
+
+function nextQuestion(){
+  document.getElementById('btn-check').style.display='';
+  document.getElementById('btn-check').disabled=true;
+  clearTimeout(lesson.tfTimer);
+  if(lesson.lives<=0){ showComplete(false); return; }
+  lesson.qIdx++;
+  if(lesson.qIdx<lesson.questions.length){
+    lesson.question=lesson.questions[lesson.qIdx];
+    lesson.checked=false; lesson.sel=null;
+    document.getElementById('lesson-progress-fill').style.width=Math.round(lesson.qIdx/lesson.questions.length*100)+'%';
+    renderQuestion(lesson.question);
+  } else { showComplete(true); }
+}
+
+function loseLife(){ lesson.lives=Math.max(0,lesson.lives-1); renderLives(); }
+
+function showComplete(passed){
+  const earned=passed?Math.max(5,lesson.score*5):0;
+  const p=prog();
+  if(passed&&!p.completed.has(lesson.lid)){ p.completed.add(lesson.lid); p.streak=Math.min(p.streak+1,999); p.xp+=earned; setTimeout(saveProgress,500); }
+  document.getElementById('comp-emoji').textContent=passed?'🏆':'💪';
+  document.getElementById('comp-title').textContent=passed?'Урок пройден!':'Попробуй ещё раз!';
+  document.getElementById('comp-sub').textContent=passed?'Молодец, '+user.name+'!':'Не сдавайся, ты справишься!';
+  document.getElementById('comp-xp').textContent='+'+earned;
+  document.getElementById('comp-score').textContent=lesson.score+' правильно';
+  document.getElementById('comp-streak').textContent='🔥'+p.streak;
+  if(passed) spawnConfetti(80);
+  switchView('complete');
+}
+
+function setFooter(state,html){
+  document.getElementById('lesson-footer').className='lesson-footer '+state;
+  document.getElementById('feedback-area').innerHTML=html;
+}
+
+function exitLesson(){ switchView('dashboard'); buildMap(); }
+
+
+</script>
+<script>
+
+// ===================== CHAT =====================
+let chatOpen = false;
+let chatWaiting = false;
+let chatHistories = { english: [], cs: [] };
+
+function toggleChat(){
+  chatOpen=!chatOpen;
+  document.getElementById('chat-box').classList.toggle('open',chatOpen);
+  document.getElementById('chat-dot').classList.remove('show');
+  if(chatOpen) setTimeout(()=>document.getElementById('chat-input').focus(),100);
+}
+
+function addBotMessage(text){
+  const msgs=document.getElementById('chat-messages');
+  const div=document.createElement('div'); div.className='msg bot';
+  div.innerHTML=`<div class="msg-av">${currentTeacher()?.emoji||'🤖'}</div><div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function addUserMessage(text){
+  const msgs=document.getElementById('chat-messages');
+  const div=document.createElement('div'); div.className='msg user';
+  div.innerHTML=`<div class="msg-bubble">${text}</div>`;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function showTyping(){
+  const msgs=document.getElementById('chat-messages');
+  const div=document.createElement('div'); div.className='msg bot'; div.id='typing-msg';
+  div.innerHTML=`<div class="msg-av">${currentTeacher()?.emoji||'🤖'}</div><div class="typing-indicator"><span></span><span></span><span></span></div>`;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+
+function removeTyping(){ const t=document.getElementById('typing-msg'); if(t)t.remove(); }
+
+function setupChatForUser(){
+  if(!user) return;
+  const av = currentTeacher();
+  document.getElementById('chat-av').textContent = av.emoji;
+  document.getElementById('chat-name').textContent = av.name;
+  document.getElementById('chat-toggle-emoji').textContent = av.emoji;
+  document.getElementById('chat-widget').style.display = 'block';
+  updateChatChips();
+  // Send greeting
+  const msgs = document.getElementById('chat-messages');
+  if(msgs) msgs.innerHTML = '';
+  setTimeout(()=>{
+    addBotMessage(av.greet(user.name));
+    document.getElementById('chat-dot').classList.add('show');
+  }, 800);
+}
+
+function updateChatChips(){
+  const chips = currentSubject==='cs'
+    ? ['Объясни if/else','Что такое функция?','Помоги с ошибкой','Объясни range()']
+    : ['Как сказать привет?','Что значит слово?','Объясни правило','Приведи пример'];
+  const el = document.getElementById('chat-chips');
+  if(!el) return;
+  el.innerHTML='';
+  chips.forEach(c=>{
+    const chip=document.createElement('button');
+    chip.style.cssText='padding:5px 12px;border-radius:12px;border:1.5px solid #c5e1a5;background:#f1f8e9;font-family:Nunito,sans-serif;font-size:12px;font-weight:800;color:#558b2f;cursor:pointer;white-space:nowrap';
+    chip.textContent=c;
+    chip.onclick=()=>{ document.getElementById('chat-input').value=c; sendChat(); };
+    el.appendChild(chip);
+  });
+}
+
+async function sendChat(){
+  const input=document.getElementById('chat-input');
+  const text=input.value.trim(); if(!text||chatWaiting)return;
+  input.value=''; chatWaiting=true;
+  document.getElementById('chat-send-btn').disabled=true;
+  const teacher=currentTeacher();
+  chatHistories[currentSubject].push({role:'user',content:text});
+  addUserMessage(text); showTyping();
+  const hist=chatHistories[currentSubject].slice(-6).map(m=>(m.role==='user'?'Ученик: ':'Учитель: ')+m.content).join('\n');
+  const msg=teacher.sp(user?.name||'Ученик')+'\n\n'+hist+'\nУченик: '+text;
+  try{
+    const response=await fetch(WORKER_URL+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+    const data=await response.json(); removeTyping();
+    const reply=data.reply||'Упс! 😅';
+    chatHistories[currentSubject].push({role:'assistant',content:reply});
+    addBotMessage(reply);
+    if(!chatOpen){ document.getElementById('chat-dot').classList.add('show'); }
+  }catch(e){ removeTyping(); addBotMessage('Ой, не могу ответить сейчас 😅'); }
+  chatWaiting=false; document.getElementById('chat-send-btn').disabled=false;
+}
+
+
+</script>
+<script>
+
+// ===================== CONFIG =====================
+const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
+const GOOGLE_CLIENT_ID = '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com';
+
+// ===================== STATE =====================
+let user = null;
+let currentSubject = 'english';
+let lesson = null;
+let lang = localStorage.getItem('darabala_lang') || 'ru';
+let progressData = {
+  english: { completed: new Set(), streak: 0, xp: 0 },
+  cs:      { completed: new Set(), streak: 0, xp: 0 }
+};
+function prog(){ return progressData[currentSubject]; }
+
+// ===================== INIT =====================
+window.addEventListener('DOMContentLoaded', function(){
+  buildAvatarGrid('avatar-grid', function(av){
+    if(!user) user = {};
+    user.avatar = av;
+    document.getElementById('btn-step3').disabled = false;
+    document.getElementById('mascot-emoji').textContent = av.emoji;
+    document.getElementById('mascot-bubble').textContent = `Я ${av.name}! 🌟`;
+  });
+  applyLang();
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/DaraBala/sw.js').catch(()=>{});
+  }
+  // Read user from localStorage (set by index.html login page)
+  const savedUser = localStorage.getItem('darabala_user');
+  if (!savedUser) {
+    // Not logged in - redirect to login page
+    window.location.href = '../';
+    return;
+  }
+  try {
+    window._googleUser = JSON.parse(savedUser);
+    // Try to load saved profile (name, avatar)
+    const profileKey = 'darabala_profile_' + (window._googleUser.email || window._googleUser.name);
+    const savedProfile = localStorage.getItem(profileKey);
+    if (savedProfile) {
+      const profile = JSON.parse(savedProfile);
+      if (profile.avatar && profile.avatar.id) {
+        profile.avatar = AVATARS.find(a => a.id === profile.avatar.id) || AVATARS[0];
+      }
+      user = profile;
+      // Load progress
+      const sp = localStorage.getItem('darabala_progress_' + (window._googleUser.email || window._googleUser.name));
+      if (sp) {
+        const spd = JSON.parse(sp);
+        progressData.english = {completed: new Set(spd.english?.completed||[]), streak: spd.english?.streak||0, xp: spd.english?.xp||0};
+        progressData.cs = {completed: new Set(spd.cs?.completed||[]), streak: spd.cs?.streak||0, xp: spd.cs?.xp||0};
+      }
+      // Load subject from session
+      const subj = sessionStorage.getItem('darabala_subject');
+      if (subj) currentSubject = subj;
+      setupChatForUser();
+      showDashboard();
+      setTimeout(() => {
+        document.getElementById('welcome-av').textContent = user?.avatar?.emoji || '🐻';
+        document.getElementById('welcome-name').textContent = 'С возвращением, ' + user.name + '!';
+        document.getElementById('welcome-sub').textContent = ['Готов учиться? 🚀', 'Продолжаем! 💪', 'Сегодня будет интересно! 🌟'][Math.floor(Math.random()*3)];
+        document.getElementById('welcome-overlay').classList.add('show');
+      }, 400);
+    } else {
+      // First time - pre-fill name from Google, go to onboarding
+      const ni = document.getElementById('input-name');
+      if (ni && window._googleUser.name) {
+        ni.value = window._googleUser.name.split(' ')[0];
+        checkStep1();
+      }
+      switchView('subject');
+    }
+  } catch(e) {
+    window.location.href = '../';
+  }
+});
+
+// ===================== AVATAR GRID =====================
+function buildAvatarGrid(containerId, onSelect){
+  const grid = document.getElementById(containerId);
+  if(!grid) return;
+  grid.innerHTML = '';
+  AVATARS.forEach(av => {
+    const btn = document.createElement('button');
+    btn.className = 'avatar-btn';
+    btn.type = 'button';
+    btn.innerHTML = `<span class="av-emoji">${av.emoji}</span><span class="av-label">${av.name}</span>`;
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      grid.querySelectorAll('.avatar-btn').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      if(onSelect) onSelect(av, btn);
+    });
+    grid.appendChild(btn);
+  });
+}
+
+// ===================== ONBOARDING =====================
+function checkStep1(){
+  const val = document.getElementById('input-name').value.trim();
+  document.getElementById('btn-step1').disabled = val.length < 2;
+  if(val.length >= 2) document.getElementById('mascot-bubble').textContent = `Привет, ${val}! 👋`;
+}
+
+function goStep(n){
+  document.querySelectorAll('.ob-step').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ob-step'+n).classList.add('active');
+  if(n===2) setTimeout(initDrums, 60);
+}
+
+function finishOnboarding(){
+  const dobVal = window.drumState
+    ? `${window.drumState.year}-${String(window.drumState.month).padStart(2,'0')}-${String(window.drumState.day).padStart(2,'0')}`
+    : '';
+  user = { name: document.getElementById('input-name').value.trim(), dob: dobVal, avatar: user?.avatar || AVATARS[0] };
+  if(window._googleUser){
+    const key = 'darabala_profile_' + (window._googleUser.email || window._googleUser.name);
+    localStorage.setItem(key, JSON.stringify(user));
+  }
+  setupChatForUser();
+  showDashboard();
+  setTimeout(()=>showWelcomeNew(user.name, user.avatar.emoji), 600);
+}
+
+// ===================== DRUM DATE PICKER =====================
+window.drumState = { day:10, month:6, year:2015 };
+const ITEM_H = 44;
+const MONTHS_RU  = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+const MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+
+function daysInMonth(m,y){ return new Date(y,m,0).getDate(); }
+
+function initDrums(){
+  const curY=new Date().getFullYear();
+  const dc=daysInMonth(drumState.month,drumState.year);
+  const days=Array.from({length:dc},(_,i)=>String(i+1));
+  const months=lang==='kz'?['Қаңтар','Ақпан','Наурыз','Сәуір','Мамыр','Маусым','Шілде','Тамыз','Қыркүйек','Қазан','Қараша','Желтоқсан']:MONTHS_RU;
+  const years=Array.from({length:80},(_,i)=>String(curY-5-i));
+  buildDrum('drum-day-list','drum-day',days,drumState.day-1,v=>{ drumState.day=parseInt(v); updateDobDisplay(); });
+  buildDrum('drum-month-list','drum-month',months,drumState.month-1,(v,i)=>{
+    drumState.month=i+1;
+    const dc2=daysInMonth(drumState.month,drumState.year);
+    buildDrum('drum-day-list','drum-day',Array.from({length:dc2},(_,j)=>String(j+1)),Math.min(drumState.day-1,dc2-1),dv=>{ drumState.day=parseInt(dv); updateDobDisplay(); });
+    updateDobDisplay();
+  });
+  buildDrum('drum-year-list','drum-year',years,5,v=>{
+    drumState.year=parseInt(v);
+    const dc3=daysInMonth(drumState.month,drumState.year);
+    buildDrum('drum-day-list','drum-day',Array.from({length:dc3},(_,j)=>String(j+1)),Math.min(drumState.day-1,dc3-1),dv=>{ drumState.day=parseInt(dv); updateDobDisplay(); });
+    updateDobDisplay();
+  });
+  updateDobDisplay();
+}
+
+function buildDrum(listId,scrollId,items,initIdx,onChange){
+  const list=document.getElementById(listId);
+  const scroll=document.getElementById(scrollId);
+  if(!list||!scroll) return;
+  list.innerHTML='';
+  const pad=2;
+  for(let p=0;p<pad;p++){ const d=document.createElement('div'); d.className='drum-item'; list.appendChild(d); }
+  items.forEach((item,i)=>{ const d=document.createElement('div'); d.className='drum-item'+(i===initIdx?' selected':''); d.textContent=item; list.appendChild(d); });
+  for(let p=0;p<pad;p++){ const d=document.createElement('div'); d.className='drum-item'; list.appendChild(d); }
+  let cur=Math.max(0,Math.min(items.length-1,initIdx));
+  function setIdx(idx,animate=true){
+    idx=Math.max(0,Math.min(items.length-1,idx)); cur=idx;
+    list.style.transition=animate?'transform .2s cubic-bezier(.25,.46,.45,.94)':'none';
+    list.style.transform=`translateY(${-(idx*ITEM_H)}px)`;
+    list.querySelectorAll('.drum-item').forEach((el,i)=>el.classList.toggle('selected',i-pad===idx));
+    onChange(items[idx],idx);
+  }
+  setIdx(cur,false);
+  let sY=0,sIdx=0,drag=false;
+  function onStart(e){ drag=true; sY=(e.touches?.[0]||e).clientY; sIdx=cur; e.preventDefault(); }
+  function onMove(e){ if(!drag)return; const dy=sY-(e.touches?.[0]||e).clientY; setIdx(sIdx+Math.round(dy/ITEM_H)); e.preventDefault(); }
+  function onEnd(){ drag=false; }
+  const clone=scroll.cloneNode(false);
+  const hl=document.createElement('div'); hl.className='drum-highlight'; clone.appendChild(hl);
+  clone.appendChild(list); scroll.parentNode.replaceChild(clone,scroll);
+  clone.addEventListener('mousedown',onStart,{passive:false});
+  clone.addEventListener('touchstart',onStart,{passive:false});
+  window.addEventListener('mousemove',onMove,{passive:false});
+  window.addEventListener('touchmove',onMove,{passive:false});
+  window.addEventListener('mouseup',onEnd);
+  window.addEventListener('touchend',onEnd);
+  clone.addEventListener('wheel',e=>{ e.preventDefault(); setIdx(cur+(e.deltaY>0?1:-1)); },{passive:false});
+}
+
+function updateDobDisplay(){
+  const el=document.getElementById('dob-display'); if(!el) return;
+  const mArr=lang==='kz'?['қаңтар','ақпан','наурыз','сәуір','мамыр','маусым','шілде','тамыз','қыркүйек','қазан','қараша','желтоқсан']:MONTHS_GEN;
+  el.textContent=`${drumState.day} ${mArr[drumState.month-1]} ${drumState.year} г.`;
+}
+
+// ===================== GOOGLE AUTH =====================
+function initGoogleAuth(){
+  applyLang();
+  const saved=localStorage.getItem('darabala_user');
+  if(saved){
+    try{
+      const u=JSON.parse(saved);
+      const profileKey='darabala_profile_'+(u.email||u.name);
+      const savedProfile=localStorage.getItem(profileKey);
+      if(savedProfile){
+        const profile=JSON.parse(savedProfile);
+        if(profile.avatar&&profile.avatar.id) profile.avatar=AVATARS.find(a=>a.id===profile.avatar.id)||AVATARS[0];
+        window._googleUser=u; user=profile;
+        const sp=localStorage.getItem('darabala_progress_'+(u.email||u.name));
+        if(sp){
+          const spd=JSON.parse(sp);
+          progressData.english={completed:new Set(spd.english?.completed||[]),streak:spd.english?.streak||0,xp:spd.english?.xp||0};
+          progressData.cs={completed:new Set(spd.cs?.completed||[]),streak:spd.cs?.streak||0,xp:spd.cs?.xp||0};
+        }
+        showWelcomeBack(profile.name); return;
+      }
+      showReturningUser(u);
+    }catch(e){ localStorage.removeItem('darabala_user'); }
+  }
+  if(window.google&&GOOGLE_CLIENT_ID){
+    google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false});
+  }
+}
+
+function signInWithGoogle(){
+  if(!window.google){ alert('Google Sign-In не загружен. Войдите как гость.'); return; }
+  google.accounts.id.prompt(n=>{ if(n.isNotDisplayed()||n.isSkippedMoment()) signInAsGuest(); });
+}
+
+function handleGoogleCredential(response){
+  const parts=response.credential.split('.');
+  const payload=JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+  completeLogin({name:payload.name,email:payload.email,picture:payload.picture,source:'google'});
+}
+
+function signInAsGuest(){
+  completeLogin({name:'Гость '+Math.floor(Math.random()*9000+1000),email:null,picture:null,source:'guest'});
+}
+
+function showReturningUser(u){
+  const wrap=document.getElementById('login-returning-user');
+  document.getElementById('continue-name').textContent=u.name.split(' ')[0];
+  document.getElementById('login-user-preview').innerHTML=`<div style="width:44px;height:44px;border-radius:50%;background:#e8f5e9;display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid #c5e1a5;flex-shrink:0">${u.picture?`<img src="${u.picture}" style="width:44px;height:44px;border-radius:50%;object-fit:cover" referrerpolicy="no-referrer">`:'👤'}</div><div><div style="font-size:15px;font-weight:900;color:#333">${u.name}</div><div style="font-size:12px;color:#aaa;font-weight:700">${u.email||'Гостевой аккаунт'}</div></div>`;
+  wrap.style.display='block'; window._savedUser=u;
+}
+
+function continueAsUser(){ if(window._savedUser) completeLogin(window._savedUser); }
+
+function completeLogin(googleUser){
+  localStorage.setItem('darabala_user',JSON.stringify(googleUser));
+  const sp=localStorage.getItem('darabala_progress_'+(googleUser.email||googleUser.name));
+  if(sp){ try{ const d=JSON.parse(sp); progressData.english={completed:new Set(d.english?.completed||[]),streak:d.english?.streak||0,xp:d.english?.xp||0}; progressData.cs={completed:new Set(d.cs?.completed||[]),streak:d.cs?.streak||0,xp:d.cs?.xp||0}; }catch(e){} }
+  window._googleUser=googleUser;
+  const ni=document.getElementById('input-name');
+  if(ni&&googleUser.name){ ni.value=googleUser.name.split(' ')[0]; checkStep1(); }
+  switchView('subject');
+}
+
+function saveProgress(){
+  if(!window._googleUser) return;
+  const key='darabala_progress_'+(window._googleUser.email||window._googleUser.name);
+  localStorage.setItem(key,JSON.stringify({
+    english:{completed:[...progressData.english.completed],streak:progressData.english.streak,xp:progressData.english.xp},
+    cs:{completed:[...progressData.cs.completed],streak:progressData.cs.streak,xp:progressData.cs.xp}
+  }));
+}
+
+function signOut(){
+  if(confirm('Выйти из аккаунта?')){
+    saveProgress(); localStorage.removeItem('darabala_user');
+    window._googleUser=null; user=null; location.reload();
+  }
+}
+
+// ===================== WELCOME =====================
+function showWelcomeBack(name){
+  const subj=sessionStorage.getItem('darabala_subject');
+  if(subj) currentSubject=subj;
+  setupChatForUser(); showDashboard();
+  setTimeout(()=>{
+    document.getElementById('welcome-av').textContent=user?.avatar?.emoji||'🐻';
+    document.getElementById('welcome-name').textContent='С возвращением, '+name+'!';
+    document.getElementById('welcome-sub').textContent=['Готов учиться? 🚀','Продолжаем! 💪','Сегодня будет интересно! 🌟'][Math.floor(Math.random()*3)];
+    document.getElementById('welcome-overlay').classList.add('show');
+  },400);
+}
+
+function showWelcomeNew(name,av){
+  document.getElementById('welcome-av').textContent=av||'🐻';
+  document.getElementById('welcome-name').textContent='Добро пожаловать, '+name+'!';
+  document.getElementById('welcome-sub').textContent='Погнали учиться! 🚀';
+  document.getElementById('welcome-overlay').classList.add('show');
+}
+
+function closeWelcome(){
+  const ov=document.getElementById('welcome-overlay');
+  ov.style.opacity='0'; ov.style.transition='opacity .3s ease';
+  setTimeout(()=>{ ov.classList.remove('show'); ov.style.opacity=''; ov.style.transition=''; },300);
+}
+
+// ===================== PROFILE =====================
+function openProfile(){
+  if(!user) return;
+  const picWrap=document.getElementById('profile-pic-wrap');
+  picWrap.innerHTML=window._googleUser?.picture?`<img src="${window._googleUser.picture}" referrerpolicy="no-referrer"/>`:user.avatar?.emoji||'🐻';
+  document.getElementById('profile-uname').textContent=user.name;
+  document.getElementById('profile-email').textContent=window._googleUser?.email||'Гостевой аккаунт';
+  document.getElementById('profile-xp-en').textContent=progressData.english.xp;
+  document.getElementById('profile-xp-cs').textContent=progressData.cs.xp;
+  document.getElementById('profile-streak').textContent=Math.max(progressData.english.streak,progressData.cs.streak)+'🔥';
+  updateLangBtns();
+  document.getElementById('profile-panel').classList.add('open');
+  document.getElementById('profile-backdrop').classList.add('show');
+}
+function closeProfile(){
+  document.getElementById('profile-panel').classList.remove('open');
+  document.getElementById('profile-backdrop').classList.remove('show');
+}
+
+function openAvatarChange(){
+  closeProfile();
+  const grid=document.getElementById('avatar-modal-grid');
+  grid.innerHTML='';
+  AVATARS.forEach(av=>{
+    const btn=document.createElement('button');
+    btn.className='avatar-btn'+(user?.avatar?.id===av.id?' sel':'');
+    btn.type='button';
+    btn.innerHTML=`<span class="av-emoji">${av.emoji}</span><span class="av-label">${av.name}</span>`;
+    btn.addEventListener('click',()=>{
+      user.avatar=av;
+      if(window._googleUser){ localStorage.setItem('darabala_profile_'+(window._googleUser.email||window._googleUser.name),JSON.stringify(user)); }
+      document.getElementById('tb-avatar').textContent=av.emoji;
+      document.getElementById('chat-av').textContent=av.emoji;
+      document.getElementById('chat-name').textContent=av.name;
+      document.getElementById('chat-toggle-emoji').textContent=av.emoji;
+      grid.querySelectorAll('.avatar-btn').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+    });
+    grid.appendChild(btn);
+  });
+  document.getElementById('avatar-change-modal').classList.add('open');
+}
+function closeAvatarChange(){ document.getElementById('avatar-change-modal').classList.remove('open'); }
+
+// ===================== LANGUAGE =====================
+function setLang(l){ lang=l; localStorage.setItem('darabala_lang',l); applyLang(); }
+function applyLang(){
+  document.getElementById('lang-ru')?.classList.toggle('active',lang==='ru');
+  document.getElementById('lang-kz')?.classList.toggle('active',lang==='kz');
+}
+function updateLangBtns(){ applyLang(); }
+
+// ===================== SUBJECT =====================
+function selectSubject(subj){
+  sessionStorage.setItem('darabala_subject',subj); currentSubject=subj;
+  const t=document.getElementById('ob-logo-title'); const s=document.getElementById('ob-logo-sub');
+  if(subj==='cs'){ if(t)t.textContent='Информатика · Python'; if(s)s.textContent='7 класс · Учимся программировать!'; }
+  else           { if(t)t.textContent='DaraBala'; if(s)s.textContent='Давай учиться вместе!'; }
+  updateSubjectSwitcher(); switchView('onboarding');
+}
+
+function switchSubjectPrompt(){ document.getElementById('subject-overlay').style.display='flex'; }
+
+function changeSubject(subj){
+  document.getElementById('subject-overlay').style.display='none';
+  currentSubject=subj; sessionStorage.setItem('darabala_subject',subj);
+  updateSubjectSwitcher(); buildMap(); setupChatForUser();
+}
+
+function updateSubjectSwitcher(){
+  document.getElementById('subject-switcher-icon').textContent=currentSubject==='cs'?'🐍':'🇬🇧';
+  document.getElementById('subject-switcher-label').textContent=currentSubject==='cs'?'Python':'Английский';
+}
+
+// ===================== DASHBOARD =====================
+function showDashboard(){
+  switchView('dashboard');
+  document.getElementById('tb-avatar').textContent=user?.avatar?.emoji||'🐻';
+  document.getElementById('tb-name').textContent=user?.name||'';
+  updateTopbar(); updateSubjectSwitcher(); buildMap(); generateDashboardStory();
+}
+
+function updateTopbar(){
+  const p=prog();
+  document.getElementById('xp-val').textContent=p.xp+' XP';
+  document.getElementById('streak-val').textContent=p.streak;
+  const sp=document.getElementById('stat-streak'); const fi=document.getElementById('flame-icon');
+  if(p.streak>0){ sp.classList.remove('dead'); fi.setAttribute('fill','currentColor'); fi.setAttribute('stroke','none'); }
+  else { sp.classList.add('dead'); fi.setAttribute('fill','none'); fi.setAttribute('stroke','currentColor'); }
+}
+
+function buildMap(){
+  const container=document.getElementById('map-container'); container.innerHTML='';
+  const mods=currentSubject==='cs'?CS_MODULES:MODULES; const p=prog();
+  mods.forEach((mod,mi)=>{
+    const mh=document.createElement('div'); mh.className='module-header mc-'+(mi%9);
+    mh.innerHTML=`<div style="position:relative;z-index:1"><h3>Unit ${mod.id} ${mod.icon}</h3><p>${mod.title}${mod.par?' · '+mod.par:''}</p></div><div class="mod-icon">${mod.icon}</div>`;
+    mh.style.animation=`fadeSlide .4s ease ${mi*0.08}s both`; container.appendChild(mh);
+    const col=document.createElement('div'); col.className='lessons-col';
+    const key='mod_'+mi; const done=p.completed.has(key); const locked=mi>0&&!p.completed.has('mod_'+(mi-1));
+    const wrap=document.createElement('div'); wrap.className='node-wrap'; wrap.style.marginBottom='10px';
+    const btn=document.createElement('button');
+    btn.className='lesson-node'+(done?' done':locked?' locked':' mc-'+(mi%9));
+    btn.style.animation=`popIn .4s cubic-bezier(.175,.885,.32,1.275) ${mi*0.1}s both`;
+    btn.disabled=locked; btn.innerHTML=done?'⭐':locked?'🔒':mod.icon;
+    if(!locked) btn.onclick=()=>startLesson(mi,key);
+    const badge=document.createElement('div');
+    badge.style.cssText=`text-align:center;font-size:12px;font-weight:800;margin-top:6px;color:${done?'#8bc34a':locked?'#bbb':'#666'}`;
+    badge.textContent=done?'Пройдено ✓':locked?'Закрыто':`${mod.lessons.length} вопросов`;
+    wrap.appendChild(btn); wrap.appendChild(badge); col.appendChild(wrap); container.appendChild(col);
+  });
+}
+
+// ===================== AI STORY =====================
+async function generateDashboardStory(){
+  const stEl=document.getElementById('dashboard-story'); if(!stEl||!user) return;
+  const mods=currentSubject==='cs'?CS_MODULES:MODULES; const p=prog(); let midx=0;
+  for(let i=0;i<mods.length;i++){ if(!p.completed.has('mod_'+i)){midx=i;break;} }
+  const mod=mods[midx];
+  stEl.style.display='block';
+  stEl.innerHTML=`<div style="font-size:13px;font-weight:800;color:#8bc34a;margin-bottom:6px">📖 История урока</div><div style="color:#ccc;font-size:13px;font-style:italic">Генерирую историю...</div>`;
+  try{
+    const resp=await fetch(WORKER_URL+'/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:`Напиши историю РОВНО 2 предложения на русском языке для темы "${mod.title}". Вставь имя "${user.name}". Только текст, без заголовка, максимум 200 символов.`})});
+    const data=await resp.json();
+    if(data.reply){
+      const t=currentTeacher(); const txt=data.reply.slice(0,300);
+      stEl.innerHTML=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:22px">${t.emoji}</span><span style="font-size:13px;font-weight:900;color:#8bc34a">📖 История урока</span></div><div style="font-size:14px;line-height:1.6;color:#444;font-weight:700" id="_story_text">${txt}</div>`;
+      window._currentStoryText=txt;
+    } else stEl.style.display='none';
+  }catch(e){ stEl.style.display='none'; }
+}
+
+// ===================== UTILS =====================
+function speakWord(word){
+  if(!window.speechSynthesis) return;
+  const utt=new SpeechSynthesisUtterance(word); utt.lang='en-US'; utt.rate=0.85;
+  window.speechSynthesis.cancel(); window.speechSynthesis.speak(utt);
+}
+
+function switchView(name){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const next=document.getElementById('view-'+name);
+  if(next){ next.classList.add('active'); window.scrollTo(0,0); }
+  const cw=document.getElementById('chat-widget');
+  if(cw) cw.style.display=(name==='lesson'||name==='complete')?'none':(user?'block':'none');
+}
+
+function spawnConfetti(count=40){
+  const colors=['#8bc34a','#ffc107','#42a5f5','#ef5350','#ab47bc','#ff9800'];
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div'); p.className='confetti-piece';
+    p.style.cssText=`left:${Math.random()*100}vw;top:-20px;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation:confettiFall ${1+Math.random()*2}s ease-in ${Math.random()*0.5}s forwards`;
+    document.body.appendChild(p); setTimeout(()=>p.remove(),3000);
+  }
+}
+
 
 </script>
 </body>
