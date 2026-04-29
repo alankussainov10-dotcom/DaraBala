@@ -9,85 +9,94 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:"Nunito",sans-serif;min-height:100vh;background:#f0f4f8;color:#333}
 
-/* Topbar */
-.topbar{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 16px rgba(0,0,0,.2);position:sticky;top:0;z-index:100;}
-.topbar-logo{font-size:26px;}
-.topbar-title{font-size:18px;font-weight:900;flex:1;}
-.topbar-user{display:flex;align-items:center;gap:10px;margin-left:auto;}
-.topbar-avatar{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5);object-fit:cover;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;}
-.topbar-name{font-size:13px;font-weight:800;color:rgba(255,255,255,.9);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.topbar-back{padding:7px 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font-family:"Nunito",sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap;}
-.topbar-back:hover{background:rgba(255,255,255,.25);}
+.topbar{background:linear-gradient(135deg,#2e7d32,#1b5e20);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 16px rgba(0,0,0,.2);position:sticky;top:0;z-index:100}
+.topbar-logo{font-size:26px}
+.topbar-title{font-size:18px;font-weight:900;flex:1}
+.topbar-user{display:flex;align-items:center;gap:10px;margin-left:auto}
+.topbar-avatar{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.5);background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;overflow:hidden}
+.topbar-name{font-size:13px;font-weight:800;color:rgba(255,255,255,.9);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-back{padding:7px 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;font-family:"Nunito",sans-serif;font-size:13px;font-weight:800;cursor:pointer;text-decoration:none;transition:all .15s;white-space:nowrap}
+.topbar-back:hover{background:rgba(255,255,255,.25)}
 
-/* Layout */
-.main{max-width:860px;margin:0 auto;padding:24px 18px 80px;}
+.main{max-width:900px;margin:0 auto;padding:24px 18px 80px}
 
-/* Tabs */
-.tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
-.tab{padding:10px 18px;border-radius:14px;border:2px solid #e0e0e0;background:#fff;font-family:"Nunito",sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#888;transition:all .15s;}
-.tab.active{border-color:#8bc34a;background:#f1f8e9;color:#2e7d32;}
-.tab:hover:not(.active){border-color:#c5e1a5;background:#f9fbe7;}
+.tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.tab{padding:10px 18px;border-radius:14px;border:2px solid #e0e0e0;background:#fff;font-family:"Nunito",sans-serif;font-size:14px;font-weight:800;cursor:pointer;color:#888;transition:all .15s}
+.tab.active{border-color:#8bc34a;background:#f1f8e9;color:#2e7d32}
+.tab:hover:not(.active){border-color:#c5e1a5;background:#f9fbe7}
 
-/* Cards */
-.card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px;}
-.card-title{font-size:18px;font-weight:900;color:#2e7d32;margin-bottom:4px;}
-.card-sub{font-size:13px;color:#aaa;font-weight:700;margin-bottom:20px;line-height:1.5;}
+.card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px}
+.card-title{font-size:18px;font-weight:900;color:#2e7d32;margin-bottom:4px}
+.card-sub{font-size:13px;color:#aaa;font-weight:700;margin-bottom:20px;line-height:1.5}
 
-/* Tip */
-.tip{background:#e3f2fd;border-radius:14px;padding:14px 16px;font-size:13px;font-weight:700;color:#1565c0;margin-bottom:20px;line-height:1.7;border-left:4px solid #42a5f5;}
-.tip b{color:#0d47a1;}
+.tip{background:#e3f2fd;border-radius:14px;padding:14px 16px;font-size:13px;font-weight:700;color:#1565c0;margin-bottom:20px;line-height:1.7;border-left:4px solid #42a5f5}
+.tip b{color:#0d47a1}
 
-/* Form */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
-@media(max-width:560px){.form-grid{grid-template-columns:1fr;}}
-.form-group{margin-bottom:16px;}
-label{display:block;font-size:12px;font-weight:900;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px;}
-select,input[type=text],textarea{
-  width:100%;padding:12px 14px;border-radius:14px;
-  border:2px solid #e0e0e0;font-family:"Nunito",sans-serif;
-  font-size:15px;font-weight:700;color:#333;background:#fafafa;
-  outline:none;transition:border-color .2s;
-}
-select:focus,input:focus,textarea:focus{border-color:#8bc34a;background:#fff;box-shadow:0 0 0 3px rgba(139,195,74,.1);}
-textarea{line-height:1.6;resize:vertical;}
-textarea.tall{height:140px;}
-textarea.medium{height:100px;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:900;color:#555;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+select,input[type=text],textarea{width:100%;padding:12px 14px;border-radius:14px;border:2px solid #e0e0e0;font-family:"Nunito",sans-serif;font-size:15px;font-weight:700;color:#333;background:#fafafa;outline:none;transition:border-color .2s}
+select:focus,input:focus,textarea:focus{border-color:#8bc34a;background:#fff;box-shadow:0 0 0 3px rgba(139,195,74,.1)}
+textarea{line-height:1.6;resize:vertical}
+textarea.tall{height:140px}
+textarea.medium{height:100px}
 
-/* Generate button */
-.btn-gen{
-  background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;border:none;
-  border-radius:16px;padding:15px 28px;font-family:"Nunito",sans-serif;
-  font-size:17px;font-weight:900;cursor:pointer;width:100%;
-  transition:all .2s;box-shadow:0 4px 16px rgba(139,195,74,.4);
-  border-bottom:4px solid rgba(0,0,0,.15);margin-top:4px;
-}
-.btn-gen:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,195,74,.5);}
-.btn-gen:active:not(:disabled){transform:translateY(2px);border-bottom-width:0;}
-.btn-gen:disabled{background:#d0d0d0;box-shadow:none;cursor:not-allowed;border-bottom-color:rgba(0,0,0,.08);}
+.btn-gen{background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;border:none;border-radius:16px;padding:15px 28px;font-family:"Nunito",sans-serif;font-size:17px;font-weight:900;cursor:pointer;width:100%;transition:all .2s;box-shadow:0 4px 16px rgba(139,195,74,.4);border-bottom:4px solid rgba(0,0,0,.15);margin-top:4px}
+.btn-gen:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 24px rgba(139,195,74,.5)}
+.btn-gen:active:not(:disabled){transform:translateY(2px);border-bottom-width:0}
+.btn-gen:disabled{background:#d0d0d0;box-shadow:none;cursor:not-allowed;border-bottom-color:rgba(0,0,0,.08)}
 
-/* Result */
-.result-wrap{margin-top:20px;display:none;}
-.result-wrap.show{display:block;}
-.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.result-label{font-size:13px;font-weight:900;color:#2e7d32;}
-.copy-btn{padding:8px 16px;border-radius:10px;border:1.5px solid #c5e1a5;background:#fff;font-family:"Nunito",sans-serif;font-size:13px;font-weight:800;color:#2e7d32;cursor:pointer;transition:all .15s;}
-.copy-btn:hover{background:#f1f8e9;}
-.result-box{background:#f9fbe7;border:1.5px solid #c5e1a5;border-radius:16px;padding:20px;white-space:pre-wrap;font-size:14px;line-height:1.9;color:#333;font-family:"Nunito",sans-serif;font-weight:700;max-height:500px;overflow-y:auto;}
+.result-wrap{margin-top:20px;display:none}
+.result-wrap.show{display:block}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.result-label{font-size:13px;font-weight:900;color:#2e7d32}
+.result-actions{display:flex;gap:8px;flex-wrap:wrap}
+.copy-btn{padding:8px 16px;border-radius:10px;border:1.5px solid #c5e1a5;background:#fff;font-family:"Nunito",sans-serif;font-size:13px;font-weight:800;color:#2e7d32;cursor:pointer;transition:all .15s}
+.copy-btn:hover{background:#f1f8e9}
+.save-btn{padding:8px 16px;border-radius:10px;border:1.5px solid #42a5f5;background:#e3f2fd;font-family:"Nunito",sans-serif;font-size:13px;font-weight:800;color:#1565c0;cursor:pointer;transition:all .15s}
+.save-btn:hover{background:#bbdefb}
+.result-box{background:#f9fbe7;border:1.5px solid #c5e1a5;border-radius:16px;padding:20px;white-space:pre-wrap;font-size:14px;line-height:1.9;color:#333;font-family:"Nunito",sans-serif;font-weight:700;max-height:500px;overflow-y:auto}
 
-/* Spinner */
-.spinner{display:none;text-align:center;padding:24px;font-size:14px;color:#8bc34a;font-weight:800;}
-.spinner.show{display:block;}
-.spinner-dots{display:inline-flex;gap:6px;margin-top:8px;}
-.spinner-dots span{width:8px;height:8px;border-radius:50%;background:#8bc34a;animation:bounce .8s ease-in-out infinite;}
-.spinner-dots span:nth-child(2){animation-delay:.15s;}
-.spinner-dots span:nth-child(3){animation-delay:.3s;}
+.spinner{display:none;text-align:center;padding:24px;font-size:14px;color:#8bc34a;font-weight:800}
+.spinner.show{display:block}
+.spinner-dots{display:inline-flex;gap:6px;margin-top:8px}
+.spinner-dots span{width:8px;height:8px;border-radius:50%;background:#8bc34a;animation:bounce .8s ease-in-out infinite}
+.spinner-dots span:nth-child(2){animation-delay:.15s}
+.spinner-dots span:nth-child(3){animation-delay:.3s}
 @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 
-/* Section divider */
-.section-label{font-size:11px;font-weight:900;color:#bbb;text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px;padding-top:16px;border-top:1px solid #f0f0f0;}
+.section-label{font-size:11px;font-weight:900;color:#bbb;text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px;padding-top:16px;border-top:1px solid #f0f0f0}
+.char-count{font-size:11px;color:#bbb;font-weight:700;text-align:right;margin-top:4px}
 
-/* Char counter */
-.char-count{font-size:11px;color:#bbb;font-weight:700;text-align:right;margin-top:4px;}
+/* ===== ИСТОРИЯ КСП ===== */
+.history-section{background:#fff;border-radius:20px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,.07);margin-bottom:20px}
+.history-title{font-size:16px;font-weight:900;color:#2e7d32;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.history-count{background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:900;border-radius:10px;padding:2px 8px}
+.history-empty{color:#bbb;font-size:13px;font-weight:700;padding:16px 0;text-align:center}
+.history-list{display:flex;flex-direction:column;gap:10px;margin-top:12px;max-height:320px;overflow-y:auto}
+.history-list::-webkit-scrollbar{width:4px}
+.history-list::-webkit-scrollbar-thumb{background:#c5e1a5;border-radius:2px}
+.history-item{background:#f9fbe7;border:1.5px solid #c5e1a5;border-radius:14px;padding:12px 16px;cursor:pointer;transition:all .15s;position:relative}
+.history-item:hover{border-color:#8bc34a;background:#f1f8e9;transform:translateY(-1px)}
+.history-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.history-item-title{font-size:14px;font-weight:900;color:#2e7d32}
+.history-item-date{font-size:11px;color:#aaa;font-weight:700}
+.history-item-meta{font-size:12px;color:#888;font-weight:700;margin-bottom:6px}
+.history-item-preview{font-size:12px;color:#666;line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.history-item-actions{display:flex;gap:6px;margin-top:8px}
+.h-btn{padding:5px 12px;border-radius:8px;border:none;font-family:"Nunito",sans-serif;font-size:12px;font-weight:800;cursor:pointer;transition:all .15s}
+.h-btn-use{background:#8bc34a;color:#fff}
+.h-btn-use:hover{background:#7cb342}
+.h-btn-del{background:#ffebee;color:#c62828}
+.h-btn-del:hover{background:#ef9a9a}
+
+/* ===== УВЕДОМЛЕНИЕ ===== */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#2e7d32;color:#fff;padding:12px 24px;border-radius:14px;font-family:"Nunito",sans-serif;font-size:14px;font-weight:800;z-index:9999;transition:transform .3s ease;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ===== РЕСУРСЫ HIGHLIGHT ===== */
+.resources-highlight{border-color:#8bc34a!important;background:#fff!important;box-shadow:0 0 0 3px rgba(139,195,74,.3),0 0 20px rgba(139,195,74,.2)!important;transition:all .4s ease!important}
 </style>
 </head>
 <body>
@@ -102,9 +111,12 @@ textarea.medium{height:100px;}
   <a href="../" class="topbar-back">← Выйти</a>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <div class="main">
   <div class="tabs">
     <button class="tab active" onclick="showTab('ksp')">📝 Генератор КСП</button>
+    <button class="tab" onclick="showTab('history')">📚 История КСП</button>
     <button class="tab" onclick="showTab('quiz')">🎯 Тест / Проверочная</button>
     <button class="tab" onclick="showTab('story')">📖 История для класса</button>
     <button class="tab" onclick="showTab('explain')">🤖 ИИ-объяснение</button>
@@ -114,15 +126,13 @@ textarea.medium{height:100px;}
   <div id="tab-ksp">
     <div class="card">
       <div class="card-title">📝 Генератор Краткосрочного Плана Урока</div>
-      <div class="card-sub">ИИ создаст КСП по стандартам МОН РК с целями, ходом урока и оцениванием</div>
+      <div class="card-sub">ИИ создаст КСП по стандартам МОН РК. После генерации план автоматически сохраняется в истории и вставляется в поле РЕСУРСЫ.</div>
 
       <div class="tip">
         <b>💡 Совет:</b> Чем больше деталей вы укажете — тем точнее будет план.<br>
-        Укажите тему, цели, методы и ресурсы которые планируете использовать.<br>
-        ИИ сформирует структуру: <b>Начало (7 мин) → Середина (25 мин) → Конец (8 мин)</b>
+        ИИ сформирует структуру: <b>Начало → Середина → Конец урока</b>
       </div>
 
-      <!-- Основная информация -->
       <div class="section-label">Основная информация</div>
       <div class="form-grid">
         <div>
@@ -171,27 +181,25 @@ textarea.medium{height:100px;}
         </div>
       </div>
 
-      <!-- Цели -->
       <div class="section-label">Цели обучения</div>
       <div class="form-group">
-        <label>Что ученики будут знать (знать)</label>
-        <textarea class="medium" id="ksp-know" placeholder="Например: знать лексику по теме School Objects (pencil, book, ruler...)"></textarea>
+        <label>Что ученики будут знать</label>
+        <textarea class="medium" id="ksp-know" placeholder="Например: знать лексику по теме School Objects..."></textarea>
       </div>
       <div class="form-group">
-        <label>Что ученики будут уметь делать (уметь)</label>
+        <label>Что ученики будут уметь делать</label>
         <textarea class="medium" id="ksp-can" placeholder="Например: использовать конструкцию 'This is my...' в диалоге"></textarea>
       </div>
       <div class="form-group">
-        <label>Как ученики будут применять знания (применять)</label>
-        <textarea class="medium" id="ksp-apply" placeholder="Например: составлять мини-диалог с одноклассником на тему школьных принадлежностей"></textarea>
+        <label>Как ученики будут применять знания</label>
+        <textarea class="medium" id="ksp-apply" placeholder="Например: составлять мини-диалог с одноклассником"></textarea>
       </div>
 
-      <!-- Методика -->
       <div class="section-label">Методика и ресурсы</div>
       <div class="form-grid">
         <div>
           <label>Методы обучения</label>
-          <select id="ksp-methods" multiple size="4" style="height:auto;padding:8px;">
+          <select id="ksp-methods" multiple size="4" style="height:auto;padding:8px">
             <option selected>Работа в парах</option>
             <option>Групповая работа</option>
             <option>Игровые методы</option>
@@ -214,11 +222,11 @@ textarea.medium{height:100px;}
       </div>
       <div class="form-group">
         <label>Ресурсы и материалы</label>
-        <textarea class="medium" id="ksp-resources" placeholder="Например: учебник Аяпова 3 класс, карточки со словами, DaraBala (онлайн-платформа), презентация PowerPoint, видео с YouTube"></textarea>
+        <textarea class="medium" id="ksp-resources" placeholder="Например: учебник Аяпова 3 класс, карточки со словами, DaraBala, презентация PowerPoint&#10;&#10;💡 Сюда автоматически вставится название сгенерированного КСП после генерации!"></textarea>
       </div>
       <div class="form-group">
         <label>Дополнительные пожелания для ИИ (необязательно)</label>
-        <textarea class="medium" id="ksp-extra" placeholder="Например: включи физминутку, добавь задание для сильных учеников, урок проводится в IT-кабинете"></textarea>
+        <textarea class="medium" id="ksp-extra" placeholder="Например: включи физминутку, добавь задание для сильных учеников"></textarea>
         <div class="char-count" id="ksp-extra-count">0 / 500</div>
       </div>
 
@@ -231,9 +239,32 @@ textarea.medium{height:100px;}
       <div class="result-wrap" id="ksp-result-wrap">
         <div class="result-header">
           <span class="result-label">📄 Готовый КСП</span>
-          <button class="copy-btn" onclick="copyResult('ksp-result')">📋 Скопировать</button>
+          <div class="result-actions">
+            <button class="copy-btn" onclick="copyResult('ksp-result')">📋 Скопировать</button>
+            <button class="save-btn" onclick="saveKSPManually()">💾 Сохранить в историю</button>
+          </div>
         </div>
         <div class="result-box" id="ksp-result"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ ИСТОРИЯ КСП ══════════════ -->
+  <div id="tab-history" style="display:none">
+    <div class="history-section">
+      <div class="history-title">
+        📚 История сгенерированных КСП
+        <span class="history-count" id="history-count">0</span>
+      </div>
+      <p style="font-size:13px;color:#aaa;font-weight:700;margin-top:4px">
+        Нажмите «Использовать» чтобы вставить КСП в поле РЕСУРСЫ на вкладке генератора
+      </p>
+      <div id="history-list" class="history-list">
+        <div class="history-empty">Нет сохранённых КСП. Сгенерируйте первый план!</div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px">
+        <button onclick="clearHistory()" style="padding:10px 20px;border-radius:12px;border:1.5px solid #ef9a9a;background:#ffebee;font-family:Nunito,sans-serif;font-size:13px;font-weight:800;color:#c62828;cursor:pointer">🗑️ Очистить всё</button>
+        <button onclick="exportHistory()" style="padding:10px 20px;border-radius:12px;border:1.5px solid #c5e1a5;background:#f1f8e9;font-family:Nunito,sans-serif;font-size:13px;font-weight:800;color:#2e7d32;cursor:pointer">📥 Скачать всё (.txt)</button>
       </div>
     </div>
   </div>
@@ -243,77 +274,20 @@ textarea.medium{height:100px;}
     <div class="card">
       <div class="card-title">🎯 Генератор Теста / Проверочной работы</div>
       <div class="card-sub">ИИ создаст готовые вопросы с ответами — можно распечатать</div>
-
-      <div class="tip">
-        <b>💡 Укажите тему и тип заданий</b> — ИИ создаст вопросы с ключом ответов.<br>
-        Для MCQ будет 4 варианта ответа. Для открытых вопросов — развёрнутые ответы.
-      </div>
-
+      <div class="tip"><b>💡 Укажите тему и тип заданий</b> — ИИ создаст вопросы с ключом ответов.</div>
       <div class="form-grid">
-        <div>
-          <label>Предмет и тема</label>
-          <input type="text" id="quiz-topic" placeholder='Например: "Английский, Weather vocabulary"'/>
-        </div>
-        <div>
-          <label>Класс и уровень</label>
-          <select id="quiz-grade">
-            <option>3 класс (начальный)</option>
-            <option>4 класс (начальный)</option>
-            <option>7 класс (средний)</option>
-            <option>8 класс (средний)</option>
-            <option>9 класс (средний)</option>
-            <option>10-11 класс (высокий)</option>
-          </select>
-        </div>
-        <div>
-          <label>Тип заданий</label>
-          <select id="quiz-type">
-            <option value="mcq">Выбор ответа (MCQ) 4 варианта</option>
-            <option value="truefalse">Правда / Ложь</option>
-            <option value="open">Открытые вопросы</option>
-            <option value="fill">Вставь пропущенное слово</option>
-            <option value="mixed">Смешанный тип</option>
-          </select>
-        </div>
-        <div>
-          <label>Количество вопросов</label>
-          <select id="quiz-count">
-            <option>5</option><option selected>10</option>
-            <option>15</option><option>20</option><option>25</option>
-          </select>
-        </div>
-        <div>
-          <label>Сложность</label>
-          <select id="quiz-level">
-            <option>Лёгкий (базовый)</option>
-            <option selected>Средний (стандарт)</option>
-            <option>Сложный (углублённый)</option>
-          </select>
-        </div>
-        <div>
-          <label>Язык теста</label>
-          <select id="quiz-lang">
-            <option value="ru">Русский</option>
-            <option value="kz">Казахский</option>
-            <option value="en">English</option>
-          </select>
-        </div>
+        <div><label>Предмет и тема</label><input type="text" id="quiz-topic" placeholder='Например: "Английский, Weather vocabulary"'/></div>
+        <div><label>Класс и уровень</label><select id="quiz-grade"><option>3 класс (начальный)</option><option>4 класс (начальный)</option><option>7 класс (средний)</option><option>8 класс (средний)</option><option>9 класс (средний)</option><option>10-11 класс (высокий)</option></select></div>
+        <div><label>Тип заданий</label><select id="quiz-type"><option value="mcq">Выбор ответа (MCQ)</option><option value="truefalse">Правда / Ложь</option><option value="open">Открытые вопросы</option><option value="fill">Вставь пропущенное слово</option><option value="mixed">Смешанный тип</option></select></div>
+        <div><label>Количество вопросов</label><select id="quiz-count"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>25</option></select></div>
+        <div><label>Сложность</label><select id="quiz-level"><option>Лёгкий (базовый)</option><option selected>Средний (стандарт)</option><option>Сложный (углублённый)</option></select></div>
+        <div><label>Язык теста</label><select id="quiz-lang"><option value="ru">Русский</option><option value="kz">Казахский</option><option value="en">English</option></select></div>
       </div>
-      <div class="form-group">
-        <label>Дополнительно (конкретные слова / темы для включения)</label>
-        <textarea class="medium" id="quiz-extra" placeholder="Например: обязательно включить слова: sunny, rainy, cloudy, windy, snowy. Добавить задание на составление предложений."></textarea>
-      </div>
-
+      <div class="form-group"><label>Дополнительно</label><textarea class="medium" id="quiz-extra" placeholder="Например: обязательно включить слова: sunny, rainy, cloudy, windy, snowy."></textarea></div>
       <button class="btn-gen" onclick="generateQuiz()">🤖 Создать тест</button>
-      <div class="spinner" id="quiz-spinner">
-        ⏳ Создаю вопросы...
-        <div class="spinner-dots"><span></span><span></span><span></span></div>
-      </div>
+      <div class="spinner" id="quiz-spinner">⏳ Создаю вопросы...<div class="spinner-dots"><span></span><span></span><span></span></div></div>
       <div class="result-wrap" id="quiz-result-wrap">
-        <div class="result-header">
-          <span class="result-label">📄 Готовый тест</span>
-          <button class="copy-btn" onclick="copyResult('quiz-result')">📋 Скопировать</button>
-        </div>
+        <div class="result-header"><span class="result-label">📄 Готовый тест</span><div class="result-actions"><button class="copy-btn" onclick="copyResult('quiz-result')">📋 Скопировать</button></div></div>
         <div class="result-box" id="quiz-result"></div>
       </div>
     </div>
@@ -323,60 +297,19 @@ textarea.medium{height:100px;}
   <div id="tab-story" style="display:none">
     <div class="card">
       <div class="card-title">📖 Генератор истории с именами учеников</div>
-      <div class="card-sub">ИИ создаст мини-историю по теме урока с именами вашего класса — дети будут в восторге!</div>
-
-      <div class="tip">
-        <b>💡 Персонализация повышает вовлечённость на 40%!</b><br>
-        Когда ученики видят своё имя в тексте — они читают внимательнее и запоминают лучше.
-      </div>
-
+      <div class="card-sub">ИИ создаст мини-историю по теме урока с именами вашего класса</div>
+      <div class="tip"><b>💡 Персонализация повышает вовлечённость на 40%!</b></div>
       <div class="form-grid">
-        <div>
-          <label>Тема истории (связана с уроком)</label>
-          <input type="text" id="story-topic" placeholder='Например: "Hello, English!" или "Переменные в Python"'/>
-        </div>
-        <div>
-          <label>Язык истории</label>
-          <select id="story-lang">
-            <option value="ru">Русский язык</option>
-            <option value="kz">Қазақ тілі</option>
-            <option value="en">English</option>
-          </select>
-        </div>
+        <div><label>Тема истории</label><input type="text" id="story-topic" placeholder='Например: "Hello, English!" или "Переменные в Python"'/></div>
+        <div><label>Язык истории</label><select id="story-lang"><option value="ru">Русский язык</option><option value="kz">Қазақ тілі</option><option value="en">English</option></select></div>
       </div>
-      <div class="form-group">
-        <label>Имена учеников класса (через запятую)</label>
-        <textarea class="medium" id="story-names" placeholder="Алан, Дарья, Марат, Айгерим, Тимур, Аида, Нурлан, Диана, Арман, Камила"></textarea>
-      </div>
-      <div class="form-group">
-        <label>Стиль истории</label>
-        <select id="story-style">
-          <option value="adventure">Приключение 🗺️</option>
-          <option value="funny">Смешная история 😄</option>
-          <option value="science">Научная фантастика 🚀</option>
-          <option value="fairy">Сказка 🧚</option>
-          <option value="school">Школьная история 🏫</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Длина истории</label>
-        <select id="story-length">
-          <option value="short">Короткая (3-4 предложения)</option>
-          <option value="medium" selected>Средняя (6-8 предложений)</option>
-          <option value="long">Длинная (10-12 предложений)</option>
-        </select>
-      </div>
-
+      <div class="form-group"><label>Имена учеников класса (через запятую)</label><textarea class="medium" id="story-names" placeholder="Алан, Дарья, Марат, Айгерим, Тимур, Аида, Нурлан, Диана, Арман, Камила"></textarea></div>
+      <div class="form-group"><label>Стиль истории</label><select id="story-style"><option value="adventure">Приключение 🗺️</option><option value="funny">Смешная история 😄</option><option value="science">Научная фантастика 🚀</option><option value="fairy">Сказка 🧚</option><option value="school">Школьная история 🏫</option></select></div>
+      <div class="form-group"><label>Длина истории</label><select id="story-length"><option value="short">Короткая (3-4 предложения)</option><option value="medium" selected>Средняя (6-8 предложений)</option><option value="long">Длинная (10-12 предложений)</option></select></div>
       <button class="btn-gen" onclick="generateStory()">🤖 Создать историю</button>
-      <div class="spinner" id="story-spinner">
-        ⏳ Пишу историю...
-        <div class="spinner-dots"><span></span><span></span><span></span></div>
-      </div>
+      <div class="spinner" id="story-spinner">⏳ Пишу историю...<div class="spinner-dots"><span></span><span></span><span></span></div></div>
       <div class="result-wrap" id="story-result-wrap">
-        <div class="result-header">
-          <span class="result-label">📄 Готовая история</span>
-          <button class="copy-btn" onclick="copyResult('story-result')">📋 Скопировать</button>
-        </div>
+        <div class="result-header"><span class="result-label">📄 Готовая история</span><div class="result-actions"><button class="copy-btn" onclick="copyResult('story-result')">📋 Скопировать</button></div></div>
         <div class="result-box" id="story-result"></div>
       </div>
     </div>
@@ -387,48 +320,23 @@ textarea.medium{height:100px;}
     <div class="card">
       <div class="card-title">🤖 ИИ-помощник для учителя</div>
       <div class="card-sub">Задайте любой вопрос — получите готовое объяснение, упражнение или методический совет</div>
-
       <div class="tip">
         <b>💡 Примеры вопросов:</b><br>
         • «Объясни разницу между Present Simple и Present Continuous»<br>
-        • «Придумай 5 игровых упражнений для закрепления темы Family»<br>
-        • «Как объяснить циклы for ребёнку 7 класса простыми словами?»<br>
-        • «Составь дифференцированные задания по 3 уровням для темы Weather»
+        • «Придумай 5 игровых упражнений для темы Family»<br>
+        • «Как объяснить циклы for ребёнку 7 класса?»
       </div>
-
-      <div class="form-group">
-        <label>Ваш запрос к ИИ-помощнику</label>
-        <textarea class="tall" id="explain-question" placeholder="Напишите свой вопрос или задание для ИИ..."></textarea>
-        <div class="char-count" id="explain-count">0 / 1000</div>
-      </div>
-      <div class="form-group">
-        <label>Для какого класса / уровня</label>
-        <input type="text" id="explain-grade" placeholder="Например: 3 класс, начальный уровень английского"/>
-      </div>
-      <div class="form-group">
-        <label>Язык ответа</label>
-        <select id="explain-lang">
-          <option value="ru">Русский</option>
-          <option value="kz">Казахский</option>
-          <option value="en">English</option>
-        </select>
-      </div>
-
+      <div class="form-group"><label>Ваш запрос к ИИ-помощнику</label><textarea class="tall" id="explain-question" placeholder="Напишите свой вопрос или задание для ИИ..."></textarea><div class="char-count" id="explain-count">0 / 1000</div></div>
+      <div class="form-group"><label>Для какого класса / уровня</label><input type="text" id="explain-grade" placeholder="Например: 3 класс, начальный уровень английского"/></div>
+      <div class="form-group"><label>Язык ответа</label><select id="explain-lang"><option value="ru">Русский</option><option value="kz">Казахский</option><option value="en">English</option></select></div>
       <button class="btn-gen" onclick="generateExplain()">🤖 Получить ответ</button>
-      <div class="spinner" id="explain-spinner">
-        ⏳ ИИ думает...
-        <div class="spinner-dots"><span></span><span></span><span></span></div>
-      </div>
+      <div class="spinner" id="explain-spinner">⏳ ИИ думает...<div class="spinner-dots"><span></span><span></span><span></span></div></div>
       <div class="result-wrap" id="explain-result-wrap">
-        <div class="result-header">
-          <span class="result-label">📄 Ответ ИИ</span>
-          <button class="copy-btn" onclick="copyResult('explain-result')">📋 Скопировать</button>
-        </div>
+        <div class="result-header"><span class="result-label">📄 Ответ ИИ</span><div class="result-actions"><button class="copy-btn" onclick="copyResult('explain-result')">📋 Скопировать</button></div></div>
         <div class="result-box" id="explain-result"></div>
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -437,46 +345,153 @@ const WORKER_URL = 'https://gemini-proxy.alankussainov10.workers.dev';
 // ── Auth check ──────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const saved = localStorage.getItem('darabala_user');
-  if (!saved) {
-    // Not logged in — redirect to login
-    window.location.href = '../';
-    return;
-  }
+  if (!saved) { window.location.href = '../'; return; }
   try {
     const u = JSON.parse(saved);
-    // Show user in topbar
     const nameEl = document.getElementById('topbar-name');
     const avatarEl = document.getElementById('topbar-avatar');
     if (nameEl) nameEl.textContent = u.name.split(' ')[0];
     if (avatarEl) {
-      if (u.picture) {
-        avatarEl.innerHTML = `<img src="${u.picture}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" referrerpolicy="no-referrer">`;
-      } else {
-        avatarEl.textContent = '👤';
-      }
+      if (u.picture) avatarEl.innerHTML = `<img src="${u.picture}" style="width:36px;height:36px;border-radius:50%;object-fit:cover" referrerpolicy="no-referrer">`;
+      else avatarEl.textContent = '👤';
     }
-  } catch(e) {
-    window.location.href = '../';
-  }
+  } catch(e) { window.location.href = '../'; }
 
-  // Char counters
-  document.getElementById('ksp-extra')?.addEventListener('input', function(){
-    document.getElementById('ksp-extra-count').textContent = this.value.length + ' / 500';
-  });
-  document.getElementById('explain-question')?.addEventListener('input', function(){
-    document.getElementById('explain-count').textContent = this.value.length + ' / 1000';
-  });
+  document.getElementById('ksp-extra')?.addEventListener('input', function(){ document.getElementById('ksp-extra-count').textContent = this.value.length + ' / 500'; });
+  document.getElementById('explain-question')?.addEventListener('input', function(){ document.getElementById('explain-count').textContent = this.value.length + ' / 1000'; });
+
+  loadHistoryUI();
 });
 
 // ── Tab switching ──────────────────────────────
 function showTab(name) {
-  const tabs = ['ksp','quiz','story','explain'];
-  tabs.forEach(t => {
-    document.getElementById('tab-'+t).style.display = t===name ? 'block' : 'none';
-  });
-  document.querySelectorAll('.tab').forEach((el, i) => {
-    el.classList.toggle('active', tabs[i] === name);
-  });
+  const tabs = ['ksp','history','quiz','story','explain'];
+  tabs.forEach(t => { document.getElementById('tab-'+t).style.display = t===name ? 'block' : 'none'; });
+  document.querySelectorAll('.tab').forEach((el, i) => { el.classList.toggle('active', tabs[i] === name); });
+  if (name === 'history') loadHistoryUI();
+}
+
+// ── Toast notification ──────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── KSP History Storage ──────────────────────────────
+function getKSPHistory() {
+  try { return JSON.parse(localStorage.getItem('darabala_ksp_history') || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveKSPToHistory(kspData) {
+  const history = getKSPHistory();
+  history.unshift(kspData); // Добавляем в начало
+  // Храним максимум 50 планов
+  if (history.length > 50) history.splice(50);
+  localStorage.setItem('darabala_ksp_history', JSON.stringify(history));
+}
+
+function loadHistoryUI() {
+  const history = getKSPHistory();
+  const listEl = document.getElementById('history-list');
+  const countEl = document.getElementById('history-count');
+  if (countEl) countEl.textContent = history.length;
+
+  if (!listEl) return;
+
+  if (history.length === 0) {
+    listEl.innerHTML = '<div class="history-empty">Нет сохранённых КСП. Сгенерируйте первый план!</div>';
+    return;
+  }
+
+  listEl.innerHTML = history.map((item, idx) => `
+    <div class="history-item" id="hist-item-${idx}">
+      <div class="history-item-header">
+        <div class="history-item-title">${escapeHtml(item.topic || 'Без темы')}</div>
+        <div class="history-item-date">${item.date}</div>
+      </div>
+      <div class="history-item-meta">📚 ${escapeHtml(item.subject)} · ${escapeHtml(item.grade)} · ${item.duration} мин</div>
+      <div class="history-item-preview">${escapeHtml(item.content.slice(0, 200))}...</div>
+      <div class="history-item-actions">
+        <button class="h-btn h-btn-use" onclick="useKSPFromHistory(${idx})">✅ Использовать как ресурс</button>
+        <button class="h-btn h-btn-del" onclick="deleteKSPFromHistory(${idx})">🗑️ Удалить</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function useKSPFromHistory(idx) {
+  const history = getKSPHistory();
+  const item = history[idx];
+  if (!item) return;
+
+  // Автовставка в поле РЕСУРСЫ
+  const resourcesEl = document.getElementById('ksp-resources');
+  if (resourcesEl) {
+    const kspRef = `[КСП] ${item.topic} (${item.subject}, ${item.grade}, ${item.date})`;
+    const current = resourcesEl.value.trim();
+    resourcesEl.value = current ? current + '\n' + kspRef : kspRef;
+
+    // Подсвечиваем поле
+    resourcesEl.classList.add('resources-highlight');
+    setTimeout(() => resourcesEl.classList.remove('resources-highlight'), 2000);
+
+    // Вставляем полный план в результат
+    document.getElementById('ksp-result').textContent = item.content;
+    document.getElementById('ksp-result-wrap').classList.add('show');
+  }
+
+  // Переключаем на вкладку КСП и скроллим к ресурсам
+  showTab('ksp');
+  setTimeout(() => {
+    resourcesEl?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    showToast('✅ КСП вставлен в поле РЕСУРСЫ!');
+  }, 300);
+}
+
+function deleteKSPFromHistory(idx) {
+  if (!confirm('Удалить этот КСП из истории?')) return;
+  const history = getKSPHistory();
+  history.splice(idx, 1);
+  localStorage.setItem('darabala_ksp_history', JSON.stringify(history));
+  loadHistoryUI();
+  showToast('🗑️ КСП удалён из истории');
+}
+
+function clearHistory() {
+  if (!confirm('Удалить ВСЕ сохранённые КСП? Это действие нельзя отменить.')) return;
+  localStorage.removeItem('darabala_ksp_history');
+  loadHistoryUI();
+  showToast('🗑️ История очищена');
+}
+
+function exportHistory() {
+  const history = getKSPHistory();
+  if (history.length === 0) { showToast('Нет КСП для скачивания'); return; }
+  const text = history.map(item => `=== КСП: ${item.topic} ===\n${item.subject} · ${item.grade} · ${item.date}\n\n${item.content}`).join('\n\n' + '='.repeat(60) + '\n\n');
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'DaraBala_КСП_История.txt'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function saveKSPManually() {
+  const content = document.getElementById('ksp-result').textContent;
+  if (!content || content.trim() === '') { showToast('Сначала сгенерируйте КСП!'); return; }
+  const topic = document.getElementById('ksp-topic').value || 'Без темы';
+  const subject = document.getElementById('ksp-subject').value;
+  const grade = document.getElementById('ksp-grade').value;
+  const duration = document.getElementById('ksp-duration').value;
+  const date = new Date().toLocaleDateString('ru-RU');
+  saveKSPToHistory({ topic, subject, grade, duration, date, content });
+  loadHistoryUI();
+  showToast('💾 КСП сохранён в историю!');
 }
 
 // ── AI call helper ──────────────────────────────
@@ -491,27 +506,24 @@ async function callAI(prompt, spinnerId, resultId, resultWrapId, btnId) {
   if (btn) btn.disabled = true;
 
   try {
-    const resp = await fetch(WORKER_URL + '/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: prompt })
-    });
-
+    const resp = await fetch(WORKER_URL + '/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt }) });
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     const data = await resp.json();
     resultEl.textContent = data.reply || 'ИИ не дал ответа. Попробуйте ещё раз.';
     resultWrap.classList.add('show');
+    return data.reply;
   } catch(e) {
     resultEl.textContent = '❌ Ошибка соединения с ИИ.\n\nПроверьте:\n1. Интернет-соединение\n2. Попробуйте через несколько секунд\n\nОшибка: ' + e.message;
     resultWrap.classList.add('show');
+    return null;
+  } finally {
+    spinner.classList.remove('show');
+    if (btn) btn.disabled = false;
   }
-
-  spinner.classList.remove('show');
-  if (btn) btn.disabled = false;
 }
 
 // ── KSP Generator ──────────────────────────────
-function generateKSP() {
+async function generateKSP() {
   const subject  = document.getElementById('ksp-subject').value;
   const grade    = document.getElementById('ksp-grade').value;
   const unit     = document.getElementById('ksp-unit').value || '—';
@@ -524,8 +536,6 @@ function generateKSP() {
   const assess   = document.getElementById('ksp-assess').value;
   const resources= document.getElementById('ksp-resources').value || 'учебник, доска';
   const extra    = document.getElementById('ksp-extra').value;
-
-  // Get selected methods
   const methodsSel = document.getElementById('ksp-methods');
   const methods = Array.from(methodsSel.selectedOptions).map(o => o.value).join(', ') || 'традиционные методы';
 
@@ -584,7 +594,33 @@ ${extra ? `\nДополнительные пожелания:\n${extra}` : ''}
 
 Язык КСП: русский. Формат: чёткий, структурированный, готовый к использованию.`;
 
-  callAI(prompt, 'ksp-spinner', 'ksp-result', 'ksp-result-wrap', 'ksp-btn');
+  const reply = await callAI(prompt, 'ksp-spinner', 'ksp-result', 'ksp-result-wrap', 'ksp-btn');
+
+  if (reply) {
+    // Автосохранение в историю
+    const kspData = {
+      topic, subject, grade, duration,
+      date: new Date().toLocaleDateString('ru-RU'),
+      content: reply
+    };
+    saveKSPToHistory(kspData);
+
+    // Автовставка в поле РЕСУРСЫ
+    const resourcesEl = document.getElementById('ksp-resources');
+    if (resourcesEl) {
+      const kspRef = `[КСП] ${topic} (${subject}, ${grade}, ${new Date().toLocaleDateString('ru-RU')})`;
+      const current = resourcesEl.value.trim();
+      // Вставляем только если этой ссылки ещё нет
+      if (!current.includes(kspRef)) {
+        resourcesEl.value = current ? current + '\n' + kspRef : kspRef;
+        // Подсвечиваем поле
+        resourcesEl.classList.add('resources-highlight');
+        setTimeout(() => resourcesEl.classList.remove('resources-highlight'), 2500);
+      }
+    }
+
+    showToast('✅ КСП сгенерирован и сохранён в историю!');
+  }
 }
 
 // ── Quiz Generator ──────────────────────────────
@@ -596,32 +632,9 @@ function generateQuiz() {
   const level  = document.getElementById('quiz-level').value;
   const lang   = document.getElementById('quiz-lang').value;
   const extra  = document.getElementById('quiz-extra').value;
-
-  const typeDesc = {
-    mcq: 'с 4 вариантами ответа (A, B, C, D) — только 1 правильный',
-    truefalse: 'типа «Правда / Ложь» — чёткие утверждения',
-    open: 'с открытым ответом — требующие развёрнутого ответа',
-    fill: 'на заполнение пропуска — вставь пропущенное слово или фразу',
-    mixed: 'смешанного типа: MCQ + Правда/Ложь + открытые'
-  };
-  const langMap = { ru: 'русском', kz: 'казахском', en: 'английском' };
-
-  const prompt = `Создай проверочную работу по теме: ${topic}
-Класс/уровень: ${grade}
-Тип заданий: ${typeDesc[type]}
-Количество вопросов: ${count}
-Сложность: ${level}
-Язык: ${langMap[lang]}
-${extra ? `\nДополнительно: ${extra}` : ''}
-
-Требования:
-- Пронумеруй каждый вопрос
-- Для MCQ: укажи варианты A, B, C, D
-- В конце добавь раздел "ОТВЕТЫ:" с ключом
-- Вопросы должны быть разнообразными и охватывать разные аспекты темы
-- Соответствуй возрасту и уровню учеников
-- Добавь шапку: Дата: ___ Имя ученика: _______________`;
-
+  const typeDesc = { mcq:'с 4 вариантами ответа (A, B, C, D)', truefalse:'типа «Правда / Ложь»', open:'с открытым ответом', fill:'на заполнение пропуска', mixed:'смешанного типа: MCQ + Правда/Ложь + открытые' };
+  const langMap = { ru:'русском', kz:'казахском', en:'английском' };
+  const prompt = `Создай проверочную работу по теме: ${topic}\nКласс/уровень: ${grade}\nТип заданий: ${typeDesc[type]}\nКоличество вопросов: ${count}\nСложность: ${level}\nЯзык: ${langMap[lang]}\n${extra ? `\nДополнительно: ${extra}` : ''}\n\nТребования:\n- Пронумеруй каждый вопрос\n- Для MCQ: укажи варианты A, B, C, D\n- В конце добавь раздел "ОТВЕТЫ:" с ключом\n- Добавь шапку: Дата: ___ Имя ученика: _______________`;
   callAI(prompt, 'quiz-spinner', 'quiz-result', 'quiz-result-wrap', null);
 }
 
@@ -632,23 +645,10 @@ function generateStory() {
   const lang   = document.getElementById('story-lang').value;
   const style  = document.getElementById('story-style').value;
   const length = document.getElementById('story-length').value;
-
-  const langMap  = { ru: 'русском', kz: 'казахском', en: 'английском' };
+  const langMap  = { ru:'русском', kz:'казахском', en:'английском' };
   const styleMap = { adventure:'приключение', funny:'смешная история', science:'научная фантастика', fairy:'сказка', school:'школьная история' };
   const lenMap   = { short:'3-4 предложения', medium:'6-8 предложений', long:'10-12 предложений' };
-
-  const prompt = `Напиши ${styleMap[style]} на ${langMap[lang]} языке.
-Тема истории связана с: "${topic}"
-Обязательно включи этих учеников как персонажей: ${names}
-Длина: ${lenMap[length]}
-
-Требования:
-- Каждый ученик из списка должен сыграть роль в истории
-- История должна быть интересной, увлекательной и подходящей для школьников
-- Если возможно — включи слова или понятия из темы урока в текст
-- Закончи историю позитивно или с уроком/моралью
-- Только готовый текст истории, без заголовка и комментариев`;
-
+  const prompt = `Напиши ${styleMap[style]} на ${langMap[lang]} языке.\nТема истории связана с: "${topic}"\nОбязательно включи этих учеников как персонажей: ${names}\nДлина: ${lenMap[length]}\n\nТребования:\n- Каждый ученик должен сыграть роль в истории\n- История должна быть увлекательной и подходящей для школьников\n- Закончи историю позитивно или с уроком/моралью\n- Только готовый текст истории, без заголовка`;
   callAI(prompt, 'story-spinner', 'story-result', 'story-result-wrap', null);
 }
 
@@ -657,21 +657,9 @@ function generateExplain() {
   const question = document.getElementById('explain-question').value;
   const grade    = document.getElementById('explain-grade').value || 'школьники';
   const lang     = document.getElementById('explain-lang').value;
-
-  if (!question.trim()) {
-    alert('Пожалуйста, напишите ваш вопрос!');
-    return;
-  }
-
-  const langMap = { ru: 'русском', kz: 'казахском', en: 'английском' };
-
-  const prompt = `Ты опытный педагог и методист. Ответь на вопрос учителя на ${langMap[lang]} языке.
-
-Аудитория: ${grade}
-Вопрос учителя: ${question}
-
-Дай развёрнутый, практичный ответ. Если уместно — добавь примеры, упражнения или методические советы.`;
-
+  if (!question.trim()) { alert('Пожалуйста, напишите ваш вопрос!'); return; }
+  const langMap = { ru:'русском', kz:'казахском', en:'английском' };
+  const prompt = `Ты опытный педагог и методист. Ответь на вопрос учителя на ${langMap[lang]} языке.\n\nАудитория: ${grade}\nВопрос учителя: ${question}\n\nДай развёрнутый, практичный ответ. Если уместно — добавь примеры, упражнения или методические советы.`;
   callAI(prompt, 'explain-spinner', 'explain-result', 'explain-result-wrap', null);
 }
 
@@ -679,22 +667,10 @@ function generateExplain() {
 function copyResult(id) {
   const text = document.getElementById(id).textContent;
   navigator.clipboard.writeText(text).then(() => {
-    const btns = document.querySelectorAll('.copy-btn');
-    btns.forEach(btn => {
-      if (btn.getAttribute('onclick') === `copyResult('${id}')`) {
-        const orig = btn.textContent;
-        btn.textContent = '✅ Скопировано!';
-        setTimeout(() => btn.textContent = orig, 2000);
-      }
-    });
+    showToast('📋 Скопировано в буфер обмена!');
   }).catch(() => {
-    // Fallback
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
+    const ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('📋 Скопировано!');
   });
 }
 </script>
