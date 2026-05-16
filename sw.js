@@ -1,7 +1,6 @@
-// Service Worker — DaraBala PWA
-const CACHE_NAME = 'darabala-v2';
+// Service Worker — DaraBala PWA v4 (force refresh)
+const CACHE_NAME = 'darabala-v4';
 
-// Файлы которые кэшируем при установке
 const STATIC_FILES = [
   '/DaraBala/',
   '/DaraBala/index.html',
@@ -9,26 +8,19 @@ const STATIC_FILES = [
   '/DaraBala/student/index.html',
   '/DaraBala/teacher/',
   '/DaraBala/teacher/index.html',
-  '/DaraBala/css/style.css',
-  '/DaraBala/js/curriculum.js',
-  '/DaraBala/js/lesson.js',
-  '/DaraBala/js/chat.js',
-  '/DaraBala/js/app.js',
   '/DaraBala/manifest.json',
   '/DaraBala/icons/icon-192.png',
   '/DaraBala/icons/icon-512.png',
 ];
 
-// Установка — кэшируем все статические файлы
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(STATIC_FILES))
+      .then(cache => cache.addAll(STATIC_FILES).catch(() => {}))
       .then(() => self.skipWaiting())
   );
 });
 
-// Активация — удаляем старые кэши
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -37,31 +29,30 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch — стратегия Cache First для статики, Network First для API
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // API запросы (воркер, Google) — только сеть, без кэша
-  if (url.hostname !== location.hostname) {
-    return; // браузер обрабатывает сам
+  // Не кэшируем API и внешние ресурсы
+  if (url.hostname !== location.hostname) return;
+  // Не кэшируем навигационные запросы — всегда свежие
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches.match(event.request).then(r => r || caches.match('/DaraBala/student/index.html'))
+      )
+    );
+    return;
   }
 
-  // Статические файлы — сначала кэш, потом сеть
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
       return fetch(event.request).then(response => {
-        // Кэшируем новые успешные ответы
-        if (response && response.status === 200) {
+        if (response && response.status === 200 && response.type === 'basic') {
           const clone = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         }
         return response;
-      }).catch(() => {
-        // Офлайн — возвращаем главную страницу для навигации
-        if (event.request.mode === 'navigate') {
-          return caches.match('/DaraBala/student/index.html');
-        }
       });
     })
   );
