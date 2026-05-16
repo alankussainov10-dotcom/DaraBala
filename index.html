@@ -4,108 +4,73 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="theme-color" content="#8bc34a"/>
-<meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
 <title>DaraBala</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="apple-touch-icon" href="icons/icon-192.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{
-  font-family:"Nunito",sans-serif;
-  min-height:100vh;
-  background:linear-gradient(160deg,#b2ebf2 0%,#c8e6c9 45%,#e8d5b7 100%);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:20px;position:relative;overflow:hidden;
-}
-.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.15;pointer-events:none;animation:bFloat 18s ease-in-out infinite alternate;}
-@keyframes bFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(var(--tx,30px),var(--ty,-40px)) scale(1.1)}}
-.card{
-  background:rgba(255,255,255,.97);
-  backdrop-filter:blur(24px);
-  border-radius:32px;
-  padding:40px 28px 36px;
-  width:100%;max-width:420px;
-  box-shadow:0 16px 64px rgba(0,0,0,.14);
-  position:relative;z-index:1;
-  animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both;
-}
-@keyframes popIn{from{opacity:0;transform:scale(.88) translateY(24px)}to{opacity:1;transform:scale(1) translateY(0)}}
+body{font-family:"Nunito",sans-serif;min-height:100vh;background:linear-gradient(160deg,#b2ebf2 0%,#c8e6c9 45%,#e8d5b7 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative;overflow:hidden}
+.blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:.15;pointer-events:none;animation:bFloat 18s ease-in-out infinite alternate}
+@keyframes bFloat{0%{transform:translate(0,0)scale(1)}100%{transform:translate(var(--tx,30px),var(--ty,-40px))scale(1.1)}}
+.card{background:rgba(255,255,255,.97);backdrop-filter:blur(24px);border-radius:32px;padding:40px 28px 36px;width:100%;max-width:420px;box-shadow:0 16px 64px rgba(0,0,0,.14);position:relative;z-index:1;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275) both}
+@keyframes popIn{from{opacity:0;transform:scale(.88)translateY(24px)}to{opacity:1;transform:scale(1)translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-.logo-area{text-align:center;margin-bottom:28px;}
-.logo-fallback{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#8bc34a,#2e7d32);display:inline-flex;align-items:center;justify-content:center;font-size:36px;font-weight:900;color:#fff;animation:bob 2.5s ease-in-out infinite;}
-.logo-img{width:80px;height:80px;border-radius:24px;animation:bob 2.5s ease-in-out infinite;display:inline-block;object-fit:cover;}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.app-name{font-size:38px;font-weight:900;color:#2e7d32;letter-spacing:-1.5px;margin-top:10px;}
-.app-tagline{font-size:13px;color:#aaa;font-weight:700;margin-top:4px;line-height:1.5;}
-.step{display:none;animation:fadeUp .3s ease both;}
-.step.active{display:block;}
-.returning-box{
-  background:#f1f8e9;border:2px solid #c5e1a5;border-radius:20px;
-  padding:14px 16px;margin-bottom:16px;
-  display:flex;align-items:center;gap:14px;
-}
-.ret-avatar{width:46px;height:46px;border-radius:50%;background:#fff;border:2px solid #c5e1a5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden;}
-.ret-avatar img{width:100%;height:100%;object-fit:cover;}
-.ret-name{font-size:15px;font-weight:900;color:#333;}
-.ret-sub{font-size:12px;color:#aaa;font-weight:700;}
-.btn-continue{
-  width:100%;padding:16px;border-radius:18px;border:none;
-  background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;
-  font-family:Nunito,sans-serif;font-size:17px;font-weight:900;
-  cursor:pointer;margin-bottom:14px;
-  box-shadow:0 6px 20px rgba(139,195,74,.4);
-  border-bottom:4px solid rgba(0,0,0,.15);
-  transition:all .2s;
-}
-.btn-continue:hover{transform:translateY(-2px);}
-.divider{display:flex;align-items:center;gap:10px;color:#ccc;font-size:12px;font-weight:700;margin:16px 0;}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:#eee;}
-.btn-google{
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  width:100%;padding:15px 20px;border-radius:18px;
-  border:2.5px solid #e0e0e0;background:#fff;cursor:pointer;
-  font-family:Nunito,sans-serif;font-size:16px;font-weight:800;color:#333;
-  box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;margin-bottom:12px;
-  text-decoration:none;
-}
-.btn-google:hover{border-color:#8bc34a;background:#f9fbe7;transform:translateY(-2px);}
-.google-logo{width:22px;height:22px;flex-shrink:0;}
-.btn-guest{
-  width:100%;padding:15px;border-radius:18px;border:2px solid #e8e8e8;
-  background:linear-gradient(135deg,#f1f8e9,#dcedc8);cursor:pointer;
-  font-family:Nunito,sans-serif;font-size:16px;font-weight:800;color:#33691e;
-  display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s;
-}
-.btn-guest:hover{background:linear-gradient(135deg,#dcedc8,#c5e1a5);transform:translateY(-1px);}
-.hint{font-size:11px;color:#ccc;font-weight:700;margin-top:14px;text-align:center;line-height:1.5;}
-.welcome-text{font-size:22px;font-weight:900;color:#2e7d32;text-align:center;margin-bottom:6px;}
-.welcome-sub{font-size:13px;color:#aaa;font-weight:700;text-align:center;margin-bottom:24px;}
-.role-btn{
-  width:100%;padding:18px 20px;border-radius:22px;border:2.5px solid #e8e8e8;
-  background:#fff;cursor:pointer;font-family:Nunito,sans-serif;
-  display:flex;align-items:center;gap:16px;transition:all .2s;margin-bottom:14px;
-  text-align:left;box-shadow:0 2px 10px rgba(0,0,0,.05);
-}
-.role-btn:hover{border-color:#8bc34a;background:#f9fbe7;transform:translateY(-2px);}
-.role-icon{font-size:42px;flex-shrink:0;}
-.role-name{font-size:18px;font-weight:900;color:#2e7d32;}
-.role-desc{font-size:12px;font-weight:700;color:#aaa;margin-top:3px;}
-.role-badge{font-size:11px;font-weight:900;border-radius:10px;padding:5px 11px;flex-shrink:0;margin-left:auto;}
-.badge-green{background:#e8f5e9;color:#388e3c;}
-.badge-blue{background:#e3f2fd;color:#1565c0;}
-.btn-back{
-  background:none;border:none;color:#bbb;font-family:Nunito,sans-serif;
-  font-size:13px;font-weight:800;cursor:pointer;margin-top:6px;
-  display:flex;align-items:center;justify-content:center;gap:6px;width:100%;
-  padding:8px;border-radius:12px;transition:color .15s;
-}
-.btn-back:hover{color:#888;}
-/* Ошибка */
-.error-msg{background:#ffebee;border:1.5px solid #ef9a9a;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:700;color:#c62828;margin-bottom:14px;display:none;text-align:center;}
-.error-msg.show{display:block;}
+.logo-area{text-align:center;margin-bottom:28px}
+.logo-img{width:80px;height:80px;border-radius:24px;animation:bob 2.5s ease-in-out infinite;display:inline-block;object-fit:cover}
+.logo-fallback{width:80px;height:80px;border-radius:24px;background:linear-gradient(135deg,#8bc34a,#2e7d32);display:inline-flex;align-items:center;justify-content:center;font-size:36px;animation:bob 2.5s ease-in-out infinite}
+.app-name{font-size:38px;font-weight:900;color:#2e7d32;letter-spacing:-1.5px;margin-top:10px}
+.app-tagline{font-size:13px;color:#aaa;font-weight:700;margin-top:4px;line-height:1.5}
+.step{display:none;animation:fadeUp .3s ease both}
+.step.active{display:block}
+.returning-box{background:#f1f8e9;border:2px solid #c5e1a5;border-radius:20px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
+.ret-avatar{width:46px;height:46px;border-radius:50%;background:#fff;border:2px solid #c5e1a5;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden}
+.ret-avatar img{width:100%;height:100%;object-fit:cover}
+.ret-name{font-size:15px;font-weight:900;color:#333}
+.ret-sub{font-size:12px;color:#aaa;font-weight:700}
+.btn-continue{width:100%;padding:16px;border-radius:18px;border:none;background:linear-gradient(135deg,#8bc34a,#33691e);color:#fff;font-family:Nunito,sans-serif;font-size:17px;font-weight:900;cursor:pointer;margin-bottom:14px;box-shadow:0 6px 20px rgba(139,195,74,.4);border-bottom:4px solid rgba(0,0,0,.15);transition:all .2s}
+.btn-continue:hover{transform:translateY(-2px)}
+.divider{display:flex;align-items:center;gap:10px;color:#ccc;font-size:12px;font-weight:700;margin:16px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:#eee}
+.btn-google{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:15px 20px;border-radius:18px;border:2.5px solid #e0e0e0;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;font-size:16px;font-weight:800;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.06);transition:all .2s;margin-bottom:12px}
+.btn-google:hover{border-color:#8bc34a;background:#f9fbe7;transform:translateY(-2px)}
+.btn-google:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.google-logo{width:22px;height:22px;flex-shrink:0}
+.btn-guest{width:100%;padding:15px;border-radius:18px;border:2px solid #e8e8e8;background:linear-gradient(135deg,#f1f8e9,#dcedc8);cursor:pointer;font-family:Nunito,sans-serif;font-size:16px;font-weight:800;color:#33691e;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.btn-guest:hover{background:linear-gradient(135deg,#dcedc8,#c5e1a5);transform:translateY(-1px)}
+.hint{font-size:11px;color:#ccc;font-weight:700;margin-top:14px;text-align:center;line-height:1.5}
+.err{background:#ffebee;border:1.5px solid #ef9a9a;border-radius:14px;padding:12px 16px;font-size:13px;font-weight:700;color:#c62828;margin-bottom:14px;display:none;text-align:center;line-height:1.5}
+.err.show{display:block}
+@keyframes ldot{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ldots{display:none;justify-content:center;gap:6px;padding:12px 0}
+.ldots.show{display:flex}
+.ldots span{width:8px;height:8px;border-radius:50%;background:#8bc34a;animation:ldot .8s ease-in-out infinite}
+.ldots span:nth-child(2){animation-delay:.15s}
+.ldots span:nth-child(3){animation-delay:.3s}
+.welcome-text{font-size:22px;font-weight:900;color:#2e7d32;text-align:center;margin-bottom:6px}
+.welcome-sub{font-size:13px;color:#aaa;font-weight:700;text-align:center;margin-bottom:24px}
+.role-btn{width:100%;padding:18px 20px;border-radius:22px;border:2.5px solid #e8e8e8;background:#fff;cursor:pointer;font-family:Nunito,sans-serif;display:flex;align-items:center;gap:16px;transition:all .2s;margin-bottom:14px;text-align:left;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.role-btn:hover{border-color:#8bc34a;background:#f9fbe7;transform:translateY(-2px)}
+.role-icon{font-size:42px;flex-shrink:0}
+.role-name{font-size:18px;font-weight:900;color:#2e7d32}
+.role-desc{font-size:12px;font-weight:700;color:#aaa;margin-top:3px}
+.role-badge{font-size:11px;font-weight:900;border-radius:10px;padding:5px 11px;flex-shrink:0;margin-left:auto}
+.badge-green{background:#e8f5e9;color:#388e3c}
+.badge-blue{background:#e3f2fd;color:#1565c0}
+.btn-back{background:none;border:none;color:#bbb;font-family:Nunito,sans-serif;font-size:13px;font-weight:800;cursor:pointer;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:8px;border-radius:12px;transition:color .15s}
+.btn-back:hover{color:#888}
+/* Google popup overlay */
+#g-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9000;align-items:center;justify-content:center}
+#g-overlay.show{display:flex}
+#g-popup{background:#fff;border-radius:24px;padding:28px 24px;width:320px;box-shadow:0 12px 48px rgba(0,0,0,.25);text-align:center}
+#g-popup h3{font-size:17px;font-weight:900;color:#333;margin-bottom:6px}
+#g-popup p{font-size:13px;color:#aaa;font-weight:700;margin-bottom:20px;line-height:1.5}
+#g-btn-target{display:flex;justify-content:center;margin-bottom:14px}
+#g-cancel{padding:8px 20px;border-radius:10px;border:1.5px solid #e0e0e0;background:#f5f5f5;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;color:#888}
+#g-cancel:hover{background:#ebebeb}
 </style>
 </head>
 <body>
@@ -113,6 +78,16 @@ body{
 <div class="blob" style="width:520px;height:520px;top:-120px;left:-120px;background:radial-gradient(circle,#8bc34a,#2e7d32);--tx:50px;--ty:-30px"></div>
 <div class="blob" style="width:420px;height:420px;bottom:-100px;right:-100px;background:radial-gradient(circle,#aed581,#558b2f);--tx:-40px;--ty:50px;animation-duration:14s"></div>
 <div class="blob" style="width:300px;height:300px;top:40%;left:-60px;background:radial-gradient(circle,#b2ebf2,#4dd0e1);--tx:30px;--ty:-60px;animation-duration:22s"></div>
+
+<!-- Google выбор аккаунта — наш overlay с официальной кнопкой -->
+<div id="g-overlay">
+  <div id="g-popup">
+    <h3>Вход через Google</h3>
+    <p>Выбери аккаунт для входа в DaraBala</p>
+    <div id="g-btn-target"></div>
+    <button id="g-cancel" onclick="closeGOverlay()">Отмена</button>
+  </div>
+</div>
 
 <div class="card">
   <div class="logo-area">
@@ -123,21 +98,15 @@ body{
     <div class="app-tagline">Умная платформа для учёбы<br>English · Python · Казахстан 🇰🇿</div>
   </div>
 
-  <!-- STEP 1: LOGIN -->
   <div class="step active" id="step-login">
-
     <div id="returning-block" style="display:none">
       <div class="returning-box" id="returning-preview"></div>
-      <button class="btn-continue" onclick="continueAsReturning()">
-        Продолжить как <span id="returning-name-btn"></span> →
-      </button>
+      <button class="btn-continue" onclick="continueAsReturning()">Продолжить как <span id="returning-name-btn"></span> →</button>
       <div class="divider">или войди как другой</div>
     </div>
-
-    <div class="error-msg" id="error-msg"></div>
-
-    <!-- Google OAuth через redirect (работает везде) -->
-    <a class="btn-google" id="btn-google-login" href="#" onclick="doGoogleLogin(event)">
+    <div class="err" id="err-msg"></div>
+    <div class="ldots" id="ldots"><span></span><span></span><span></span></div>
+    <button class="btn-google" id="btn-google" onclick="openGOverlay()">
       <svg class="google-logo" viewBox="0 0 24 24">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -145,201 +114,170 @@ body{
         <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
       </svg>
       Войти через Google
-    </a>
-
-    <div class="divider">или</div>
-
-    <button class="btn-guest" onclick="doGuestLogin()">
-      👤 Войти как гость
     </button>
-
+    <div class="divider">или</div>
+    <button class="btn-guest" onclick="doGuestLogin()">👤 Войти как гость</button>
     <div class="hint">Прогресс гостя сохраняется только в этом браузере</div>
   </div>
 
-  <!-- STEP 2: ROLE SELECT -->
   <div class="step" id="step-role">
     <div class="welcome-text" id="welcome-text">Добро пожаловать! 👋</div>
     <div class="welcome-sub">Кто ты сегодня?</div>
-
     <button class="role-btn" onclick="goToRole('student')">
       <div class="role-icon">🎒</div>
-      <div>
-        <div class="role-name">Мир Ученика</div>
-        <div class="role-desc">Уроки · ИИ-учитель · Задания</div>
-      </div>
+      <div><div class="role-name">Мир Ученика</div><div class="role-desc">Уроки · ИИ-учитель · Задания</div></div>
       <span class="role-badge badge-green">3–7 класс</span>
     </button>
-
     <button class="role-btn" onclick="goToRole('teacher')">
       <div class="role-icon">📋</div>
-      <div>
-        <div class="role-name">Кабинет Учителя</div>
-        <div class="role-desc">КСП · Тесты · ИИ-помощник</div>
-      </div>
+      <div><div class="role-name">Кабинет Учителя</div><div class="role-desc">КСП · Тесты · ИИ-помощник</div></div>
       <span class="role-badge badge-blue">Педагог</span>
     </button>
-
     <button class="btn-back" onclick="goBack()">← Сменить аккаунт</button>
   </div>
-
 </div>
 
 <script>
-// ===================== CONFIG =====================
-const GOOGLE_CLIENT_ID = '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com';
-// Redirect URI — должен совпадать с тем что в Google Console
-const REDIRECT_URI = 'https://alankussainov10-dotcom.github.io/DaraBala/';
-
+const CLIENT_ID = '533836977579-vmtqmhrmtemrbo44loi5vjr9rv87jenj.apps.googleusercontent.com';
 let _user = null;
+let _gsiReady = false;
+let _btnRendered = false;
 
-// ===================== INIT =====================
+// ── INIT ──────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  // Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/DaraBala/sw.js').catch(() => {});
   }
-
-  // Проверяем redirect от Google OAuth
-  handleOAuthRedirect();
-
-  // Проверяем сохранённого пользователя
-  const saved = localStorage.getItem('darabala_user');
-  if (saved) {
-    try {
-      _user = JSON.parse(saved);
-      showReturning(_user);
-    } catch(e) {
-      localStorage.removeItem('darabala_user');
-    }
-  }
+  checkSaved();
+  pollGSI();
 });
 
-// ===================== GOOGLE OAUTH (REDIRECT FLOW) =====================
-function doGoogleLogin(e) {
-  e.preventDefault();
-
-  // Строим URL авторизации Google
-  const params = new URLSearchParams({
-    client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-    response_type: 'token',       // implicit flow — токен сразу в hash
-    scope: 'openid email profile',
-    prompt: 'select_account',
-    state: 'darabala_oauth'
-  });
-
-  const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
-  window.location.href = authUrl;
-}
-
-function handleOAuthRedirect() {
-  // Google возвращает токен в hash: #access_token=...&token_type=Bearer...
-  const hash = window.location.hash;
-  if (!hash || !hash.includes('access_token')) return;
-
-  // Очищаем hash из URL
-  history.replaceState(null, '', window.location.pathname + window.location.search);
-
-  const params = new URLSearchParams(hash.substring(1));
-  const accessToken = params.get('access_token');
-  const state = params.get('state');
-
-  if (!accessToken || state !== 'darabala_oauth') return;
-
-  // Получаем профиль через Google API
-  fetchGoogleProfile(accessToken);
-}
-
-async function fetchGoogleProfile(accessToken) {
-  try {
-    const resp = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
-      headers: { 'Authorization': 'Bearer ' + accessToken }
-    });
-    const profile = await resp.json();
-
-    if (profile.error) throw new Error(profile.error.message);
-
-    afterLogin({
-      name: profile.name,
-      email: profile.email,
-      picture: profile.picture,
-      source: 'google'
-    });
-  } catch(e) {
-    showError('Ошибка Google авторизации: ' + e.message + '. Войдите как гость.');
-    console.error('Google profile error:', e);
+function pollGSI() {
+  if (window.google && window.google.accounts && window.google.accounts.id) {
+    initGSI();
+  } else {
+    setTimeout(pollGSI, 150);
   }
 }
 
-// ===================== GUEST LOGIN =====================
+function initGSI() {
+  try {
+    google.accounts.id.initialize({
+      client_id: CLIENT_ID,
+      callback: onGoogleToken,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    });
+    _gsiReady = true;
+    renderGoogleBtn();
+  } catch(e) {
+    console.warn('GSI init failed:', e);
+  }
+}
+
+function renderGoogleBtn() {
+  if (_btnRendered) return;
+  const target = document.getElementById('g-btn-target');
+  if (!target || !_gsiReady) return;
+  try {
+    google.accounts.id.renderButton(target, {
+      type: 'standard',
+      theme: 'outline',
+      size: 'large',
+      text: 'signin_with',
+      locale: 'ru',
+      width: 260,
+    });
+    _btnRendered = true;
+  } catch(e) {
+    console.warn('renderButton failed:', e);
+  }
+}
+
+// ── OVERLAY ───────────────────────────────────────────────
+function openGOverlay() {
+  hideErr();
+  if (!_gsiReady) {
+    showErr('Google загружается, подождите секунду...');
+    setTimeout(() => { if (_gsiReady) openGOverlay(); }, 1500);
+    return;
+  }
+  renderGoogleBtn();
+  document.getElementById('g-overlay').classList.add('show');
+}
+
+function closeGOverlay() {
+  document.getElementById('g-overlay').classList.remove('show');
+}
+
+// Закрыть оверлей при клике на фон
+document.getElementById('g-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeGOverlay();
+});
+
+// ── GSI CALLBACK ──────────────────────────────────────────
+function onGoogleToken(response) {
+  closeGOverlay();
+  try {
+    // Декодируем JWT id_token
+    const parts = response.credential.split('.');
+    const pad = '='.repeat((4 - parts[1].length % 4) % 4);
+    const json = atob((parts[1] + pad).replace(/-/g, '+').replace(/_/g, '/'));
+    const p = JSON.parse(json);
+    afterLogin({ name: p.name, email: p.email, picture: p.picture, sub: p.sub, source: 'google' });
+  } catch(e) {
+    showErr('Ошибка чтения данных Google. Попробуйте ещё раз.');
+  }
+}
+
+// ── SAVED USER ────────────────────────────────────────────
+function checkSaved() {
+  const s = localStorage.getItem('darabala_user');
+  if (!s) return;
+  try {
+    _user = JSON.parse(s);
+    const b = document.getElementById('returning-block');
+    document.getElementById('returning-name-btn').textContent = _user.name.split(' ')[0];
+    document.getElementById('returning-preview').innerHTML =
+      `<div class="ret-avatar">${_user.picture ? `<img src="${_user.picture}" referrerpolicy="no-referrer"/>` : '👤'}</div>` +
+      `<div><div class="ret-name">${_user.name}</div><div class="ret-sub">${_user.email || 'Гостевой аккаунт'}</div></div>`;
+    b.style.display = 'block';
+  } catch(e) { localStorage.removeItem('darabala_user'); }
+}
+
+function continueAsReturning() { if (_user) afterLogin(_user); }
+
+// ── GUEST ─────────────────────────────────────────────────
 function doGuestLogin() {
-  afterLogin({
-    name: 'Гость ' + Math.floor(Math.random() * 9000 + 1000),
-    email: null,
-    picture: null,
-    source: 'guest'
-  });
+  afterLogin({ name: 'Гость ' + Math.floor(Math.random()*9000+1000), email: null, picture: null, source: 'guest' });
 }
 
-// ===================== RETURNING USER =====================
-function showReturning(u) {
-  const block = document.getElementById('returning-block');
-  const preview = document.getElementById('returning-preview');
-  const nameBtn = document.getElementById('returning-name-btn');
-
-  nameBtn.textContent = u.name.split(' ')[0];
-  preview.innerHTML = `
-    <div class="ret-avatar">
-      ${u.picture ? `<img src="${u.picture}" referrerpolicy="no-referrer"/>` : '👤'}
-    </div>
-    <div>
-      <div class="ret-name">${u.name}</div>
-      <div class="ret-sub">${u.email || 'Гостевой аккаунт'}</div>
-    </div>`;
-  block.style.display = 'block';
-}
-
-function continueAsReturning() {
-  if (_user) afterLogin(_user);
-}
-
-// ===================== AFTER LOGIN =====================
-function afterLogin(user) {
-  _user = user;
-  localStorage.setItem('darabala_user', JSON.stringify(user));
-
-  const firstName = user.name.split(' ')[0];
-  document.getElementById('welcome-text').textContent =
-    user.source === 'guest' ? 'Добро пожаловать! 👋' : `Привет, ${firstName}! 👋`;
-
+// ── AFTER LOGIN ───────────────────────────────────────────
+function afterLogin(u) {
+  _user = u;
+  localStorage.setItem('darabala_user', JSON.stringify(u));
+  const first = u.name.split(' ')[0];
+  document.getElementById('welcome-text').textContent = u.source === 'guest' ? 'Добро пожаловать! 👋' : `Привет, ${first}! 👋`;
   document.getElementById('step-login').classList.remove('active');
   document.getElementById('step-role').classList.add('active');
 }
 
-// ===================== ROLE SELECT =====================
-function goToRole(role) {
-  sessionStorage.setItem('darabala_role', role);
-  if (role === 'student') {
-    window.location.href = 'student/';
-  } else {
-    window.location.href = 'teacher/';
-  }
+// ── ROLE ──────────────────────────────────────────────────
+function goToRole(r) {
+  sessionStorage.setItem('darabala_role', r);
+  window.location.href = r === 'student' ? 'student/' : 'teacher/';
 }
 
 function goBack() {
-  localStorage.removeItem('darabala_user');
-  _user = null;
+  localStorage.removeItem('darabala_user'); _user = null;
   document.getElementById('returning-block').style.display = 'none';
   document.getElementById('step-role').classList.remove('active');
   document.getElementById('step-login').classList.add('active');
 }
 
-// ===================== UTILS =====================
-function showError(msg) {
-  const el = document.getElementById('error-msg');
-  el.textContent = msg;
-  el.classList.add('show');
-}
+// ── UTILS ─────────────────────────────────────────────────
+function showErr(m) { const e = document.getElementById('err-msg'); e.textContent = m; e.classList.add('show'); }
+function hideErr()  { document.getElementById('err-msg').classList.remove('show'); }
 </script>
 </body>
 </html>
